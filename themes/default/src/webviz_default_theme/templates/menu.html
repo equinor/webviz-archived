@@ -1,0 +1,41 @@
+{% import macros as webviz with context %}
+<header id="header" class="Bgc(gray-5) C(white) D(f) Fxs(0) Fxd(c) H(80px) H(100vh)--sm Pos(f) Pos(s)--sm T(0) W(100%) W(50px)--sm W(250px)--lg Z(1044)">
+    <button id="menuOpenBtn" class="C(gray-0) C(white):h D(b) Ap(n) Bd(n) P(0) Bg(n) W(50px) H(50px) O(n) expanded_D(n) D(n)--lg">
+        <svg class="W(8px) H(15px) Stklj(r) Stklc(r) Stk(cc) Stkw(2) Fill(n)">
+            <path d="M1,1 L7,7.5 L1,14" />
+        </svg>
+    </button>
+
+    <a href="{{webviz.index_page()}}" class="D(n) D(f)--sm Ai(c) Jc(c) Mx(8px) C(white) Fz(30px) expanded_D(n) D(n)--lg">
+        <img class="W(34px) H(34.34px)" src="{{webviz.resource('img/burn.svg')}}" alt="logo">
+    </a>
+
+    <div class="Pos(a) T(0) D(n)--sm H(80px) expanded_D(b) expanded_H(100vh) D(b)--lg Bgc(gray-5) W(1/1) W(a)--sm expanded_W(250px)--sm">
+        <button id="menuCloseBtn" class="Bg(n) C(gray-0) C(white):h D(n) D(b)--sm Ap(n) Bd(n) W(50px) H(50px) Fl(end) O(n) D(n)--lg ">
+            <svg class="W(8px) H(15px) Stklj(r) Stklc(r) Stk(cc) Stkw(2) Fill(n)">
+                <path d="M7,1 L1,7.5 L7,14" />
+            </svg>
+        </button>
+        <a href="{{webviz.index_page()}}" class="Pos(a)--sm Start(0) T(0) H(50px) H(60px)--sm W(190px)--sm D(f) Ai(c) Jc(c) Jc(fs)--sm Mx(a) My(13px) M(20px)--sm Fz(30px) C(white) Z(1045)">
+            <img class="W(105.55px) H(50px) W(125px)--sm H(59.2px)--sm"  src="{{webviz.resource('/img/logo.svg')}}" alt="logo">
+        </a>
+    </div>
+
+    <button id="menuToggleBtn" class="C(gray-0) C(white):h Pos(a) T(31px) Start(10px) Ap(n) Bg(n) Bd(n) O(n) D(n)--sm">
+        <svg class="W(22px) H(18px) Stklj(r) Stklc(r) Stk(cc) Stkw(4) Fill(n)">
+            <path d="M2,2 L20,2 M2,9 L20,9 M2,16 L20,16" />
+        </svg>
+    </button>
+    <nav role="navigation" class="Bgc(gray-5) Pos(a) T(74px) B(0)--sm T(100px)--sm D(n) expanded_D(b) D(b)--sm W(100%) W(50px)--sm expanded_W(250px)--sm W(250px)--lg subexpanded_W(500px)--sm Ovy(h) Ovy(a):h Ovx(h) Z(1045)">
+        <ul class="Pstart(0) List(n) My(0) W(250px)--sm subexpanded_TranslateX(-100%) subexpanded_TranslateX(0)--sm">
+            {% call(location, title, current_page, icon, subelements) webviz.iter_menu() %}
+            {% if subelements | length == 0 %}
+                {% include 'menu_item.html' %}
+                {% else %}
+                {% include 'sub_menu.html' %}
+                {% endif %}
+            {% endcall %}
+        </ul>
+    </nav>
+
+</header>

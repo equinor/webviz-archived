@@ -1,0 +1,37 @@
+{% import macros as webviz with context %}
+<!DOCTYPE html>
+<html lang="en" id="webviz">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, shrink-to-fit=no">
+
+    {{ webviz.header() }}
+</head>
+
+
+<body class="Ff(de)">
+    <div class="D(f)--sm H(100vh)">
+        {% include 'menu.html' %}
+        <main class="D(f) Fxd(c) Fxg(1)--sm H(100vh) Ovy(a)--sm Ovs(touch) Scb(s)">
+            <div class="Fxg(1) Fxs(0) Mt(80px) Mt(0)--sm Bgc(white)">
+                {% call(banner) webviz.banner() %}
+                <div class="Pos(r) H(0) Pt(56.25%) Pt(534.375px)--lg Bgz(cv) Bgp(c)" style="background-image: url({{banner}})" role="banner">
+                    <div class="StretchedBox D(f) Ai(c) Jc(c)">
+                        <p class="C(white) My(0) Fz(48px) Ff(SD) Fw(700) Tsh(bannerTextShadow)">
+                        {{banner_title}}
+                        </p>
+                    </div>
+                </div>
+                {% endcall %}
+                {{ webviz.content() }}
+            </div>
+            {% if copyright_notice %}
+            {{ copyright_notice }}
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

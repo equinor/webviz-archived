@@ -1,0 +1,25 @@
+{% import macros as webviz with context %}
+{% extends 'menu_item.html' %}
+{% block link %}
+<button class="subMenuOpenBtn C(gray-0) C(white):h Ap(n) Bd(n) W(50px) H(50px) O(n) Cur(p) showSubMenu_D(n) Pe(a) Fxs(0) {{'Bgc(yellow-9)' if current_page else 'Bgc(gray-6) Bgc(yellow-9):h'}}">
+    <svg class="W(8px) H(15px) Stklj(r) Stklc(r) Stk(cc) Stkw(2) Fill(n)">
+        <path d="M1,1 L7,7.5 L1,14" />
+    </svg>
+</button>
+<button class="subMenuCloseBtn C(gray-0) C(white):h Ap(n) Bd(n) W(50px) H(50px) O(n) Cur(p) Pos(a) T(0) End(-50px) Z(1) Pos(s)--sm D(n) showSubMenu_D(b) Pe(a) Fxs(0) {{'Bgc(yellow-9)' if current_page else 'Bgc(gray-6) Bgc(yellow-9):h'}}">
+    <svg class="W(8px) H(15px) Stklj(r) Stklc(r) Stk(cc) Stkw(2) Fill(n)">
+        <path d="M7,1 L1,7.5 L7,14" />
+    </svg>
+</button>
+{% endblock %}
+{% block sublink %}
+<ul class="Pstart(0) List(n) My(0) W(100%) W(250px)--sm Pos(a) Start(100%) Start(250px)--sm T(0) D(n) showSubMenu_D(b)">
+    {% call(sub_location, sub_title) webviz.iter_sub_menu(subelements) %}
+        <li class="P(0) BdB Bdstartw(1px)--sm Bdbw(1px)--sm Bdc(white) Bgc(yellow-7):h {{'Bgc(yellow-7)' if current_page else 'Bgc(gray-5)'}}">
+            <a href="{{sub_location}}" class="D(f) Ai(c) Td(n) H(50px) C(cc) Mstart(70px) Mstart(10px)--sm">
+                <span class="Fw(b) Tt(u) Px(10px) Fz(15px) Lh(1.2em)">{{sub_title}}</span>
+            </a>
+        </li>
+    {% endcall %}
+</ul>
+{% endblock %}

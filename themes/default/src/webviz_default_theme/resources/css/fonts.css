@@ -1,0 +1,50 @@
+/**
+==================================================================
+LEAGUE GOTHIC by Caroline Hadilaksono, Micah Rich and Tyler Finck
+
+Font-weights:
+- 400 (regular)
+
+Font-stretch:
+- normal
+- condenced
+
+Font-styles:
+- normal
+- italic
+==================================================================
+*/
+
+@font-face {
+    font-family: "League Gothic";
+    src: local('☻'), url(../fonts/leaguegothic-regular-webfont.woff) format('woff');
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+
+@font-face {
+    font-family: "League Gothic";
+    src: local('☻'), url(../fonts/leaguegothic-italic-webfont.woff) format('woff');
+    font-style: italic;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "League Gothic Condensed";
+    src: local('☻'), url(../fonts/leaguegothic-condensed-regular-webfont.woff) format('woff');
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: condenced;
+}
+
+
+@font-face {
+    font-family: "League Gothic Condensed";
+    src: local('☻'), url(../fonts/leaguegothic-condensed-italic-webfont.woff) format('woff');
+    font-style: italic;
+    font-weight: 400;
+    font-stretch: condenced;
+}

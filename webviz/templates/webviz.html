@@ -1,0 +1,51 @@
+{% macro header() -%}
+    <title>{{title}}</title>
+
+    {% for css in css_files %}
+    <link rel='stylesheet' href='{{root_folder}}/{{css}}' type='text/css'></link>
+    {% endfor %}
+
+
+    {% for js in js_files %}
+    <script src='{{root_folder}}/{{js}}'></script>
+    {% endfor %}
+{%- endmacro %}
+
+{% macro resource(name) -%} {{root_folder + '/resources/' + name }} {%- endmacro %}
+{% macro index_page() -%} {{root_folder}}/index.html {%- endmacro %}
+
+{% macro banner() -%}
+{% if banner_image %}
+{{ caller(banner_filename) }}
+{% endif %}
+{%- endmacro %}
+
+{% macro content() -%}
+{% for element in page.contents %}
+    {% include element.get_template() %}
+{% endfor %}
+{%- endmacro %}
+
+{% macro iter_sub_menu(subelements) -%}
+{% for subitem in subelements %}
+{{ caller(root_folder + '/' + subitem.location, subitem.title) }}
+{% endfor %}
+{%- endmacro %}
+
+{% macro iter_menu() -%}
+{% for element in menu %}
+    {% if element.subelements is undefined %}
+        {{ caller(root_folder + '/' + element.location,
+                  element.title,
+                  element.current_page,
+                  element.icon,
+                  []) }}
+    {% else %}
+        {{ caller(root_folder + '/' + element.location,
+                  element.title,
+                  element.current_page,
+                  element.icon,
+                  element.subelements) }}
+    {% endif %}
+{% endfor %}
+{%- endmacro %}

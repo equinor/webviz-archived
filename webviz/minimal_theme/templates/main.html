@@ -1,0 +1,29 @@
+{% import macros as webviz with context %}
+<html>
+<head>
+{{ webviz.header() }}
+</head>
+<body>
+{% call(banner) webviz.banner() %}
+<img src='{{banner}}'></img>
+{% endcall %}
+<ul>
+  {% call(loc, title, current, icon, sub) webviz.iter_menu() %}
+    <li> <a href='{{loc}}'> {{icon}} {{title}}</a>
+      {% if sub %}
+      <ul>
+          {% call(sub_loc, sub_title) webviz.iter_sub_menu(sub) %}
+              <li><a href='{{sub_loc}}'> {{icon}} {{sub_title}}</a></li>
+          {% endcall %}
+        </li>
+      </ul>
+       {% endif %}
+  {% endcall %}
+</ul>
+{{ webviz.content() }}
+
+{% if copyright_notice %}
+  {{ copyright_notice }}
+{% endif%}
+</body>
+</html>

@@ -1,0 +1,12 @@
+<li class="menuItem P(0) BdB Bdc(white) Bgc(yellow-7):h C(white) {{'Bgc(yellow-7)' if current_page else 'Bgc(gray-5)'}}">
+    <a href="{{location}}" class="D(f) Ai(c) Td(n) H(50px) C(cc) Cur(p)">
+        {% if icon %}
+        <span class="D(f) Ai(c) Jc(c) W(50px) Fxs(0) Fz(24px) C(white)">
+            <i class="fas fa-{{icon}}"></i>
+        </span>
+        {% endif %}
+        <span class="menuItemTitle Fw(b) Tt(u) Px(10px) Fxg(1) Fz(15px) Lh(1.2em)">{{title}}</span>
+        {% block link %}{% endblock %}
+    </a>
+    {% block sublink %}{% endblock %}
+</li>

@@ -22,10 +22,13 @@ class Plotly(JSONPageElement):
         self['layout'] = layout
 
     def get_template(self):
+        """
+        overrides :py:meth:`webviz.PageElement.get_template`.
+        """
         return env.get_template('plotly.html')
 
     def get_js_dep(self):
-        """ Overrides :py:meth:`webportal.PageElement.get_js_dep`."""
+        """Extends :py:meth:webviz.PageElement.get_js_dep"""
         deps = super(Plotly, self).get_js_dep()
         plotly_js = path.join(
             path.dirname(__file__),

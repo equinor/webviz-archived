@@ -6,7 +6,7 @@
     "build": "node move_deps.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Eivind Jahren",
+  "author": "Equinor ASA",
   "license": "ISC",
   "dependencies": {
     "plotly.js-dist": "^1.39.1"

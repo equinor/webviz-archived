@@ -37,7 +37,7 @@ class TestLineChartExample(unittest.TestCase):
     def selects(self, selector):
         return self.driver.find_elements_by_css_selector(selector)
 
-    def test_plotly_plot_in_script(self):
+    def test_plot_on_page(self):
         link = self.select('li.menuItem > a')
         link.click()
         plots = self.selects('div.plot-container')

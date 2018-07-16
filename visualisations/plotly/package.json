@@ -1,0 +1,14 @@
+{
+  "name": "webviz-plotly",
+  "version": "0.1.0",
+  "description": "Webviz page element for plotly visualisations.",
+  "scripts": {
+    "build": "node move_deps.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eivind Jahren",
+  "license": "ISC",
+  "dependencies": {
+    "plotly.js-dist": "^1.39.1"
+  }
+}

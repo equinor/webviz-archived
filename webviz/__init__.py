@@ -21,10 +21,13 @@ from ._theme import Theme
 from ._webviz import Webviz, SubMenu, Page
 from ._page_element import PageElement
 from ._json_page_element import JSONPageElement
-
-__all__ = ['Webviz',
-           'Page',
-           'SubMenu',
-           'PageElement',
-           'Theme',
-           'JSONPageElement']
+from ._html import Html
+__all__ = [
+    'Webviz',
+    'Html',
+    'Page',
+    'SubMenu',
+    'PageElement',
+    'Theme',
+    'JSONPageElement'
+]

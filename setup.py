@@ -17,6 +17,9 @@ setup(
     entry_points={
         'webviz_themes': [
             'minimal = webviz.minimal_theme:minimal_theme'
+        ],
+        'webviz_page_elements': [
+            'html = webviz:Html'
         ]
     },
     zip_safe=False

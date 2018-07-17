@@ -23,7 +23,31 @@ The ``d3.js`` library is used by companies like `NRK <https://www.nrk.no>`_,
 The site generator is used to organize the visualisations in a html-report so
 that it can be shared and viewed through a web-browser.
 
-Simple example
+Example
+----------
+
+Webviz can be executed using
+
+.. code-block:: bash
+
+   python -m webviz site-folder
+
+
+Where `site-folder` is a fodler containing markdown files. See
+`examples/site_example` for an example. In the `site-folder`, there are two
+special files: `index.md` and `config.yaml`. `index.md` is the landing page for
+the site and `config.yaml` contains configuration info, such as which theme to
+use.
+
+In markdown files, page elements (such as visualisations) can be added using:
+
+.. code-block:: html
+
+   {{ page_element('name_of_page_element', arguments...) }}
+
+
+
+API example
 --------------
 
 The example below creates several (currently empty) pages, linked together through a navigation

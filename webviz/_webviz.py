@@ -42,6 +42,7 @@ class Page(object):
         self.location = None
         self.icon_name = icon
         self.icon = None
+        self.subelements = []
 
     def add_content(self, content):
         """

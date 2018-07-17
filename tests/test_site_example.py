@@ -47,7 +47,7 @@ class TestSiteExample(unittest.TestCase):
         self.assertEqual(len(sub_pages), 1)
 
     def test_containts_html_element(self):
-        link = self.driver.find_element_by_css_selector('li.menuItem > a')
+        link = self.driver.find_element_by_css_selector('li > a')
         link.click()
         menu = self.driver.find_element_by_id('htmlTitle')
         self.assertIn(u'html element title', menu.get_attribute('innerHTML'))

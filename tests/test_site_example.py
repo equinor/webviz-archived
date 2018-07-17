@@ -15,7 +15,7 @@ class TestSiteExample(unittest.TestCase):
         os.chdir(cls.tempdir)
 
         shutil.copytree('{}/../examples/site_example'.format(thisdir), './site_example')
-        os.system('python -m webviz site_example')
+        cls.ret = os.system('python -m webviz site_example')
 
         chromeOptions = Options()
         chromeOptions.add_argument("--headless")
@@ -32,7 +32,10 @@ class TestSiteExample(unittest.TestCase):
         address = 'file://{}/site_example/html_output/index.html'.format(self.tempdir)
         self.driver.get(address)
 
-    def test_five_menu_items(self):
+    def test_return_value(self):
+        self.assertEqual(self.ret, 0)
+
+    def test_three_menu_items(self):
         menu_items = self.driver.find_elements_by_xpath('//ul//li')
         self.assertEqual(len(menu_items), 3)
 

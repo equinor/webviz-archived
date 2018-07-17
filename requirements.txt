@@ -4,3 +4,4 @@ future
 six
 argparse
 pyyaml
+markdown

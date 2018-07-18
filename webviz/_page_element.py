@@ -40,15 +40,6 @@ class PageElement:
         """
         return []
 
-    def additional_resources(self):
-        """
-        :returns: A dictionary of additional resources
-            to be included in the built site. Keys are
-            relative path to the resource, and values
-            are the contents (or file with contents).
-        """
-        return {}
-
     def __str__(self):
         css_deps = self.get_css_dep()
         js_deps = self.get_js_dep()

@@ -55,6 +55,24 @@ class TestSiteExample(unittest.TestCase):
         menu = self.driver.find_element_by_id('htmlTitle')
         self.assertIn(u'html element title', menu.get_attribute('innerHTML'))
 
+    def test_css_moved(self):
+        self.assertTrue(os.path.isfile(os.path.join(
+            self.tempdir,
+            'site_example',
+            'html_output',
+            'resources',
+            'css',
+            'test.css')))
+
+    def test_js_moved(self):
+        self.assertTrue(os.path.isfile(os.path.join(
+            self.tempdir,
+            'site_example',
+            'html_output',
+            'resources',
+            'js',
+            'test.js')))
+
 
 if __name__ == '__main__':
     unittest.main()

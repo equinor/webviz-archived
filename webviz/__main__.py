@@ -1,7 +1,3 @@
-"""
-Handles calls to webportal from the commandline via e.g.
-`python -m webviz`.
-"""
 import argparse
 import os
 from os import path
@@ -19,57 +15,68 @@ from ._html import Html
 class FullPaths(argparse.Action):
     """Expand user- and relative-paths"""
     def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, os.path.abspath(os.path.expanduser(values)))
+        setattr(namespace, self.dest, path.abspath(path.expanduser(values)))
 
 
 def is_dir(dirname):
     """Checks if a path is an actual directory"""
-    if not os.path.isdir(dirname):
+    if not path.isdir(dirname):
         msg = "{0} is not a directory".format(dirname)
         raise argparse.ArgumentTypeError(msg)
     else:
         return dirname
 
 
+collected_elements = []
+
+
 def page_element(name, *args, **kwargs):
     element = page_elements[name](*args, **kwargs)
+    collected_elements.append(element)
     template = element.get_template()
     return template.render(element=element)
 
 
-parser = argparse.ArgumentParser(
-    description='webviz site-generator'
-)
+def read_config():
+    configfile = path.join(root_folder, 'config.yaml')
+    config = {
+        'theme': 'default',
+        'title': path.basename(root_folder)
+    }
+    if path.isfile(configfile):
+        with open(configfile, 'r') as f:
+            config = dict(config, **load(f))
+    return config
 
-parser.add_argument(
-    'site_folder',
-    default='.',
-    action=FullPaths,
-    type=is_dir
-)
+
+def init_parser():
+    parser = argparse.ArgumentParser(
+        description='webviz site-generator'
+    )
+
+    parser.add_argument(
+        'site_folder',
+        default='.',
+        action=FullPaths,
+        type=is_dir
+    )
+    return parser
+
 
 page_elements = {}
 for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
     page_elements[entry_point.name] = entry_point.load()
 
 
-args = parser.parse_args()
-root_folder = args.site_folder
+root_folder = init_parser().parse_args().site_folder
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(root_folder),
 )
 
-configfile = os.path.join(root_folder, 'config.yaml')
-config = {
-    'theme': 'default',
-    'title': path.basename(root_folder)
-}
-if os.path.isfile(configfile):
-    with open(configfile, 'r') as f:
-        config = dict(config, **load(f))
+config = read_config()
 
-
+prevdir = os.getcwd()
 submenus = {}
 web = Webviz(config['title'], theme=config['theme'])
 web.add_page = web.add
@@ -83,13 +90,33 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
         if ext == '.md':
             templ = env.get_template(
                 path.relpath(path.join(root, filename), root_folder))
-            html = markdown.markdown(templ.render(page_element=page_element))
+            collected_elements = []
+            untemplated_markdown = templ.render(page_element=page_element)
+            rendered = markdown.markdown(untemplated_markdown)
             page = None
             if filename == 'index.md':
                 page = web.index
             else:
                 page = Page(name)
-            page.add_content(Html(html))
+
+            html = Html(rendered)
+            for element in collected_elements:
+                for js in element.get_js_dep():
+                    absjs = ''
+                    if path.isabs(js):
+                        absjs = js
+                    else:
+                        absjs = path.normpath(path.join(root_folder, js))
+                    html.add_js_dep(absjs)
+                for css in element.get_css_dep():
+                    abscss = ''
+                    if path.isabs(css):
+                        abscss = css
+                    else:
+                        abscss = path.normpath(path.join(root_folder, css))
+                    html.add_css_dep(abscss)
+
+            page.add_content(html)
             submenus[root].add_page(page)
 
 for submenu in itervalues(submenus):

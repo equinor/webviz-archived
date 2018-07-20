@@ -34,18 +34,10 @@
 
 {% macro iter_menu() -%}
 {% for element in menu %}
-    {% if element.subelements is undefined %}
-        {{ caller(root_folder + '/' + element.location,
-                  element.title,
-                  element.current_page,
-                  element.icon,
-                  []) }}
-    {% else %}
-        {{ caller(root_folder + '/' + element.location,
+    {{ caller(root_folder + (('/' + element.location) if element.location else ''),
                   element.title,
                   element.current_page,
                   element.icon,
                   element.subelements) }}
-    {% endif %}
 {% endfor %}
 {%- endmacro %}

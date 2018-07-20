@@ -33,7 +33,7 @@ Webviz can be executed using
    python -m webviz site-folder
 
 
-Where `site-folder` is a fodler containing markdown files. See
+Where `site-folder` is a folder containing markdown files. See
 `examples/site_example` for an example. In the `site-folder`, there are two
 special files: `index.md` and `config.yaml`. `index.md` is the landing page for
 the site and `config.yaml` contains configuration info, such as which theme to

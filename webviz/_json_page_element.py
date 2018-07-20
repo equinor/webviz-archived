@@ -7,7 +7,7 @@ from six import iteritems, itervalues
 from ._page_element import PageElement
 from builtins import str as text
 
-_json_store_init = StringIO(u'<script>var json_store={};</script>')
+_json_store_init = StringIO(u'var json_store={};')
 _json_store_init.name = 'json_store_init.js'
 
 

@@ -52,18 +52,6 @@ class Page(object):
             raise ValueError('Content added to Page must be PageElement')
         self.contents.append(content)
 
-    def get_additional_resources(self, webviz_writer):
-        """
-        Goes through all PageElements in the page and collects the
-        additional resources they need, then writes them.
-
-        :param webviz_writer: The writer to write the resources to.
-        """
-        resources = {}
-        for content in self.contents:
-            resources = dict(resources, **content.additional_resources())
-        return resources
-
     @property
     def css_dep(self):
         """

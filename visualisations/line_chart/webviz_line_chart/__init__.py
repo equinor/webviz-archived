@@ -21,11 +21,11 @@ class LineChart(Plotly):
         else:
             self.data = data
 
-        y = self.data.index.tolist()
+        x = self.data.index.tolist()
 
         lines = [{
-            'x': self.data[column].tolist(),
-            'y': y,
+            'y': self.data[column].tolist(),
+            'x': x,
             'type': 'scatter',
             'name': column
             }

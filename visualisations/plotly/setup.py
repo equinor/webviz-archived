@@ -15,8 +15,8 @@ setup(
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
-        'webviz_page_element': [
-            'line_chart = webviz_line_chart.LineChart'
+        'webviz_page_elements': [
+            'plotly = webviz_plotly:Plotly'
         ]
     },
     zip_safe=False

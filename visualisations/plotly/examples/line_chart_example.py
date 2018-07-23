@@ -1,4 +1,4 @@
-from webviz import Webviz, Page, SubMenu
+from webviz import Webviz, Page
 
 from webviz_plotly import Plotly
 

@@ -5,3 +5,4 @@ six
 argparse
 pyyaml
 markdown
+pandas

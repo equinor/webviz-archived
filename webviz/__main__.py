@@ -27,6 +27,11 @@ def is_dir(dirname):
         return dirname
 
 
+page_elements = {}
+for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
+    page_elements[entry_point.name] = entry_point.load()
+
+
 collected_elements = []
 
 
@@ -63,11 +68,6 @@ def init_parser():
     return parser
 
 
-page_elements = {}
-for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
-    page_elements[entry_point.name] = entry_point.load()
-
-
 root_folder = init_parser().parse_args().site_folder
 
 env = jinja2.Environment(
@@ -81,6 +81,7 @@ submenus = {}
 web = Webviz(config['title'], theme=config['theme'])
 web.add_page = web.add
 submenus[root_folder] = web
+os.chdir(root_folder)
 for root, dirs, files in os.walk(root_folder, topdown=True):
     dirs[:] = [d for d in dirs if d != 'html_output']
     for dirname in dirs:
@@ -102,19 +103,9 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
             html = Html(rendered)
             for element in collected_elements:
                 for js in element.get_js_dep():
-                    absjs = ''
-                    if path.isabs(js):
-                        absjs = js
-                    else:
-                        absjs = path.normpath(path.join(root_folder, js))
-                    html.add_js_dep(absjs)
+                    html.add_js_dep(js)
                 for css in element.get_css_dep():
-                    abscss = ''
-                    if path.isabs(css):
-                        abscss = css
-                    else:
-                        abscss = path.normpath(path.join(root_folder, css))
-                    html.add_css_dep(abscss)
+                    html.add_css_dep(css)
 
             page.add_content(html)
             submenus[root].add_page(page)

@@ -1,6 +1,6 @@
 set -e
 
-declare -a projects=('.' 'themes/default/' 'visualisations/plotly')
+declare -a projects=('.' 'themes/default/' 'visualisations/plotly' 'visualisations/line_chart')
 
 for project in "${projects[@]}"
 do

@@ -65,9 +65,9 @@ class PieChart(Plotly):
                 'type': 'pie',
                 'hoverinfo': 'label+percent+name',
                 'domain': {
-                    'x': [(ind % num_per_row) / length + margin/2,
-                          ((ind % num_per_row)+1) / length - margin/2],
-                    'y': [(ind / num_per_row) / length + margin/2,
-                          ((ind / num_per_row)+1) / length - margin/2]
+                    'x': [(ind % width) / float(width) + margin/2,
+                          ((ind % width)+1) / float(width) - margin/2],
+                    'y': [(ind / width) / float(height) + margin/2,
+                          ((ind / width)+1) / float(height) - margin/2]
                     }
                 } for ind, row in self.data.iterrows()])

@@ -1,4 +1,5 @@
 from webviz import Webviz, Page
+import pandas as pd
 
 from webviz_pie_chart import PieChart
 
@@ -6,8 +7,8 @@ web = Webviz('Pie Chart Example')
 
 page = Page('Pie Chart')
 
-page.add_content(PieChart(
-    [19, 26, 55],
-    ['sector 1', 'sector 2', 'sector 3']))
+frame = pd.DataFrame([[19, 26, 55], [33, 14, 55]], columns=['sector 1', 'sector 2', 'sector 3'])
+
+page.add_content(PieChart(frame))
 web.add(page)
 web.write_html("./webviz_example", overwrite=True, display=False)

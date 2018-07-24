@@ -15,7 +15,7 @@ test:
 	py.test --cov=webviz_plotly --cov-fail-under=100 tests/
 
 lint:
-	pycodestyle webviz_plotly examples
+	pycodestyle webviz_plotly examples tests
 
 doc:
 	echo "No doc"

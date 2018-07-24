@@ -12,10 +12,10 @@ install: build
 	python setup.py install
 
 test:
-	py.test --cov=webviz_line_chart --cov-fail-under=100 tests/
+	py.test --cov=webviz_pie_chart --cov-fail-under=100 tests/
 
 lint:
-	pycodestyle webviz_line_chart examples tests
+	pycodestyle webviz_pie_chart examples tests
 
 doc:
 	echo "No doc"

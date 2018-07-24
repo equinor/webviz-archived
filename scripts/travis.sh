@@ -6,6 +6,7 @@ declare -a projects=(\
     'visualisations/plotly'\
     'visualisations/line_chart'\
     'visualisations/bar_chart'\
+    'visualisations/pie_chart'\
 )
 
 for project in "${projects[@]}"

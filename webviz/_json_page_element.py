@@ -1,6 +1,7 @@
 import json
 from io import StringIO
 from uuid import uuid4
+import numpy
 
 from six import iteritems, itervalues
 
@@ -9,6 +10,12 @@ from builtins import str as text
 
 _json_store_init = StringIO(u'var json_store={};')
 _json_store_init.name = 'json_store_init.js'
+
+
+def default(o):
+    if isinstance(o, numpy.int64):
+        return int(o)
+    raise TypeError
 
 
 class JSONPageElement(PageElement):
@@ -68,7 +75,10 @@ class JSONPageElement(PageElement):
         if self.is_dumped(key):
             return 'json_store["{0}"]'.format(self._json_id[key])
         else:
-            return json.dumps(self._json_params[key], separators=(',', ':'))
+            return json.dumps(self._json_params[key],
+                              separators=(',', ':'),
+                              default=default
+                              )
 
     def is_dumped(self, key):
         """
@@ -83,7 +93,10 @@ class JSONPageElement(PageElement):
         :raises: KeyError, if there is no value for the given json-key.
         """
         self._json_id[key] = str(uuid4())
-        data_dump = json.dumps(self._json_params[key], separators=(',', ':'))
+        data_dump = json.dumps(self._json_params[key],
+                               separators=(',', ':'),
+                               default=default
+                               )
         dump = 'json_store["{0}"] = {1};'.format(self._json_id[key], data_dump)
         self._json_dump[key] = dump
 

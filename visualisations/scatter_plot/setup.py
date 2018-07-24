@@ -13,7 +13,7 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'scatter_plot = webviz_scatter_plot:ScatterPlot'
+            'ScatterPlot = webviz_scatter_plot:ScatterPlot'
         ]
     },
     zip_safe=False

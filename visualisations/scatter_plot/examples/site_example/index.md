@@ -1,1 +1,1 @@
-{{ page_element('scatter_plot', './test.csv') }}
+{{ page_element('ScatterPlot', './test.csv') }}

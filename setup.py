@@ -25,7 +25,7 @@ setup(
             'minimal = webviz.minimal_theme:minimal_theme'
         ],
         'webviz_page_elements': [
-            'html = webviz:Html'
+            'Html = webviz:Html'
         ]
     },
     zip_safe=False

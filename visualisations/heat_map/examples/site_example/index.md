@@ -1,1 +1,1 @@
-{{ page_element('heat_map', './test.csv') }}
+{{ page_element('HeatMap', './test.csv') }}

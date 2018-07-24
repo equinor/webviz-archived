@@ -13,7 +13,7 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'bar_chart = webviz_bar_chart:BarChart'
+            'BarChart = webviz_bar_chart:BarChart'
         ]
     },
     zip_safe=False

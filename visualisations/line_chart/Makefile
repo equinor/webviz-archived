@@ -15,7 +15,7 @@ test:
 	py.test --cov=webviz_line_chart --cov-fail-under=100 tests/
 
 lint:
-	pycodestyle webviz_line_chart examples
+	pycodestyle webviz_line_chart examples tests
 
 doc:
 	echo "No doc"

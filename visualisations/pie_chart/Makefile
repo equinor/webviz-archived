@@ -15,7 +15,7 @@ test:
 	py.test --cov=webviz_pie_chart --cov-fail-under=100 tests/
 
 lint:
-	pycodestyle webviz_pie_chart examples
+	pycodestyle webviz_pie_chart examples tests
 
 doc:
 	echo "No doc"

@@ -7,6 +7,7 @@ declare -a projects=(\
     'visualisations/line_chart'\
     'visualisations/bar_chart'\
     'visualisations/pie_chart'\
+    'visualisations/tornado_plot'\
 )
 
 for project in "${projects[@]}"

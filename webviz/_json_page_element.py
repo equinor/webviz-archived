@@ -15,6 +15,9 @@ _json_store_init.name = 'json_store_init.js'
 def default(o):
     if isinstance(o, numpy.int64):
         return int(o)
+    if isinstance(o, numpy.float64):
+        return float(o)
+    print(type(o))
     raise TypeError
 
 

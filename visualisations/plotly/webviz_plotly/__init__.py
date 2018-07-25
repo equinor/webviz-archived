@@ -21,6 +21,12 @@ class Plotly(JSONPageElement):
         self['config'] = config
         self['layout'] = layout
 
+    def add_annotation(self, **kwargs):
+        if 'annotations' not in self['layout']:
+            self['layout']['annotations'] = []
+
+        self['layout']['annotations'].append(dict(**kwargs))
+
     def get_template(self):
         """
         overrides :py:meth:`webviz.PageElement.get_template`.

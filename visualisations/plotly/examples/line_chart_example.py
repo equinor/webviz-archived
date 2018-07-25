@@ -21,6 +21,8 @@ line2 = {
 
 lines = [line1, line2]
 
-page.add_content(Plotly(lines))
+plot = Plotly(lines)
+plot.add_annotation(x=1, y=10, text='label')
+page.add_content(plot)
 web.add(page)
 web.write_html("./webviz_example", overwrite=True, display=False)

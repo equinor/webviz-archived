@@ -15,10 +15,12 @@ _json_store_init.name = 'json_store_init.js'
 def default(o):
     if isinstance(o, numpy.int64):
         return int(o)
-    if isinstance(o, numpy.float64):
-        return float(o)
-    print(type(o))
     raise TypeError
+
+
+def dump_json(o):
+    print(o)
+    return json.dumps(o, separators=(',', ':'), default=default)
 
 
 class JSONPageElement(PageElement):
@@ -78,10 +80,7 @@ class JSONPageElement(PageElement):
         if self.is_dumped(key):
             return 'json_store["{0}"]'.format(self._json_id[key])
         else:
-            return json.dumps(self._json_params[key],
-                              separators=(',', ':'),
-                              default=default
-                              )
+            return dump_json(self._json_params[key])
 
     def is_dumped(self, key):
         """
@@ -89,17 +88,14 @@ class JSONPageElement(PageElement):
         """
         return key in self._json_dump
 
-    def dump_json(self, key):
+    def dump_json_key(self, key):
         """
         Dumps the given json-key.
 
         :raises: KeyError, if there is no value for the given json-key.
         """
         self._json_id[key] = str(uuid4())
-        data_dump = json.dumps(self._json_params[key],
-                               separators=(',', ':'),
-                               default=default
-                               )
+        data_dump = dump_json(self._json_params[key])
         dump = 'json_store["{0}"] = {1};'.format(self._json_id[key], data_dump)
         self._json_dump[key] = dump
 
@@ -115,7 +111,7 @@ class JSONPageElement(PageElement):
         """
         for key in self._json_params:
             if not self.is_dumped(key):
-                self.dump_json(key)
+                self.dump_json_key(key)
         return self._json_dump
 
     def get_js_dep(self):

@@ -2,10 +2,14 @@ import unittest
 import json
 import shutil
 import tempfile
+import numpy
+import json
 from os import path
 from jinja2 import Template
+from six import iteritems
 
 from webviz import JSONPageElement, Webviz, Page
+from webviz._json_page_element import dump_json
 
 
 class JSONContent(JSONPageElement):
@@ -51,6 +55,12 @@ class TestPage(unittest.TestCase):
             'resources',
             'js',
             js_deps[0].name))
+
+    def test_dump_json(self):
+        data = {'a': numpy.int64(3), 'b': numpy.float64(3)}
+        roundtrip = json.loads(dump_json(data))
+        for key, value in iteritems(data):
+            self.assertEqual(data[key], roundtrip[key])
 
 
 if __name__ == '__main__':

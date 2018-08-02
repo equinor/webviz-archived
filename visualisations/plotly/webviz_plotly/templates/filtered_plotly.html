@@ -1,0 +1,57 @@
+<form id="form_{{element.containerId}}">
+    {% for key in element.check_box_filters %}
+    <fieldset id="{{key}}_fieldset_{{element.containerId}}"
+              style='display:inline-block'>
+        <legend> {{key}} </legend>
+        <div style='height:100px; overflow-y: auto'>
+        {% for label in element.labels[key] %}
+            <div>
+                <input id='{{key}}{{label}}box{{element.containerId}}'
+                       type="checkbox"
+                       name="{{key}}-{{label}}"
+                       value={{label}}/ checked>
+                    <label for="{{key}}">{{label}}</label>
+            </div>
+        {% endfor %}
+    </fieldset>
+    {% endfor %}
+</form>
+<div id="{{element.containerId}}" style="height: 600px">
+</div>
+
+<script>
+{
+    (function () {
+        let filtered_data = {{element.get_json_dump("data")}};
+        let labels = {{element.get_json_dump("labels")}};
+        let keys = Object.keys(labels);
+
+        boxes = document.querySelectorAll('#form_{{element.containerId}} > fieldset > div > div > input');
+        function updatePlot() {
+            let enabled = {};
+            keys.map(function (key){
+                if(!enabled[key]) enabled[key] = []
+                for(let l = 0; l < labels[key].length;++l){
+                    let label = labels[key][l];
+                    let query = '#' + key + label + 'box{{element.containerId}}';
+                    let box = document.querySelector(query);
+                    if(box.checked){
+                        enabled[key].push(label);
+                    }
+                }
+            })
+            let data = filtered_data.filter(point =>
+                keys.every(key =>
+                    enabled[key].find(e => e == point.labels[key])));
+            Plotly.newPlot(
+                "{{element.containerId}}",
+                data,
+                {{element.get_json_dump("layout")}},
+                {{element.get_json_dump("config")}}
+            );
+        }
+        boxes.forEach(x => x.addEventListener('click',updatePlot));
+        updatePlot();
+    }());
+};
+</script>

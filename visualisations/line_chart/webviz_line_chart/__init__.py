@@ -1,8 +1,8 @@
-from webviz_plotly import Plotly
+from webviz_plotly import Plotly, FilteredPlotly
 import pandas as pd
 
 
-class LineChart(Plotly):
+class LineChart(FilteredPlotly):
     """
     Line chart page element.
     :param data: Either a file path to a csv file or a pandas dataframe.  Each
@@ -10,25 +10,19 @@ class LineChart(Plotly):
         the csv file, but a special column 'index' will be used as the
         horizontal value.
     """
-    def __init__(self, data):
-        if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                        self.data['index'],
-                        inplace=True)
-                del self.data['index']
-        else:
-            self.data = data
+    layout = {'showlegend': True}
+    config = {}
 
-        x = self.data.index.tolist()
+    def process_data(self, data):
+
+        x = data.index.tolist()
 
         lines = [{
-            'y': self.data[column].tolist(),
+            'y': data[column].tolist(),
             'x': x,
             'type': 'scatter',
             'name': column
             }
-            for column in self.data.columns]
+            for column in data.columns]
 
-        super(LineChart, self).__init__(lines)
+        return lines

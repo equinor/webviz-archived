@@ -20,38 +20,25 @@
 </div>
 
 <script>
-{
     (function () {
-        let filtered_data = {{element.get_json_dump("data")}};
-        let labels = {{element.get_json_dump("labels")}};
-        let keys = Object.keys(labels);
 
-        boxes = document.querySelectorAll('#form_{{element.containerId}} > fieldset > div > div > input');
-        function updatePlot() {
-            let enabled = {};
-            keys.map(function (key){
-                if(!enabled[key]) enabled[key] = []
-                for(let l = 0; l < labels[key].length;++l){
-                    let label = labels[key][l];
-                    let query = '#' + key + label + 'box{{element.containerId}}';
-                    let box = document.querySelector(query);
-                    if(box.checked){
-                        enabled[key].push(label);
-                    }
+        let labels = {{element.get_json_dump("labels")}}
+        let boxes = {}
+        Object.keys(labels).forEach(key =>
+            labels[key].forEach(label => {
+                if(!boxes[key]) boxes[key] = {}
+                boxes[key][label] = document.querySelector(
+                    '#' + key + label + 'box{{element.containerId}}'
+                )
                 }
-            })
-            let data = filtered_data.filter(point =>
-                keys.every(key =>
-                    enabled[key].find(e => e == point.labels[key])));
-            Plotly.newPlot(
-                "{{element.containerId}}",
-                data,
-                {{element.get_json_dump("layout")}},
-                {{element.get_json_dump("config")}}
-            );
-        }
-        boxes.forEach(x => x.addEventListener('click',updatePlot));
-        updatePlot();
-    }());
-};
+            )
+        )
+        plotly_checkbox_filter(
+            "{{element.containerId}}",
+            boxes,
+            {{element.get_json_dump("data")}},
+            {{element.get_json_dump("layout")}},
+            {{element.get_json_dump("config")}}
+        )
+    }())
 </script>

@@ -64,7 +64,6 @@ class FilteredPlotly(Plotly):
                         inplace=True)
                 del self.data['index']
 
-        print(self.data)
         filtered_data = []
         self.labels = {}
         if check_box_columns:
@@ -103,6 +102,17 @@ class FilteredPlotly(Plotly):
                 self.layout,
                 self.config)
         self['labels'] = self.labels
+
+    def get_js_dep(self):
+        """Extends :py:meth:webviz.PageElement.get_js_dep"""
+        deps = super(FilteredPlotly, self).get_js_dep()
+        plotly_js = path.join(
+            path.dirname(__file__),
+            'resources',
+            'js',
+            'plotly_checkboxes.js')
+        deps.append(plotly_js)
+        return deps
 
     def get_template(self):
         """

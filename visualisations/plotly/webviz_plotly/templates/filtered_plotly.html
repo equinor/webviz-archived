@@ -1,16 +1,18 @@
 <form id="form_{{element.containerId}}">
     {% for key in element.check_box_filters %}
-    <fieldset id="{{key}}_fieldset_{{element.containerId}}"
+    {% set ki = loop.index0 %}
+    <fieldset id="{{loop.index0}}_fieldset_{{element.containerId}}"
               style='display:inline-block'>
         <legend> {{key}} </legend>
         <div style='height:100px; overflow-y: auto'>
         {% for label in element.labels[key] %}
+            {% set li = loop.index0 %}
             <div>
-                <input id='{{key}}{{label}}box{{element.containerId}}'
+                <input id='box{{ki}}-{{li}}{{element.containerId}}'
                        type="checkbox"
-                       name="{{key}}-{{label}}"
-                       value={{label}}/ checked>
-                    <label for="{{key}}">{{label}}</label>
+                       name="{{ki}}-{{li}}"
+                       value={{li}}/ checked>
+                    <label for="{{ki}}">{{label}}</label>
             </div>
         {% endfor %}
     </fieldset>
@@ -24,11 +26,11 @@
 
         let labels = {{element.get_json_dump("labels")}}
         let boxes = {}
-        Object.keys(labels).forEach(key =>
-            labels[key].forEach(label => {
+        Object.keys(labels).forEach((key, ki) =>
+            labels[key].forEach((label, li) => {
                 if(!boxes[key]) boxes[key] = {}
                 boxes[key][label] = document.querySelector(
-                    '#' + key + label + 'box{{element.containerId}}'
+                    '#box' + ki + '-' + li + '{{element.containerId}}'
                 )
                 }
             )

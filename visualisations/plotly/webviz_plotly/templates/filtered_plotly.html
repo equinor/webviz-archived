@@ -1,0 +1,46 @@
+<form id="form_{{element.containerId}}">
+    {% for key in element.check_box_filters %}
+    {% set ki = loop.index0 %}
+    <fieldset id="{{loop.index0}}_fieldset_{{element.containerId}}"
+              style='display:inline-block'>
+        <legend> {{key}} </legend>
+        <div style='height:100px; overflow-y: auto'>
+        {% for label in element.labels[key] %}
+            {% set li = loop.index0 %}
+            <div>
+                <input id='box{{ki}}-{{li}}{{element.containerId}}'
+                       type="checkbox"
+                       name="{{ki}}-{{li}}"
+                       value={{li}}/ checked>
+                    <label for="{{ki}}">{{label}}</label>
+            </div>
+        {% endfor %}
+    </fieldset>
+    {% endfor %}
+</form>
+<div id="{{element.containerId}}" style="height: 600px">
+</div>
+
+<script>
+    (function () {
+
+        let labels = {{element.get_json_dump("labels")}}
+        let boxes = {}
+        Object.keys(labels).forEach((key, ki) =>
+            labels[key].forEach((label, li) => {
+                if(!boxes[key]) boxes[key] = {}
+                boxes[key][label] = document.querySelector(
+                    '#box' + ki + '-' + li + '{{element.containerId}}'
+                )
+                }
+            )
+        )
+        plotly_checkbox_filter(
+            "{{element.containerId}}",
+            boxes,
+            {{element.get_json_dump("data")}},
+            {{element.get_json_dump("layout")}},
+            {{element.get_json_dump("config")}}
+        )
+    }())
+</script>

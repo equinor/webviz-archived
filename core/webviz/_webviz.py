@@ -244,7 +244,8 @@ class Webviz(object):
             js_written = {js: writer.write_js_file(js) for js in js_deps}
             css_written = {css: writer.write_css_file(css) for css in css_deps}
             theme_js_written = [js_written[js] for js in self._theme.js_files]
-            theme_css_written = [css_written[css] for css in self._theme.css_files]
+            theme_css_written = [css_written[css]
+                                 for css in self._theme.css_files]
 
             for location, resources in iteritems(self._theme.resources):
                 for resource in resources:

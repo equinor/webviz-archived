@@ -16,6 +16,3 @@ test:
 
 lint:
 	pycodestyle webviz_line_chart examples tests
-
-doc:
-	echo "No doc"

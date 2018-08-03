@@ -133,9 +133,6 @@ class Webviz(object):
     contains :class:`PageElement` s.  The Webviz is used to build a
     collection of these, which can be rendered as html.
 
-    .. literalinclude:: ../examples/minimal_example.py
-        :language: python
-
     There is one special page, :py:data:`Webviz.index`, which is the
     start page for each webviz instance.
 

@@ -16,6 +16,3 @@ test:
 
 lint:
 	pycodestyle src/webviz_default_theme/ tests examples && npm run lint
-
-doc:
-	echo "No doc"

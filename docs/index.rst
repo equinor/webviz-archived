@@ -53,7 +53,7 @@ API example
 The example below creates several (currently empty) pages, linked together through a navigation
 menu. Further below you will see examples on how to add content to the different pages.
 
-.. literalinclude:: ../examples/minimal_example.py
+.. literalinclude:: ../core/examples/minimal_example.py
     :language: python
 
 When the site is created by running :func:`webviz.Webviz.write_html`, the output is a

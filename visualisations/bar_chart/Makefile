@@ -16,6 +16,3 @@ test:
 
 lint:
 	pycodestyle webviz_bar_chart examples
-
-doc:
-	echo "No doc"

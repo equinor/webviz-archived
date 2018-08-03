@@ -17,7 +17,9 @@ class TestBannerExample(unittest.TestCase):
 
         exampledir = '{}/../examples/banner_example/'.format(thisdir)
 
-        os.system('python {0}/banner_example.py {0}/test_image.svg'.format(exampledir))
+        script = '{0}/banner_example.py'.format(exampledir)
+        image = '{0}/test_image.svg'.format(exampledir)
+        os.system('python {0} {1}'.format(script, image))
 
         chromeOptions = Options()
         chromeOptions.add_argument("--headless")

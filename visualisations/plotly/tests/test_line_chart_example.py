@@ -14,7 +14,8 @@ class TestLineChartExample(unittest.TestCase):
         cls.tempdir = tempfile.mkdtemp()
         os.chdir(cls.tempdir)
 
-        os.system('python {}/../examples/line_chart_example.py'.format(thisdir))
+        example_script = '{}/../examples/line_chart_example.py'.format(thisdir)
+        os.system('python {}'.format(example_script))
 
         chromeOptions = Options()
         chromeOptions.add_argument("--headless")

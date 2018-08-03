@@ -16,6 +16,3 @@ test:
 
 lint:
 	pycodestyle webviz_scatter_plot examples tests
-
-doc:
-	echo "No doc"

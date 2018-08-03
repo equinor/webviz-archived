@@ -30,4 +30,9 @@ install:
   - export PATH=$PATH:$PWD
 
 script:
-  - bash scripts/travis.sh
+  - make build
+  - make lint
+  - make dev-install
+  - make test
+  - make doc
+  - make install

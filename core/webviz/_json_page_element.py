@@ -19,7 +19,6 @@ def default(o):
 
 
 def dump_json(o):
-    print(o)
     return json.dumps(o, separators=(',', ':'), default=default)
 
 

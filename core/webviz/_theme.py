@@ -20,7 +20,7 @@ class Theme(_Theme):
     Webviz exposes a set of jinja macros that set up includes
     the content. A minimal example of a theme is as follows:
 
-    .. literalinclude:: ../webviz/minimal_theme/templates/main.html
+    .. literalinclude:: ../core/webviz/minimal_theme/templates/main.html
         :language: html
 
     See the webviz_default_theme plugin for a more advanced example.

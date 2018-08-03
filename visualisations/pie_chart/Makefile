@@ -16,6 +16,3 @@ test:
 
 lint:
 	pycodestyle webviz_pie_chart examples tests
-
-doc:
-	echo "No doc"

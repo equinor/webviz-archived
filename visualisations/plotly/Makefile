@@ -16,6 +16,3 @@ test:
 
 lint:
 	pycodestyle webviz_plotly examples tests
-
-doc:
-	echo "No doc"

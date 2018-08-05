@@ -1,8 +1,9 @@
 """
-This package contains the core functionality for putting together different :class:`Page`
-instances into a :py:class:`Webviz` instance. Each :class:`Page` is a collection of
-:class:`PageElement` instances, which are rendered in the input order on the corresponding page
-when running :meth:`Webviz.write_html`.
+This package contains the core functionality for putting together different
+:class:`Page` instances into a :py:class:`Webviz` instance. Each :class:`Page`
+is a collection of :class:`PageElement` instances, which are rendered in
+the input order on the corresponding page when running
+:meth:`Webviz.write_html`.
 
 .. code-block:: python
 
@@ -13,8 +14,9 @@ when running :meth:`Webviz.write_html`.
    web.add(page)
    web.write_html("./simple_webviz_example", overwrite=True, display=True)
 
-This small example will create an instance ``web``, add one empty page to it (in addition to
-the default index/front page), and write the output to a folder ``./simple_webviz_example``.
+This small example will create an instance ``web``, add one empty page to
+it (in addition to the default index/front page), and write the output to
+a folder ``./simple_webviz_example``.
 
 """
 from ._theme import Theme

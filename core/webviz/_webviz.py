@@ -29,7 +29,8 @@ def escape_all(html):
 class Page(object):
     """
     Container for :py:class:`PageElement` instances. In order to be
-    rendered the :py:class:`Page` should be added to a :py:class:`Webviz` instance.
+    rendered the :py:class:`Page` should be added to a
+    :py:class:`Webviz` instance.
 
     :param title: String. A title for the page.
     :param icon: `Optional parameter`. String.
@@ -130,12 +131,13 @@ class SubMenu(object):
 
 class Webviz(object):
     """
-    An instance of :py:class:`Webviz` is a collection of :py:class:`Page` instances,
-    and optionally also :py:class:`SubMenu` instances. :py:class:`Webviz` is used to build a
-    collection of these, which can afterwards be rendered as `html`.
+    An instance of :py:class:`Webviz` is a collection of
+    :py:class:`Page` instances, and optionally also :py:class:`SubMenu`
+    instances. :py:class:`Webviz` is used to build a collection of these,
+    which can afterwards be rendered as `html`.
 
-    There is one special :py:class:`Page` included as default, ``index``, which is the
-    front page in the `html` output.
+    There is one special :py:class:`Page` included as default, ``index``,
+    which is the front page in the `html` output.
 
     """
     def __init__(self, title, banner_title='Webviz',
@@ -191,11 +193,13 @@ class Webviz(object):
 
     def add(self, menu_item):
         """
-        Adds an item to the top-level navigation bar of the :py:class:`Webviz` instance.
+        Adds an item to the top-level navigation bar of the :py:class:`Webviz`
+        instance.
 
         :param menu_item: A :py:class:`Page` or :py:class:`Submenu` to add
                           to the :py:class:`Webviz` instance.
-        :raises: :py:class:`ValueError`, if ``menu_item`` is neither :py:class:`Page` nor a :py:class:`SubMenu`.
+        :raises: :py:class:`ValueError`, if ``menu_item`` is neither
+                 :py:class:`Page` nor a :py:class:`SubMenu`.
         """
         if not isinstance(menu_item, (Page, SubMenu)):
             raise ValueError('Item added to webviz must be Page or SubMenu')

@@ -1,5 +1,5 @@
 import jinja2
-from . import PageElement
+from ._page_element import PageElement
 
 
 class Html(PageElement):

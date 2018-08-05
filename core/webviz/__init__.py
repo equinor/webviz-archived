@@ -1,8 +1,8 @@
 """
-This package contains the functionality for composing webpages using webviz.
-Each instance of :class:`Webviz` is a collection of of :class:`Page` s. Each
-:class:`Page` is a list of :class:`PageElement` s which are shown in order on
-the corresponding page.
+This package contains the core functionality for putting together different :class:`Page`
+instances into a :py:class:`Webviz` instance. Each :class:`Page` is a collection of
+:class:`PageElement` instances, which are rendered in the input order on the corresponding page
+when running :meth:`Webviz.write_html`.
 
 .. code-block:: python
 
@@ -13,8 +13,8 @@ the corresponding page.
    web.add(page)
    web.write_html("./simple_webviz_example", overwrite=True, display=True)
 
-This example will create an empty ``webviz`` with one page (in addition to
-the index page).
+This small example will create an instance ``web``, add one empty page to it (in addition to
+the default index/front page), and write the output to a folder ``./simple_webviz_example``.
 
 """
 from ._theme import Theme
@@ -22,6 +22,7 @@ from ._webviz import Webviz, SubMenu, Page
 from ._page_element import PageElement
 from ._json_page_element import JSONPageElement
 from ._html import Html
+
 __all__ = [
     'Webviz',
     'Html',

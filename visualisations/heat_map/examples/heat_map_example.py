@@ -1,7 +1,5 @@
 from webviz import Webviz, Page
-
 from webviz_heat_map import HeatMap
-
 import pandas as pd
 
 web = Webviz('Heat Map Example')

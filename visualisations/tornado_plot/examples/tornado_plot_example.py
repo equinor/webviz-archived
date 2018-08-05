@@ -1,7 +1,5 @@
 from webviz import Webviz, Page
-
 from webviz_tornado_plot import TornadoPlot
-
 import pandas as pd
 
 web = Webviz('Tornado Plot Example')

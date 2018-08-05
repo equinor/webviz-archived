@@ -3,9 +3,9 @@ import pandas as pd
 
 
 class TornadoPlot(Plotly):
-    """
-    Tornado plot page element.
-    :param data: Either a file path to a csv file or a pandas dataframe.
+    """Tornado plot page element.
+
+    :param data: Either a file path to a `csv` file or a :class:`pandas.DataFrame`.
         There are two columns: 'low' and 'high' describing
     :param high_text: Optional text for
     """

@@ -1,5 +1,4 @@
 from webviz import Webviz, Page
-
 from webviz_plotly import Plotly
 
 web = Webviz('Line Chart Example')

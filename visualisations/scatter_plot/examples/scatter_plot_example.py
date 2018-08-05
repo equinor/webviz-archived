@@ -1,7 +1,5 @@
 from webviz import Webviz, Page
-
 from webviz_scatter_plot import ScatterPlot
-
 import pandas as pd
 
 web = Webviz('Scatter Plot Example')

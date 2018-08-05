@@ -28,11 +28,11 @@ def escape_all(html):
 
 class Page(object):
     """
-    A Page in the webviz. Contains :class:`PageElement` s. In order to be
-    rendered the :class:`Page` should be added to a :class:`Webviz`.
+    Container for :py:class:`PageElement` instances. In order to be
+    rendered the :py:class:`Page` should be added to a :py:class:`Webviz` instance.
 
     :param title: String. A title for the page.
-    :param icon: `Optional Parameter` String.
+    :param icon: `Optional parameter`. String.
     """
 
     def __init__(self, title, icon=None):
@@ -46,7 +46,9 @@ class Page(object):
 
     def add_content(self, content):
         """
-        Add a :class:`PageElement` to the page.
+        Add a :py:class:`PageElement` to the page.
+
+        :param content: The :py:class:`PageElement` to add.
         """
         if not isinstance(content, PageElement):
             raise ValueError('Content added to Page must be PageElement')
@@ -55,7 +57,7 @@ class Page(object):
     @property
     def css_dep(self):
         """
-        :returns: The set of css dependencies for all page elements
+        :returns: The set of `css` dependencies for all page elements
             in the page
         """
         css_dep = set()
@@ -66,7 +68,7 @@ class Page(object):
     @property
     def js_dep(self):
         """
-        :returns: The list of js dependencies for all page elements
+        :returns: The list of `js` dependencies for all page elements
             in the page.
         """
         js_dep = []
@@ -85,7 +87,7 @@ class SubMenu(object):
     of the :class:`Webviz` .
 
     :param title: The title of the submenu.
-    :param icon: `Optional Parameter`. The icon of the submenu.
+    :param icon: `Optional parameter`. The icon of the submenu.
     """
     def __init__(self, title, icon=None):
         self.title = escape_all(title)
@@ -108,7 +110,7 @@ class SubMenu(object):
     @property
     def location(self):
         """
-        :returns: The location of the first page
+        :returns: The location of the first page,
             or `None` if the submenu is empty.
         """
         if len(self.subelements):
@@ -118,8 +120,8 @@ class SubMenu(object):
 
     def add_page(self, page):
         """
-        Adds a page to the submenu.
-        :param page: A page to add to the submenu.
+        Adds a :class:`Page` to the submenu.
+        :param page: A :class:`Page` to add to the submenu.
         """
         if not isinstance(page, Page):
             raise ValueError('Can only add a Page to a SubMenu')
@@ -128,13 +130,12 @@ class SubMenu(object):
 
 class Webviz(object):
     """
-    Builds a Webviz instance. The webviz instance is a collection of
-    :class:`SubMenu` s, which contains :class:`Page` s, each :class:`Page`
-    contains :class:`PageElement` s.  The Webviz is used to build a
-    collection of these, which can be rendered as html.
+    An instance of :py:class:`Webviz` is a collection of :py:class:`Page` instances,
+    and optionally also :py:class:`SubMenu` instances. :py:class:`Webviz` is used to build a
+    collection of these, which can afterwards be rendered as `html`.
 
-    There is one special page, :py:data:`Webviz.index`, which is the
-    start page for each webviz instance.
+    There is one special :py:class:`Page` included as default, ``index``, which is the
+    front page in the `html` output.
 
     """
     def __init__(self, title, banner_title='Webviz',
@@ -178,7 +179,7 @@ class Webviz(object):
     @property
     def pages(self):
         """
-        List of all pages in the webviz.
+        List of all :py:class:`Pages` in the :py:class:`Webviz` instance.
         """
         ret_val = []
         for element in self:
@@ -190,11 +191,11 @@ class Webviz(object):
 
     def add(self, menu_item):
         """
-        Adds an item to the top-level navigation bar of the webviz,
-        either a :class:`SubMenu` or a :class:`Page`.
+        Adds an item to the top-level navigation bar of the :py:class:`Webviz` instance.
 
-        :param menu_item: A Page or Submenu to add to the webviz instance.
-        :raises: ValueError, if menu_item is neither Page nor a SubMenu.
+        :param menu_item: A :py:class:`Page` or :py:class:`Submenu` to add
+                          to the :py:class:`Webviz` instance.
+        :raises: :py:class:`ValueError`, if ``menu_item`` is neither :py:class:`Page` nor a :py:class:`SubMenu`.
         """
         if not isinstance(menu_item, (Page, SubMenu)):
             raise ValueError('Item added to webviz must be Page or SubMenu')
@@ -204,13 +205,16 @@ class Webviz(object):
 
     def write_html(self, destination, display=False, overwrite=False):
         """
-            writes the html to the destination folder.
+            Writes the `html` to the destination folder.
 
+            :param destination: Directory to write the `html` output to.
             :param overwrite: `Optional Parameter`. Whether to ignore if
                 the given destination already exists. Content inside the folder
                 may be deleted.
             :param display: `Optional Parameter`. Whether to open browser
                 to the index page.
+            :raises: :py:class:`ValueError` if ``overwrite`` is ``False``
+                     and destination folder exists.
         """
         template = self._env.get_template('main.html')
 

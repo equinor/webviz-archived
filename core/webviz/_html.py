@@ -1,11 +1,12 @@
 import jinja2
-from ._page_element import PageElement
+from . import PageElement
 
 
 class Html(PageElement):
     """
-    A page element for adding html.
-    :param html: The html string to add to the page.
+    A page element for adding `html`.
+
+    :param html: The `html` string to add to the page.
     """
     def __init__(self, html, js_deps=[], css_deps=[]):
         super(Html, self).__init__()

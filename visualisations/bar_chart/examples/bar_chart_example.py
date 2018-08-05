@@ -1,7 +1,5 @@
 from webviz import Webviz, Page
-
 from webviz_bar_chart import BarChart
-
 import pandas as pd
 
 web = Webviz('Bar Chart Example')

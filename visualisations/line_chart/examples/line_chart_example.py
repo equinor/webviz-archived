@@ -1,7 +1,5 @@
 from webviz import Webviz, Page
-
 from webviz_line_chart import LineChart
-
 import pandas as pd
 
 web = Webviz('Line Chart Example')

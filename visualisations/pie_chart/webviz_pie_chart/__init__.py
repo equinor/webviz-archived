@@ -6,9 +6,9 @@ class PieChart(Plotly):
     """Pie chart page element.
 
     :param data: Value for each sector, or csv file (one column for each
-                 sector). Each row (line) becomes a separate pie chart. If there is
-                 a column with the name 'pie_chart_label' it is used
-                 for the name of each pie chart.
+                 sector). Each row (line) becomes a separate pie chart.
+                 If there is a column with the name 'pie_chart_label'
+                 it is used for the name of each pie chart.
     :param num_per_row: If more than one pie chart, number per row.
     """
     def __init__(self, data, num_per_row=4):

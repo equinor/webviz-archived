@@ -28,15 +28,15 @@ class PageElement:
 
     def get_js_dep(self):
         """
-        :returns: A list of js files (absolute path)
-            to be included for in for the html code.
+        :returns: A list of `js` files (absolute path)
+            to be included for in for the `html` code.
         """
         return []
 
     def get_css_dep(self):
         """
-        :returns: A list of css files (absolute path)
-            to be included for in for the html code.
+        :returns: A list of `css` files (absolute path)
+            to be included for in for the `html` code.
         """
         return []
 

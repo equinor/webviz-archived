@@ -33,7 +33,9 @@ class Page(object):
     :py:class:`Webviz` instance.
 
     :param title: String. A title for the page.
-    :param icon: `Optional parameter`. String.
+    :param icon: `Optional parameter`. Name of an icon provided by the
+                 :class:`webviz.Theme` used in the :class:`Webviz` instance
+                 this page will be added to.
     """
 
     def __init__(self, title, icon=None):
@@ -50,6 +52,8 @@ class Page(object):
         Add a :py:class:`PageElement` to the page.
 
         :param content: The :py:class:`PageElement` to add.
+        :raises: :class:`ValueError` if ``content`` is not a
+                 :class:`PageElement`.
         """
         if not isinstance(content, PageElement):
             raise ValueError('Content added to Page must be PageElement')
@@ -88,7 +92,9 @@ class SubMenu(object):
     of the :class:`Webviz` .
 
     :param title: The title of the submenu.
-    :param icon: `Optional parameter`. The icon of the submenu.
+    :param icon: `Optional parameter`. Name of an icon provided by the
+                 :class:`webviz.Theme` used in the :class:`Webviz` instance
+                 this submenu will be added to.
     """
     def __init__(self, title, icon=None):
         self.title = escape_all(title)
@@ -123,6 +129,7 @@ class SubMenu(object):
         """
         Adds a :class:`Page` to the submenu.
         :param page: A :class:`Page` to add to the submenu.
+        :raises: :class:`ValueError` if ``page`` is not a :class:`SubMenu`.
         """
         if not isinstance(page, Page):
             raise ValueError('Can only add a Page to a SubMenu')

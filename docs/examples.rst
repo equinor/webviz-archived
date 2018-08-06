@@ -1,6 +1,13 @@
 Examples
 ========
 
+The different ``webviz`` visualization plugins can, when installed,
+be imported using e.g.
+
+.. code-block:: python
+
+   from webviz.page_elements import BarChart, LineChart, PieChart
+
 Bar chart
 ^^^^^^^^^
 

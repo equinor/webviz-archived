@@ -129,7 +129,7 @@ class SubMenu(object):
         """
         Adds a :class:`Page` to the submenu.
         :param page: A :class:`Page` to add to the submenu.
-        :raises: :class:`ValueError` if ``page`` is not a :class:`SubMenu`.
+        :raises: :class:`ValueError` if ``page`` is not a :class:`Page`.
         """
         if not isinstance(page, Page):
             raise ValueError('Can only add a Page to a SubMenu')

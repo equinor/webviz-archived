@@ -1,4 +1,4 @@
-from webviz.page_elements import Plotly
+from webviz_plotly import Plotly
 import pandas as pd
 
 

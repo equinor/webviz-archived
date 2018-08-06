@@ -128,6 +128,7 @@ class SubMenu(object):
     def add_page(self, page):
         """
         Adds a :class:`Page` to the submenu.
+
         :param page: A :class:`Page` to add to the submenu.
         :raises: :class:`ValueError` if ``page`` is not a :class:`Page`.
         """

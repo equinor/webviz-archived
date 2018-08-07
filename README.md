@@ -1,10 +1,10 @@
 # Webviz
 
-Webviz is a static site generator that fascilitates producing visualisations
+Webviz is a static site generator that fascilitates producing visualizations
 using [d3](https://d3js.org) and [plotly](https://plot.ly). Sites can be generated
-both using markdown and the python interface. Visualisations and other page elements
-can be added as plugins. See `examples/` for example usage. Visualisation plugins
-are found in the `visualisation/` folder and each has their own set of example
+both using markdown and the python interface. Visualizations and other page elements
+can be added as plugins. See `examples/` for example usage. Visualization plugins
+are found in the `visualization/` folder and each has their own set of example
 showing usage.
 
 ## Installation
@@ -53,5 +53,5 @@ To run an example written using markdown, run, for instance:
 ## History
 
 Webviz (Originally Webportal) was initially written and is maintained by
-[Equinor ASA](http://www.equinor.com/) as a free visualisation suite that can be
+[Equinor ASA](http://www.equinor.com/) as a free visualization suite that can be
 tailored to our needs, and as contribution to the free software community.

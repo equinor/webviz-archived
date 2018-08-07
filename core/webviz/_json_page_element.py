@@ -24,7 +24,7 @@ def dump_json(o):
 
 class JSONPageElement(PageElement):
     """
-    A :class:`JSONPageELement` is a :class:`PageElement` which stores some
+    A :class:`JSONPageElement` is a :class:`PageElement` which stores some
     json-data. The data is either assigned to some key in the json store
     object or otherwise can be accessed as a json-string.
 

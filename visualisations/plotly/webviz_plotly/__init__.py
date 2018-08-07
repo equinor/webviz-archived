@@ -12,8 +12,8 @@ env = jinja2.Environment(
 
 class Plotly(JSONPageElement):
     """
-    Plotly page element. Arguments are the same as plotly.plot() from
-    plotly.js. See https://plot.ly/javascript/ for usage.
+    Plotly page element. Arguments are the same as ``plotly.plot()`` from
+    `plotly.js`. See https://plot.ly/javascript/ for usage.
     """
     def __init__(self, data, layout={}, config={}):
         super(Plotly, self).__init__()
@@ -29,12 +29,12 @@ class Plotly(JSONPageElement):
 
     def get_template(self):
         """
-        overrides :py:meth:`webviz.PageElement.get_template`.
+        Overrides :meth:`webviz.PageElement.get_template`.
         """
         return env.get_template('plotly.html')
 
     def get_js_dep(self):
-        """Extends :py:meth:webviz.PageElement.get_js_dep"""
+        """Extends :meth:`webviz.PageElement.get_js_dep`."""
         deps = super(Plotly, self).get_js_dep()
         plotly_js = path.join(
             path.dirname(__file__),

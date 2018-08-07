@@ -14,7 +14,8 @@ class TestScatterPlotExample(unittest.TestCase):
         cls.tempdir = tempfile.mkdtemp()
         os.chdir(cls.tempdir)
 
-        command = 'python {}/../examples/scatter_plot_example.py'.format(thisdir)
+        command = 'python {}/../examples/scatter_plot_example.py'\
+                  .format(thisdir)
         cls.ret = os.system(command)
 
         chromeOptions = Options()

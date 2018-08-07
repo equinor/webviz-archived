@@ -4,10 +4,10 @@ from uuid import uuid4
 
 class PageElement:
     """
-    A page element with data and a template which renders to html.
+    A page element with data and a template which renders to `html`.
 
-    Each element also has a unique containerId in order to make unique
-    DOM ids in the template.
+    Each element also has a unique ``containerId`` in order to make unique
+    DOM IDs in the template.
     """
     __metaclass__ = ABCMeta
 
@@ -17,7 +17,7 @@ class PageElement:
     @abstractmethod
     def get_template(self):
         """
-        :returns: The corresponding jinja template for the plot,
+        :returns: The corresponding ``jinja2`` template for the plot,
             which can be rendered using:
 
         ::
@@ -28,15 +28,15 @@ class PageElement:
 
     def get_js_dep(self):
         """
-        :returns: A list of js files (absolute path)
-            to be included for in for the html code.
+        :returns: A list of `js` files (absolute path)
+                  to be included in the `html` code.
         """
         return []
 
     def get_css_dep(self):
         """
-        :returns: A list of css files (absolute path)
-            to be included for in for the html code.
+        :returns: A list of `css` files (absolute path)
+                  to be included in the `html` code.
         """
         return []
 

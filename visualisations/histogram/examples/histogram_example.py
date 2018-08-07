@@ -1,7 +1,5 @@
 from webviz import Webviz, Page
-
-from webviz_histogram import Histogram
-
+from webviz.page_elements import Histogram
 import pandas as pd
 import numpy as np
 

@@ -3,12 +3,12 @@ import pandas as pd
 
 
 class HeatMap(Plotly):
-    """
-    Line chart page element.
-    :param data: Either a file path to a csv file or a pandas dataframe.  Each
-        column of the dataframe becomes one line in the chart. Similarly for
-        the csv file, but a special column 'index' will be used as the
-        horizontal value.
+    """Line chart page element.
+
+    :param data: Either a file path to a `csv` file or a
+        :class:`pandas.DataFrame`. Each column of the dataframe becomes one
+        line in the chart. Similarly for the `csv` file, but a special column
+        ``index`` will be used as the horizontal value.
     """
     def __init__(self, data):
         if isinstance(data, str):

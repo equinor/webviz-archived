@@ -1,5 +1,6 @@
 from webviz_plotly import Plotly
 import pandas as pd
+import math
 
 
 class PieChart(Plotly):
@@ -43,8 +44,10 @@ class PieChart(Plotly):
                 'domain': {
                     'x': [(ind % width) / float(width) + margin/2,
                           ((ind % width)+1) / float(width) - margin/2],
-                    'y': [(ind / width) / float(height) + margin/2,
-                          ((ind / width)+1) / float(height) - margin/2]
+                    'y': [math.floor(ind / width) /
+                          float(height) + margin/2,
+                          (math.floor(ind / width)+1) /
+                          float(height) - margin/2]
                     }
                 } for ind, row in self.data.iterrows()],
                 layout={'annotations': [
@@ -54,7 +57,8 @@ class PieChart(Plotly):
                      'xanchor': 'center',
                      'yanchor': 'middle',
                      'x': ((ind % width) + 0.5) / float(width),
-                     'y': ((ind / width) + 0.5) / float(height),
+                     'y': (math.floor(ind / width) + 0.5) /
+                        float(height),
                      }
                     for ind, _ in self.data.iterrows()]}
                 )
@@ -67,7 +71,10 @@ class PieChart(Plotly):
                 'domain': {
                     'x': [(ind % width) / float(width) + margin/2,
                           ((ind % width)+1) / float(width) - margin/2],
-                    'y': [(ind / width) / float(height) + margin/2,
-                          ((ind / width)+1) / float(height) - margin/2]
+
+                    'y': [math.floor(ind / width) /
+                          float(height) + margin/2,
+                          (math.floor(ind / width)+1) /
+                          float(height) - margin/2]
                     }
                 } for ind, row in self.data.iterrows()])

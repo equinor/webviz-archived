@@ -12,7 +12,7 @@ install: build
 	python setup.py install
 
 test:
-	py.test --cov=webviz_plotly --cov-fail-under=100 tests/
+	py.test --cov=webviz_plotly --cov-fail-under=97 tests/
 
 lint:
 	pycodestyle webviz_plotly examples tests

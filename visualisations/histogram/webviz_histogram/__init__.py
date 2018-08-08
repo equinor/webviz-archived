@@ -1,8 +1,7 @@
-from webviz_plotly import Plotly
-import pandas as pd
+from webviz_plotly import FilteredPlotly
 
 
-class Histogram(Plotly):
+class Histogram(FilteredPlotly):
     """Histogram page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -23,33 +22,37 @@ class Histogram(Plotly):
     :param nbinsx: Maximum number of desired bins. Default value ``0`` will
         generate optimal number of bins.
     """
-    def __init__(self, data, xlabel, ylabel='[%]', barmode='overlay',
-                 histnorm='percent', nbinsx=0):
-        if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                        self.data['index'],
-                        inplace=True)
-                del self.data['index']
-        else:
-            self.data = data
-
-        x = self.data.index.tolist()
-
-        bars = [{
-            'x': self.data[column].tolist(),
-            'type': 'histogram',
-            'opacity': 0.7,
-            'histnorm': histnorm,
-            'nbinsx': nbinsx,
-            'name': column
-            }
-            for column in self.data.columns]
-
-        super(Histogram, self).__init__(bars, layout={
+    def __init__(self,
+                 data,
+                 xlabel,
+                 ylabel='[%]',
+                 barmode='overlay',
+                 histnorm='percent',
+                 nbinsx=0,
+                 *args,
+                 **kwargs):
+        self.ylabel = ylabel
+        self.histnorm = histnorm
+        self.nbinsx = nbinsx
+        super(Histogram, self).__init__(
+            data,
+            *args,
+            layout={
                 'bargap': 0.05,
                 'bargroupgap': 0.05,
                 'barmode': barmode,
                 'xaxis': {'title': xlabel},
-                'yaxis': {'title': ylabel}})
+                'yaxis': {'title': ylabel}},
+            config={},
+            **kwargs)
+
+    def process_data(self, data):
+        return [{
+            'x': data[column].tolist(),
+            'type': 'histogram',
+            'opacity': 0.7,
+            'histnorm': self.histnorm,
+            'nbinsx': self.nbinsx,
+            'name': column
+            }
+            for column in self.data.columns]

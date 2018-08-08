@@ -68,6 +68,7 @@ class FilteredPlotly(Plotly):
             data,
             check_box_columns=[],
             check_box=False,
+            *args,
             **kwargs):
         if isinstance(data, pd.DataFrame):
             self.data = data.copy()
@@ -114,14 +115,10 @@ class FilteredPlotly(Plotly):
                     self.labels['name'].append(point['name'])
                 point['labels']['name'] = point['name']
 
-        if not hasattr(self, 'layout'):
-            self.layout = {}
-        if not hasattr(self, 'config'):
-            self.config = {}
         super(FilteredPlotly, self).__init__(
-                filtered_data,
-                self.layout,
-                self.config)
+            filtered_data,
+            *args,
+            **kwargs)
         self['labels'] = self.labels
 
     def get_js_dep(self):
@@ -143,4 +140,9 @@ class FilteredPlotly(Plotly):
 
     @abstractmethod
     def process_data(self, frame):
+        """
+        :param frame: A dataframe.
+        :returns: List of traces to be used as
+            data for the Plotly Page Element.
+        """
         pass

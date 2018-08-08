@@ -1,8 +1,7 @@
-from webviz_plotly import Plotly
-import pandas as pd
+from webviz_plotly import FilteredPlotly
 
 
-class BarChart(Plotly):
+class BarChart(FilteredPlotly):
     """Bar chart page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -15,25 +14,21 @@ class BarChart(Plotly):
         See `plotly.js layout-barmode <https://plot.ly/javascript/reference/
         #layout-barmode>`_.
     """
-    def __init__(self, data, barmode='group'):
-        if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                        self.data['index'],
-                        inplace=True)
-                del self.data['index']
-        else:
-            self.data = data
+    def __init__(self, data, barmode='group', *args,  **kwargs):
+        super(BarChart, self).__init__(
+                data,
+                *args,
+                layout={'barmode': barmode},
+                config={},
+                **kwargs)
 
+    def process_data(self, frame):
         x = self.data.index.tolist()
 
-        bars = [{
+        return [{
             'y': self.data[column].tolist(),
             'x': x,
             'type': 'bar',
             'name': column
             }
             for column in self.data.columns]
-
-        super(BarChart, self).__init__(bars, layout={'barmode': barmode})

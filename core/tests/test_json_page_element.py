@@ -75,8 +75,8 @@ class TestPage(unittest.TestCase):
         page2 = Page('2')
         page2.add_content(content2)
 
-        jsdeps1 = map(lambda x: x.name, page1.js_dep)
-        jsdeps2 = map(lambda x: x.name, page2.js_dep)
+        jsdeps1 = [x.name for x in page1.js_dep]
+        jsdeps2 = [x.name for x in page2.js_dep]
 
         self.assertEqual(len(set(jsdeps1 + jsdeps2)), 3)
 

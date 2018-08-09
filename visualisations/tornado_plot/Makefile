@@ -16,6 +16,3 @@ test:
 
 lint:
 	pycodestyle webviz_tornado_plot examples
-
-doc:
-	echo "No doc"

@@ -1,45 +1,43 @@
 webviz documentation
-===================================
+====================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   webviz
+   webviz_package
+   webviz_visualizations
+   examples
 
 Introduction
 ------------
 
 
-Welcome! You are now browsing the documentation for webviz the site generator
-for webviz visualisations.
+Welcome! You are now browsing the documentation for ``webviz`` - a static site generator,
+optionally including different kind of interactive visualizations. ``webviz`` facilitates automatic
+visualization using the popular open source libraries `d3.js <https://d3js.org/>`_
+and `plotly.js <https://d3js.org/>`_.
 
-``webviz`` facilitates automatic reporting and visualisation using the popular
-open source library `d3.js <https://d3js.org/>`_, which is extremely flexible.
-The ``d3.js`` library is used by companies like `NRK <https://www.nrk.no>`_,
-`Aftenposten <https://www.aftenposten.no/>`_, `Washington Post
-<https://www.washingtonpost.com/>`_ and `The New York Times
-<https://www.nytimes.com/>`_.
+``webviz`` creates `html` output such that the report can be viewed through a web browser.
+The site generator can be used in two different ways: using ``yaml`` and markdown, or
+the ``webviz`` Python API.
 
-The site generator is used to organize the visualisations in a html-report so
-that it can be shared and viewed through a web-browser.
-
-Example
-----------
+Using folder structure and markdown files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Webviz can be executed using
 
 .. code-block:: bash
 
-   python -m webviz site-folder
+   python -m webviz site_folder
 
 
-Where `site-folder` is a folder containing markdown files. See
-`examples/site_example` for an example. In the `site-folder`, there are two
-special files: `index.md` and `config.yaml`. `index.md` is the landing page for
-the site and `config.yaml` contains configuration info, such as which theme to
-use.
+where ``site_folder`` is a folder containing `markdown files <https://en.wikipedia.org/wiki/Markdown>`_.
+See `the github repository <https://github.com/Statoil/webviz/tree/master/core/examples/site_example>`_
+for an example. In the ``site_folder``, there are two special files: ``index.md`` and
+``config.yaml``. ``index.md`` is the landing page for the site and ``config.yaml`` contains
+configuration info, such as which theme to use.
 
-In markdown files, page elements (such as visualisations) can be added using:
+In markdown files, page elements (such as visualizations) can be added using:
 
 .. code-block:: html
 
@@ -48,18 +46,18 @@ In markdown files, page elements (such as visualisations) can be added using:
 
 
 API example
---------------
+^^^^^^^^^^^
 
 The example below creates several (currently empty) pages, linked together through a navigation
 menu. Further below you will see examples on how to add content to the different pages.
 
-.. literalinclude:: ../examples/minimal_example.py
+.. literalinclude:: ../core/examples/minimal_example.py
     :language: python
 
 When the site is created by running :func:`webviz.Webviz.write_html`, the output is a
 folder containing all the files needed for opening and running the site in a browser.
 
-For information about how to use the webportal package, see the :doc:`webviz`.
+For information about how to use the webviz Python API, see the :doc:`webviz_package`.
 
 .. warning:
 

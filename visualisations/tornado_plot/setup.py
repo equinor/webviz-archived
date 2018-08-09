@@ -13,7 +13,7 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'tornado_plot = webviz_tornado_plot:TornadoPlot'
+            'TornadoPlot = webviz_tornado_plot:TornadoPlot'
         ]
     },
     zip_safe=False

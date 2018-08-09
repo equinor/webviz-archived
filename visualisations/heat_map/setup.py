@@ -13,7 +13,7 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'heat_map = webviz_heat_map:HeatMap'
+            'HeatMap = webviz_heat_map:HeatMap'
         ]
     },
     zip_safe=False

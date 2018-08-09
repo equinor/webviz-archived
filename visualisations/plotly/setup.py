@@ -16,7 +16,8 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'plotly = webviz_plotly:Plotly'
+            'Plotly = webviz_plotly:Plotly',
+            'FilteredPlotly = webviz_plotly:FilteredPlotly'
         ]
     },
     zip_safe=False

@@ -1,7 +1,6 @@
 from webviz import Webviz, Page
 import pandas as pd
-
-from webviz_pie_chart import PieChart
+from webviz.page_elements import PieChart
 
 web = Webviz('Pie Chart Example')
 

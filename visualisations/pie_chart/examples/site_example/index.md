@@ -1,1 +1,1 @@
-{{ page_element('pie_chart', './test.csv') }}
+{{ page_element('PieChart', './test.csv') }}

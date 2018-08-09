@@ -1,35 +1,28 @@
-from webviz_plotly import Plotly
-import pandas as pd
+from webviz_plotly import FilteredPlotly
 
 
-class ScatterPlot(Plotly):
+class ScatterPlot(FilteredPlotly):
+    """Scatter plot page element.
+
+    :param data: Either a file path to a `csv` file or a
+        :class:`pandas.DataFrame`. If a dataframe is given, each column is one
+        set of points in the chart. The dataframe index is used for the
+        horizontal values. Similarly for the `csv` file, where a special column
+        named ``index`` will be used for the horizontal values.
     """
-    Scatter plot page element.
-    :param data: Either a file path to a csv file or a pandas dataframe.  Each
-        column of the dataframe becomes one set of points in the chart.
-        Similarly for the csv file, but a special column 'index' will be used
-        as the horizontal value.
-    """
-    def __init__(self, data):
-        if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                        self.data['index'],
-                        inplace=True)
-                del self.data['index']
-        else:
-            self.data = data
+    def __init__(self, *args, **kwargs):
+        super(ScatterPlot, self).__init__(
+            *args,
+            layout={},
+            config={},
+            **kwargs)
 
-        x = self.data.index.tolist()
-
-        points = [{
-            'y': self.data[column].tolist(),
-            'x': x,
+    def process_data(self, data):
+        return [{
+            'y': data[column].tolist(),
+            'x': data.index.tolist(),
             'mode': 'markers',
             'type': 'scatter',
             'name': column
             }
             for column in self.data.columns]
-
-        super(ScatterPlot, self).__init__(points)

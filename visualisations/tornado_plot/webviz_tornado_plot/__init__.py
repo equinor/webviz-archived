@@ -1,27 +1,25 @@
-from webviz_plotly import Plotly
-import pandas as pd
+from webviz_plotly import FilteredPlotly
 
 
-class TornadoPlot(Plotly):
-    """
-    Tornado plot page element.
-    :param data: Either a file path to a csv file or a pandas dataframe.
-        There are two columns: 'low' and 'high' describing
+class TornadoPlot(FilteredPlotly):
+    """Tornado plot page element.
+
+    :param data: Either a file path to a `csv` file or a
+        :class:`pandas.DataFrame`. There are two columns:
+        'low' and 'high' describing.
     :param high_text: Optional text for
     """
-    def __init__(self,
-                 data,
-                 ):
-        if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                        self.data['index'],
-                        inplace=True)
-                del self.data['index']
-        else:
-            self.data = data
+    def __init__(self, *args, **kwargs):
+        super(TornadoPlot, self).__init__(
+            *args,
+            layout={
+                'barmode': 'relative',
+                'showlegend': False,
+                },
+            config={},
+            **kwargs)
 
+    def process_data(self, data):
         low_bars = {
             'type': 'bar',
             'name': 'low',
@@ -34,7 +32,7 @@ class TornadoPlot(Plotly):
                 'line': {
                     'width': 2,
                     'color': 'rgba(210, 15, 140, 1)'
-                 }
+                }
             }
         }
         high_bars = {
@@ -49,11 +47,11 @@ class TornadoPlot(Plotly):
                 'line': {
                     'width': 2,
                     'color': 'rgba(64, 83, 125, 1)'
-                 }
                 }
+            }
         }
 
-        for index, row in self.data.iterrows():
+        for index, row in data.iterrows():
             high_bars['y'].append(index)
             low_bars['y'].append(index)
             if row['high'] > 0:
@@ -72,10 +70,4 @@ class TornadoPlot(Plotly):
                 low_bars['x'].append(0)
                 low_bars['base'].append(row['low'])
 
-        super(TornadoPlot, self).__init__(
-            [low_bars, high_bars],
-            layout={
-                'barmode': 'relative',
-                'showlegend': False,
-                }
-        )
+        return [low_bars, high_bars]

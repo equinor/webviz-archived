@@ -13,7 +13,7 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'line_chart = webviz_line_chart:LineChart'
+            'LineChart = webviz_line_chart:LineChart'
         ]
     },
     zip_safe=False

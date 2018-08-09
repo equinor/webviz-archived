@@ -6,7 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-class TestBarChartExample(unittest.TestCase):
+class TestTornadoPlotExample(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         thisdir = os.path.abspath(os.path.dirname(__file__))

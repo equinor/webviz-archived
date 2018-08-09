@@ -13,7 +13,7 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'pie_chart = webviz_pie_chart:PieChart'
+            'PieChart = webviz_pie_chart:PieChart'
         ]
     },
     zip_safe=False

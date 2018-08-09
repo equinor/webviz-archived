@@ -18,8 +18,6 @@ resource_files = {
     'img': [
         'img/logo.svg',
         'img/burn.svg',
-        'img/book.svg',
-        'img/certificate.svg',
     ]
 }
 

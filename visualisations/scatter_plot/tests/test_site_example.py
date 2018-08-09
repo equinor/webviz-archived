@@ -14,7 +14,8 @@ class TestSiteExample(unittest.TestCase):
         cls.tempdir = tempfile.mkdtemp()
         os.chdir(cls.tempdir)
 
-        shutil.copytree('{}/../examples/site_example'.format(thisdir), './site_example')
+        shutil.copytree('{}/../examples/site_example'.format(thisdir),
+                        './site_example')
         cls.ret = os.system('python -m webviz site_example')
 
         chromeOptions = Options()
@@ -29,7 +30,8 @@ class TestSiteExample(unittest.TestCase):
         cls.driver.close()
 
     def setUp(self):
-        address = 'file://{}/site_example/html_output/index.html'.format(self.tempdir)
+        address = 'file://{}/site_example/html_output/index.html'\
+                  .format(self.tempdir)
         self.driver.get(address)
 
     def test_return_value(self):

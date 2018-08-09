@@ -1,1 +1,5 @@
-{{ page_element('line_chart', './test.csv') }}
+{{ page_element('LineChart',
+                './test.csv',
+                check_box=true,
+                check_box_columns=['category'])
+}}

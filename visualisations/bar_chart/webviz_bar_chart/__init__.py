@@ -1,37 +1,34 @@
-from webviz_plotly import Plotly
-import pandas as pd
+from webviz_plotly import FilteredPlotly
 
 
-class BarChart(Plotly):
+class BarChart(FilteredPlotly):
+    """Bar chart page element.
+
+    :param data: Either a file path to a `csv` file or a
+        :class:`pandas.DataFrame`. If a dataframe is given, each column is one
+        set of bars in the chart. The dataframe index is used for the
+        horizontal values. Similarly for the `csv` file, where a special
+        column named ``index`` will be used for the horizontal values.
+    :param barmode: Either ``'group'``, ``'stack'``, ``'relative'`` or
+        ``'overlay'``. Defines how multiple bars per index-value are combined.
+        See `plotly.js layout-barmode <https://plot.ly/javascript/reference/
+        #layout-barmode>`_.
     """
-    Bar chart page element.
-    :param data: Either a file path to a csv file or a pandas dataframe.  Each
-        column is one set of bars in the chart. Similarly for
-        the csv file, but a special column 'index' will be used as the
-        horizontal value.
-    :param barmode: Either 'group', 'stack', 'relative' or 'overlay'. Defines
-        how more than one bar per index-value is combined. See
-        plot.ly/javascript/reference/#layout-barmode.
-    """
-    def __init__(self, data, barmode='group'):
-        if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                        self.data['index'],
-                        inplace=True)
-                del self.data['index']
-        else:
-            self.data = data
+    def __init__(self, data, barmode='group', *args,  **kwargs):
+        super(BarChart, self).__init__(
+                data,
+                *args,
+                layout={'barmode': barmode},
+                config={},
+                **kwargs)
 
+    def process_data(self, frame):
         x = self.data.index.tolist()
 
-        bars = [{
+        return [{
             'y': self.data[column].tolist(),
             'x': x,
             'type': 'bar',
             'name': column
             }
             for column in self.data.columns]
-
-        super(BarChart, self).__init__(bars, layout={'barmode': barmode})

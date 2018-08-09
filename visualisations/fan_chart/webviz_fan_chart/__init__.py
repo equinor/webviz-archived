@@ -26,7 +26,7 @@ class FanChart(Plotly):
         uniquelines = []
         lines = []
 
-        for line_id in self.data['id']:
+        for line_id in self.data['name']:
             if line_id not in uniquelines:
                 uniquelines.append(line_id)
 
@@ -39,7 +39,7 @@ class FanChart(Plotly):
         ]
 
         for line in uniquelines:
-            line_data = self.data[self.data['id'] == line]
+            line_data = self.data[self.data['name'] == line]
             x = line_data.index.tolist()
             for column in line_data.columns:
                 if column == 'mean':
@@ -51,7 +51,7 @@ class FanChart(Plotly):
                         'name': line,
                         'mode': 'lines',
                         'line': {
-                            'color': 'rgb(' + color[line - 1] + ')'
+                            'color': 'rgb(' + color[uniquelines.index(line)] + ')'
                         }
                     })
                 elif column == 'p90':
@@ -64,9 +64,8 @@ class FanChart(Plotly):
                         'name': line,
                         'fill': 'toself',
                         'mode': 'lines',
-                        # 'hoveron': 'points',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[line - 1] + ', 0.4)',
+                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.4)',
                         'line': {
                             'width': 0
                         }
@@ -81,9 +80,8 @@ class FanChart(Plotly):
                         'name': line,
                         'fill': 'toself',
                         'mode': 'lines',
-                        # 'hoveron': 'points',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[line - 1] + ', 0.4)',
+                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.4)',
                         'line': {
                             'width': 0
                         }
@@ -98,9 +96,8 @@ class FanChart(Plotly):
                         'name': line,
                         'fill': 'toself',
                         'mode': 'lines',
-                        # 'hoveron': 'points',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[line - 1] + ', 0.2)',
+                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.2)',
                         'line': {
                             'width': 0
                         }
@@ -115,14 +112,13 @@ class FanChart(Plotly):
                         'name': line,
                         'fill': 'toself',
                         'mode': 'lines',
-                        # 'hoveron': 'points',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[line - 1] + ', 0.2)',
+                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.2)',
                         'line': {
                             'width': 0
                         }
                     })
-                elif column == 'id':
+                elif column == 'name':
                     pass
                 else:
                     raise ValueError('An unknown column was passed')

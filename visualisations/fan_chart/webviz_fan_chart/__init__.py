@@ -36,7 +36,7 @@ class FanChart(Plotly):
             '0, 255, 0',
             '0, 255, 255',
             '255, 0, 255'
-            ]
+        ]
 
         for line in uniquelines:
             line_data = self.data[self.data['id'] == line]
@@ -126,6 +126,5 @@ class FanChart(Plotly):
                     pass
                 else:
                     raise ValueError('An unknown column was passed')
-
 
         super(FanChart, self).__init__(lines)

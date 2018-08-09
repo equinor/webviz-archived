@@ -90,7 +90,5 @@ class TestSiteExample(unittest.TestCase):
         self.assertIn('test2.js', filepaths1[0])
 
 
-
-
 if __name__ == '__main__':
     unittest.main()

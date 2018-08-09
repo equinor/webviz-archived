@@ -1,5 +1,6 @@
 from webviz_plotly import Plotly
 import pandas as pd
+import matplotlib.colors as colors
 
 
 class FanChart(Plotly):
@@ -23,20 +24,17 @@ class FanChart(Plotly):
         else:
             self.data = data
 
+        rgbcolors = []
+        for name, hex in colors.cnames.items():
+            rgbcolors.append(colors.to_rgb(name))
+        print(rgbcolors)
+
         uniquelines = []
         lines = []
 
         for line_id in self.data['name']:
             if line_id not in uniquelines:
                 uniquelines.append(line_id)
-
-        color = [
-            '0, 0, 255',
-            '255, 0, 0',
-            '0, 255, 0',
-            '0, 255, 255',
-            '255, 0, 255'
-        ]
 
         for line in uniquelines:
             line_data = self.data[self.data['name'] == line]
@@ -51,7 +49,9 @@ class FanChart(Plotly):
                         'name': line,
                         'mode': 'lines',
                         'line': {
-                            'color': 'rgb(' + color[uniquelines.index(line)] + ')'
+                            'color': 'rgba'
+                            + str(rgbcolors[uniquelines.index(line)])[:-1]
+                            + ')'
                         }
                     })
                 elif column == 'p90':
@@ -65,7 +65,9 @@ class FanChart(Plotly):
                         'fill': 'toself',
                         'mode': 'lines',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.4)',
+                        'fillcolor': 'rgba'
+                        + str(rgbcolors[uniquelines.index(line)])[:-1]
+                        + ', 0.6)',
                         'line': {
                             'width': 0
                         }
@@ -81,7 +83,9 @@ class FanChart(Plotly):
                         'fill': 'toself',
                         'mode': 'lines',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.4)',
+                        'fillcolor': 'rgba'
+                        + str(rgbcolors[uniquelines.index(line)])[:-1]
+                        + ', 0.6)',
                         'line': {
                             'width': 0
                         }
@@ -97,7 +101,9 @@ class FanChart(Plotly):
                         'fill': 'toself',
                         'mode': 'lines',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.2)',
+                        'fillcolor': 'rgba'
+                        + str(rgbcolors[uniquelines.index(line)])[:-1]
+                        + ', 0.4)',
                         'line': {
                             'width': 0
                         }
@@ -113,7 +119,9 @@ class FanChart(Plotly):
                         'fill': 'toself',
                         'mode': 'lines',
                         'showlegend': False,
-                        'fillcolor': 'rgba(' + color[uniquelines.index(line)] + ', 0.2)',
+                        'fillcolor': 'rgba'
+                        + str(rgbcolors[uniquelines.index(line)])[:-1]
+                        + ', 0.4)',
                         'line': {
                             'width': 0
                         }

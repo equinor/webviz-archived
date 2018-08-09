@@ -62,6 +62,24 @@ class TestPage(unittest.TestCase):
         for key, value in iteritems(data):
             self.assertEqual(data[key], roundtrip[key])
 
+    def test_multiple_dumps(self):
+        content1 = JSONContent()
+        content2 = JSONContent()
+
+        content1['data1'] = {'name': 'value'}
+        content2['data2'] = {'name2': 'value2'}
+
+        page1 = Page('1')
+        page1.add_content(content1)
+
+        page2 = Page('2')
+        page2.add_content(content2)
+
+        jsdeps1 = [x.name for x in page1.js_dep]
+        jsdeps2 = [x.name for x in page2.js_dep]
+
+        self.assertEqual(len(set(jsdeps1 + jsdeps2)), 3)
+
 
 if __name__ == '__main__':
     unittest.main()

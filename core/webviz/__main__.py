@@ -108,7 +108,8 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
                     html.add_css_dep(css)
 
             page.add_content(html)
-            submenus[root].add_page(page)
+            if filename != 'index.md':
+                submenus[root].add_page(page)
 
 for submenu in itervalues(submenus):
     if isinstance(submenu, SubMenu):

@@ -43,8 +43,6 @@ class TestSiteExample(unittest.TestCase):
         return self.driver.find_elements_by_css_selector(selector)
 
     def test_plot_on_page(self):
-        link = self.select('li.menuItem > a')
-        link.click()
         plots = self.selects('div.plot-container')
         self.assertEqual(len(plots), 1)
 

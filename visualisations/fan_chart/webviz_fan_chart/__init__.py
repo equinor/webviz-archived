@@ -27,10 +27,28 @@ class FanChart(Plotly):
         rgbcolors = []
         for name, hex in colors.cnames.items():
             rgbcolors.append(colors.to_rgb(name))
-        print(rgbcolors)
 
         uniquelines = []
         lines = []
+
+        def init_scatter_trace(y_line, column, line):
+            lines.append({
+                'y': y_line[column].tolist()
+                + y_line['mean'].tolist()[::-1],
+                'x': x + x[::-1],
+                'type': 'scatter',
+                'legendgroup': line,
+                'name': column,
+                'fill': 'toself',
+                'mode': 'lines',
+                'showlegend': False,
+                'fillcolor': 'rgba'
+                + str(rgbcolors[uniquelines.index(line)])[:-1]
+                + ', 0.5)',
+                'line': {
+                    'width': 0
+                }
+            })
 
         for line_id in self.data['name']:
             if line_id not in uniquelines:
@@ -55,77 +73,13 @@ class FanChart(Plotly):
                         }
                     })
                 elif column == 'p90':
-                    lines.append({
-                        'y': line_data[column].tolist()
-                        + line_data['mean'].tolist()[::-1],
-                        'x': x + x[::-1],
-                        'type': 'scatter',
-                        'legendgroup': line,
-                        'name': line,
-                        'fill': 'toself',
-                        'mode': 'lines',
-                        'showlegend': False,
-                        'fillcolor': 'rgba'
-                        + str(rgbcolors[uniquelines.index(line)])[:-1]
-                        + ', 0.6)',
-                        'line': {
-                            'width': 0
-                        }
-                    })
+                    init_scatter_trace(line_data, column, line)
                 elif column == 'p10':
-                    lines.append({
-                        'y': line_data[column].tolist()
-                        + line_data['mean'].tolist()[::-1],
-                        'x': x + x[::-1],
-                        'type': 'scatter',
-                        'legendgroup': line,
-                        'name': line,
-                        'fill': 'toself',
-                        'mode': 'lines',
-                        'showlegend': False,
-                        'fillcolor': 'rgba'
-                        + str(rgbcolors[uniquelines.index(line)])[:-1]
-                        + ', 0.6)',
-                        'line': {
-                            'width': 0
-                        }
-                    })
+                    init_scatter_trace(line_data, column, line)
                 elif column == 'min':
-                    lines.append({
-                        'y': line_data[column].tolist()
-                        + line_data['mean'].tolist()[::-1],
-                        'x': x + x[::-1],
-                        'type': 'scatter',
-                        'legendgroup': line,
-                        'name': line,
-                        'fill': 'toself',
-                        'mode': 'lines',
-                        'showlegend': False,
-                        'fillcolor': 'rgba'
-                        + str(rgbcolors[uniquelines.index(line)])[:-1]
-                        + ', 0.4)',
-                        'line': {
-                            'width': 0
-                        }
-                    })
+                    init_scatter_trace(line_data, column, line)
                 elif column == 'max':
-                    lines.append({
-                        'y': line_data[column].tolist()
-                        + line_data['mean'].tolist()[::-1],
-                        'x': x + x[::-1],
-                        'type': 'scatter',
-                        'legendgroup': line,
-                        'name': line,
-                        'fill': 'toself',
-                        'mode': 'lines',
-                        'showlegend': False,
-                        'fillcolor': 'rgba'
-                        + str(rgbcolors[uniquelines.index(line)])[:-1]
-                        + ', 0.4)',
-                        'line': {
-                            'width': 0
-                        }
-                    })
+                    init_scatter_trace(line_data, column, line)
                 elif column == 'name':
                     pass
                 else:

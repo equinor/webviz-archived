@@ -1,6 +1,43 @@
 from webviz_plotly import Plotly
 import pandas as pd
-import matplotlib.colors as colors
+import matplotlib.cm as cm
+
+color_scheme = cm.get_cmap('Set1')
+
+
+def color_spread(n):
+    colorlist = []
+    for i in range(n):
+        single_color = color_scheme(1.*i/n)
+        formatted_color = []
+        for y in single_color[:-1]:
+            formatted_color.append(str(y))
+        colorlist.append(formatted_color)
+    return colorlist
+
+
+def format_color(color, opacity):
+    return '(' + color[0] \
+    + ', ' + color[1] \
+    + ', ' + color[2] \
+    + ',' + opacity + ')'
+
+
+def init_scatter_trace(y, mean, x, name, line, color, index):
+    return [{
+        'y': y + mean[::-1],
+        'x': x + x[::-1],
+        'type': 'scatter',
+        'legendgroup': line,
+        'name': name,
+        'fill': 'toself',
+        'mode': 'lines',
+        'showlegend': False,
+        'fillcolor': 'rgba' + color,
+        'line': {
+            'width': 0
+        }
+    }]
 
 
 class FanChart(Plotly):
@@ -24,35 +61,14 @@ class FanChart(Plotly):
         else:
             self.data = data
 
-        rgbcolors = []
-        for name, hex in colors.cnames.items():
-            rgbcolors.append(colors.to_rgb(name))
-
         uniquelines = []
         lines = []
-
-        def init_scatter_trace(y_line, column, line):
-            lines.append({
-                'y': y_line[column].tolist()
-                + y_line['mean'].tolist()[::-1],
-                'x': x + x[::-1],
-                'type': 'scatter',
-                'legendgroup': line,
-                'name': column,
-                'fill': 'toself',
-                'mode': 'lines',
-                'showlegend': False,
-                'fillcolor': 'rgba'
-                + str(rgbcolors[uniquelines.index(line)])[:-1]
-                + ', 0.5)',
-                'line': {
-                    'width': 0
-                }
-            })
 
         for line_id in self.data['name']:
             if line_id not in uniquelines:
                 uniquelines.append(line_id)
+
+        colors = color_spread(len(uniquelines))
 
         for line in uniquelines:
             line_data = self.data[self.data['name'] == line]
@@ -68,21 +84,68 @@ class FanChart(Plotly):
                         'mode': 'lines',
                         'line': {
                             'color': 'rgba'
-                            + str(rgbcolors[uniquelines.index(line)])[:-1]
-                            + ')'
+                            + str(format_color(
+                                colors[uniquelines.index(line)],
+                                '1'
+                            ))
                         }
                     })
                 elif column == 'p90':
-                    init_scatter_trace(line_data, column, line)
+                    lines += init_scatter_trace(
+                        line_data[column].tolist(),
+                        line_data['mean'].tolist(),
+                        x,
+                        column,
+                        line,
+                        str(format_color(
+                            colors[uniquelines.index(line)],
+                            '0.5'
+                        )),
+                        uniquelines.index(line)
+                    )
                 elif column == 'p10':
-                    init_scatter_trace(line_data, column, line)
+                    lines += init_scatter_trace(
+                        line_data[column].tolist(),
+                        line_data['mean'].tolist(),
+                        x,
+                        column,
+                        line,
+                        str(format_color(
+                            colors[uniquelines.index(line)],
+                            '0.5'
+                        )),
+                        uniquelines.index(line)
+                    )
                 elif column == 'min':
-                    init_scatter_trace(line_data, column, line)
+                    lines += init_scatter_trace(
+                        line_data[column].tolist(),
+                        line_data['mean'].tolist(),
+                        x,
+                        column,
+                        line,
+                        str(format_color(
+                            colors[uniquelines.index(line)],
+                            '0.3'
+                        )),
+                        uniquelines.index(line)
+                    )
                 elif column == 'max':
-                    init_scatter_trace(line_data, column, line)
+                    lines += init_scatter_trace(
+                        line_data[column].tolist(),
+                        line_data['mean'].tolist(),
+                        x,
+                        column,
+                        line,
+                        str(format_color(
+                            colors[uniquelines.index(line)],
+                            '0.3'
+                        )),
+                        uniquelines.index(line)
+                    )
                 elif column == 'name':
                     pass
                 else:
+                    pass
                     raise ValueError('An unknown column was passed')
 
         super(FanChart, self).__init__(lines)

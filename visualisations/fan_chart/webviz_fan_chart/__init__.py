@@ -18,9 +18,9 @@ def color_spread(n):
 
 def format_color(color, opacity):
     return '(' + color[0] \
-    + ', ' + color[1] \
-    + ', ' + color[2] \
-    + ',' + opacity + ')'
+        + ', ' + color[1] \
+        + ', ' + color[2] \
+        + ',' + opacity + ')'
 
 
 def init_scatter_trace(y, mean, x, name, line, color, index):

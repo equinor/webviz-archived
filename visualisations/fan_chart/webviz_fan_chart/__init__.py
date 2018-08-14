@@ -8,7 +8,7 @@ color_scheme = cm.get_cmap('Set1')
 def color_spread(n):
     colorlist = []
     for i in range(n):
-        single_color = color_scheme(1.*i/n)
+        single_color = color_scheme(float(i) / n)
         formatted_color = []
         for y in single_color[:-1]:
             formatted_color.append(str(y))
@@ -17,10 +17,7 @@ def color_spread(n):
 
 
 def format_color(color, opacity):
-    return '(' + color[0] \
-        + ', ' + color[1] \
-        + ', ' + color[2] \
-        + ',' + opacity + ')'
+    return "({},{})".format(','.join(color), opacity)
 
 
 def init_scatter_trace(y, mean, x, name, line, color, index):
@@ -70,7 +67,7 @@ class FanChart(Plotly):
 
         colors = color_spread(len(uniquelines))
 
-        for line in uniquelines:
+        for index, line in enumerate(uniquelines):
             line_data = self.data[self.data['name'] == line]
             x = line_data.index.tolist()
             for column in line_data.columns:
@@ -84,10 +81,10 @@ class FanChart(Plotly):
                         'mode': 'lines',
                         'line': {
                             'color': 'rgba'
-                            + str(format_color(
-                                colors[uniquelines.index(line)],
+                            + format_color(
+                                colors[index],
                                 '1'
-                            ))
+                            )
                         }
                     })
                 elif column == 'p90':
@@ -97,11 +94,11 @@ class FanChart(Plotly):
                         x,
                         column,
                         line,
-                        str(format_color(
-                            colors[uniquelines.index(line)],
+                        format_color(
+                            colors[index],
                             '0.5'
-                        )),
-                        uniquelines.index(line)
+                        ),
+                        index
                     )
                 elif column == 'p10':
                     lines += init_scatter_trace(
@@ -110,11 +107,11 @@ class FanChart(Plotly):
                         x,
                         column,
                         line,
-                        str(format_color(
-                            colors[uniquelines.index(line)],
+                        format_color(
+                            colors[index],
                             '0.5'
-                        )),
-                        uniquelines.index(line)
+                        ),
+                        index
                     )
                 elif column == 'min':
                     lines += init_scatter_trace(
@@ -123,11 +120,11 @@ class FanChart(Plotly):
                         x,
                         column,
                         line,
-                        str(format_color(
-                            colors[uniquelines.index(line)],
+                        format_color(
+                            colors[index],
                             '0.3'
-                        )),
-                        uniquelines.index(line)
+                        ),
+                        index
                     )
                 elif column == 'max':
                     lines += init_scatter_trace(
@@ -136,11 +133,11 @@ class FanChart(Plotly):
                         x,
                         column,
                         line,
-                        str(format_color(
-                            colors[uniquelines.index(line)],
+                        format_color(
+                            colors[index],
                             '0.3'
-                        )),
-                        uniquelines.index(line)
+                        ),
+                        index
                     )
                 elif column == 'name':
                     pass

@@ -13,6 +13,11 @@ Bar chart
 
 .. literalinclude:: ../visualisations/bar_chart/examples/bar_chart_example.py
 
+Fan chart
+^^^^^^^^^
+
+.. literalinclude:: ../visualisations/fan_chart/examples/fan_chart_example.py
+
 Heat map
 ^^^^^^^^
 

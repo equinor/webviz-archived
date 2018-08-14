@@ -6,6 +6,7 @@ projects = \
     visualisations/bar_chart\
     visualisations/pie_chart\
     visualisations/tornado_plot\
+	visualisations/fan_chart\
 
 
 build:

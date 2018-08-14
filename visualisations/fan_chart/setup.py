@@ -8,7 +8,7 @@ setup(
     package_data={
         'webviz_fan_chart': []},
     test_suite="setup.discover_test_suite",
-    install_requires=['jinja2', 'webviz', 'webviz_plotly', 'pandas'],
+    install_requires=['jinja2', 'webviz', 'webviz_plotly', 'pandas', 'matplotlib'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={

@@ -79,12 +79,8 @@ class FanChart(Plotly):
         else:
             self.data = data
 
-        uniquelines = []
+        uniquelines = set(self.data['name'])
         lines = []
-
-        for line_id in self.data['name']:
-            if line_id not in uniquelines:
-                uniquelines.append(line_id)
 
         colors = color_spread(len(uniquelines))
 

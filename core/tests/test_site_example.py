@@ -1,6 +1,7 @@
 import unittest
 import shutil
 import os
+from os import path
 import tempfile
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -9,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 class TestSiteExample(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        thisdir = os.path.abspath(os.path.dirname(__file__))
+        thisdir = path.abspath(path.dirname(__file__))
 
         cls.tempdir = tempfile.mkdtemp()
         os.chdir(cls.tempdir)
@@ -57,7 +58,7 @@ class TestSiteExample(unittest.TestCase):
         self.assertIn(u'html element title', menu.get_attribute('innerHTML'))
 
     def test_css_moved(self):
-        self.assertTrue(os.path.isfile(os.path.join(
+        self.assertTrue(path.isfile(path.join(
             self.tempdir,
             'site_example',
             'html_output',
@@ -66,13 +67,27 @@ class TestSiteExample(unittest.TestCase):
             'test.css')))
 
     def test_js_moved(self):
-        self.assertTrue(os.path.isfile(os.path.join(
+        basepath = path.join(
             self.tempdir,
             'site_example',
             'html_output',
             'resources',
-            'js',
-            'test.js')))
+            'js')
+        self.assertTrue(path.isfile(path.join(basepath, 'test.js')))
+        self.assertTrue(path.isfile(path.join(basepath, 'test2.js')))
+
+    def test_contains_js(self):
+        includes = self.driver.find_elements_by_css_selector('script')
+        filepaths1 = [tag.get_attribute('src') for tag in includes]
+        link = self.driver.find_element_by_css_selector('li > a')
+        link.click()
+        includes = self.driver.find_elements_by_css_selector('script')
+        filepaths2 = [tag.get_attribute('src') for tag in includes]
+
+        self.assertTrue(len(filepaths1) == 1)
+        self.assertTrue(len(filepaths2) == 1)
+        self.assertIn('test.js', filepaths2[0])
+        self.assertIn('test2.js', filepaths1[0])
 
 
 if __name__ == '__main__':

@@ -8,6 +8,17 @@ from ._page_element import PageElement
 from ._webviz_writer import WebvizWriter
 
 
+def ordered_union(a, b):
+    """
+    Appends all elements of b, that are not in a, at the end of b.
+    """
+    result = a[:]
+    for elem in b:
+        if elem not in a:
+            result.append(elem)
+    return result
+
+
 def escape_all(html):
     """
     Escapes any html or utf8 character in the given
@@ -154,8 +165,6 @@ class Webviz(object):
         self.menu = []
         self.title = escape_all(title)
         self.banner_title = banner_title
-        self.js_files = []
-        self.css_files = []
         self.index = Page(title)
 
         self.banner_image = banner_image
@@ -267,16 +276,18 @@ class Webviz(object):
                 for resource in resources:
                     writer.write_resource(resource, subdir=location)
 
+            all_pages = self.pages[:]
+            all_pages.append(self.index)
+            for page in all_pages:
+                page.js_files = ordered_union(
+                        [js_written[js] for js in page.js_dep],
+                        theme_js_written
+                )
+                page.css_files = ordered_union(
+                        [css_written[css] for css in page.css_dep],
+                        theme_css_written
+                )
             for page in self.pages:
-                self.js_files = [js_written[js] for js in page.js_dep]
-                self.js_files.extend(theme_js_written)
-                for js in theme_js_written:
-                    if js not in self.js_files:
-                        self.js_files.append(js)
-                self.css_files = [css_written[css] for css in page.css_dep]
-                for css in theme_css_written:
-                    if css not in self.css_files:
-                        self.css_files.append(css)
                 writer.write_sub_page(page)
             writer.write_index_page(self.index)
 

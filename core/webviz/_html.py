@@ -15,8 +15,8 @@ class Html(PageElement):
     def __init__(self, html, js_deps=[], css_deps=[]):
         super(Html, self).__init__()
         self._html = html
-        self._js_deps = js_deps
-        self._css_deps = css_deps
+        self._js_deps = js_deps[:]
+        self._css_deps = css_deps[:]
 
     def get_js_dep(self):
         """ Overrides :py:meth:`webviz.PageElement.get_js_dep`."""

@@ -1,12 +1,12 @@
 {% macro header() -%}
     <title>{{title}}</title>
 
-    {% for css in css_files %}
+    {% for css in page.css_files %}
     <link rel='stylesheet' href='{{root_folder}}/{{css}}' type='text/css'></link>
     {% endfor %}
 
 
-    {% for js in js_files %}
+    {% for js in page.js_files %}
     <script src='{{root_folder}}/{{js}}'></script>
     {% endfor %}
 {%- endmacro %}

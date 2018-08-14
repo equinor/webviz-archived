@@ -14,7 +14,8 @@ class TestSiteExample(unittest.TestCase):
         cls.tempdir = tempfile.mkdtemp()
         os.chdir(cls.tempdir)
 
-        shutil.copytree('{}/../examples/site_example'.format(thisdir), './site_example')
+        folder = '{}/../examples/site_example'.format(thisdir)
+        shutil.copytree(folder, './site_example')
         cls.ret = os.system('python -m webviz site_example')
 
         chromeOptions = Options()
@@ -29,8 +30,9 @@ class TestSiteExample(unittest.TestCase):
         cls.driver.close()
 
     def setUp(self):
-        address = 'file://{}/site_example/html_output/index.html'.format(self.tempdir)
-        self.driver.get(address)
+
+        address = '{}/site_example/html_output/index.html'.format(self.tempdir)
+        self.driver.get('file://{}'.format(address))
 
     def test_return_value(self):
         self.assertEqual(self.ret, 0)
@@ -42,8 +44,6 @@ class TestSiteExample(unittest.TestCase):
         return self.driver.find_elements_by_css_selector(selector)
 
     def test_plot_on_page(self):
-        link = self.select('li.menuItem > a')
-        link.click()
         plots = self.selects('div.plot-container')
         self.assertEqual(len(plots), 1)
 

@@ -7,9 +7,10 @@ color_scheme = cm.get_cmap('Set1')
 
 def color_spread(n):
     """Color generator function
+
     :param data:
         n = number of total colors needed
-    Returns list of lists of three strings representing rgb
+        Returns list of lists of three strings representing rgb
     """
     colorlist = []
     for i in range(n):
@@ -23,16 +24,18 @@ def color_spread(n):
 
 def format_color(color, opacity):
     """Color formatting function
+
     :param data:
         color list with three strings to represent an rgb color,
         opacity between 0 and 1.
-    Returns color as 'rgba(r,g,b,a)' string
+        Returns color as 'rgba(r,g,b,a)' string
     """
     return "rgba({},{})".format(','.join(color), opacity)
 
 
 def init_scatter_trace(y, mean, x, name, line, color):
     """Plotting function
+    
     :param data:
         y: y-axis plots
         mean: mean value to be drawn backwards to fill area
@@ -40,7 +43,7 @@ def init_scatter_trace(y, mean, x, name, line, color):
         name: name of line
         line: id for belonging group
         color: color of line
-    Returns dictionary in plotly format
+        Returns dictionary in plotly format
     """
     return {
         'y': y + mean[::-1],

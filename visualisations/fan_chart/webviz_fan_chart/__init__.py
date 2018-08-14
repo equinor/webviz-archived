@@ -6,6 +6,11 @@ color_scheme = cm.get_cmap('Set1')
 
 
 def color_spread(n):
+    """Color generator function
+    :param data:
+        n = number of total colors needed
+    Returns list of lists of three strings representing rgb
+    """
     colorlist = []
     for i in range(n):
         single_color = color_scheme(float(i) / n)
@@ -17,11 +22,27 @@ def color_spread(n):
 
 
 def format_color(color, opacity):
-    return "({},{})".format(','.join(color), opacity)
+    """Color formatting function
+    :param data:
+        color list with three strings to represent an rgb color,
+        opacity between 0 and 1.
+    Returns color as 'rgba(r,g,b,a)' string
+    """
+    return "rgba({},{})".format(','.join(color), opacity)
 
 
-def init_scatter_trace(y, mean, x, name, line, color, index):
-    return [{
+def init_scatter_trace(y, mean, x, name, line, color):
+    """Plotting function
+    :param data:
+        y: y-axis plots
+        mean: mean value to be drawn backwards to fill area
+        x: x-axis plots
+        name: name of line
+        line: id for belonging group
+        color: color of line
+    Returns dictionary in plotly format
+    """
+    return {
         'y': y + mean[::-1],
         'x': x + x[::-1],
         'type': 'scatter',
@@ -30,11 +51,11 @@ def init_scatter_trace(y, mean, x, name, line, color, index):
         'fill': 'toself',
         'mode': 'lines',
         'showlegend': False,
-        'fillcolor': 'rgba' + color,
+        'fillcolor': color,
         'line': {
             'width': 0
         }
-    }]
+    }
 
 
 class FanChart(Plotly):
@@ -80,65 +101,45 @@ class FanChart(Plotly):
                         'name': line,
                         'mode': 'lines',
                         'line': {
-                            'color': 'rgba'
-                            + format_color(
-                                colors[index],
-                                '1'
-                            )
+                            'color': format_color(colors[index], '1')
                         }
                     })
                 elif column == 'p90':
-                    lines += init_scatter_trace(
+                    lines.append(init_scatter_trace(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
                         column,
                         line,
-                        format_color(
-                            colors[index],
-                            '0.5'
-                        ),
-                        index
-                    )
+                        format_color(colors[index], '0.5'),
+                    ))
                 elif column == 'p10':
-                    lines += init_scatter_trace(
+                    lines.append(init_scatter_trace(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
                         column,
                         line,
-                        format_color(
-                            colors[index],
-                            '0.5'
-                        ),
-                        index
-                    )
+                        format_color(colors[index], '0.5'),
+                    ))
                 elif column == 'min':
-                    lines += init_scatter_trace(
+                    lines.append(init_scatter_trace(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
                         column,
                         line,
-                        format_color(
-                            colors[index],
-                            '0.3'
-                        ),
-                        index
-                    )
+                        format_color(colors[index], '0.3'),
+                    ))
                 elif column == 'max':
-                    lines += init_scatter_trace(
+                    lines.append(init_scatter_trace(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
                         column,
                         line,
-                        format_color(
-                            colors[index],
-                            '0.3'
-                        ),
-                        index
-                    )
+                        format_color(colors[index], '0.3'),
+                    ))
                 elif column == 'name':
                     pass
                 else:

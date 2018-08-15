@@ -8,7 +8,7 @@ page = Page('Fan Chart')
 
 index = ['2012-01-01', '2012-01-02', '2012-01-03', '2012-01-04']
 
-name = 'line-1'
+name = ['line-1', 'line-1', 'line-1', 'line-1']
 
 mean = [10, 15, 13, 17]
 

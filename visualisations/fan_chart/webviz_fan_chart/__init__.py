@@ -35,7 +35,7 @@ def format_color(color, opacity):
 
 def init_scatter_trace(y, mean, x, name, line, color):
     """Plotting function
-    
+
     :param data:
         y: y-axis plots
         mean: mean value to be drawn backwards to fill area
@@ -73,6 +73,7 @@ class FanChart(Plotly):
     def __init__(self, data):
         if isinstance(data, str):
             self.data = pd.read_csv(data)
+            print(self.data)
             if 'index' in self.data.columns:
                 self.data.set_index(
                     self.data['index'],
@@ -139,10 +140,9 @@ class FanChart(Plotly):
                         line,
                         format_color(colors[index], '0.3'),
                     ))
-                elif column == 'name':
+                elif column == 'name' or column == 'index':
                     pass
                 else:
-                    pass
-                    raise ValueError('An unknown column was passed')
+                    raise ValueError('An unknown column was passed: ', column)
 
         super(FanChart, self).__init__(lines)

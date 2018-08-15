@@ -13,6 +13,11 @@ webviz visualizations
     :undoc-members:
     :show-inheritance:
 
+.. automodule:: webviz_fan_chart
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 .. automodule:: webviz_heat_map
     :members:
     :undoc-members:

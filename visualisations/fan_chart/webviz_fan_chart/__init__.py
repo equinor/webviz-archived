@@ -68,12 +68,13 @@ class FanChart(Plotly):
         :class:`pandas.DataFrame`. If a dataframe is given, each column is one
         line in the chart. The dataframe index is used for the horizontal
         values. Similarly for the `csv` file, where a special column named
-        ``index`` will be used for the horizontal values.
+        ``index`` will be used for the horizontal values. The column `name`
+        describes which fan the data belongs to, if no such column, all data
+        belongs to same fan.
     """
     def __init__(self, data):
         if isinstance(data, str):
             self.data = pd.read_csv(data)
-            print(self.data)
             if 'index' in self.data.columns:
                 self.data.set_index(
                     self.data['index'],
@@ -83,13 +84,14 @@ class FanChart(Plotly):
         else:
             self.data = data
 
-        uniquelines = set(self.data['name'])
+        uniquelines = set(self.data['name']) if 'name' in self.data else ['line']
         lines = []
 
         colors = color_spread(len(uniquelines))
 
         for index, line in enumerate(uniquelines):
-            line_data = self.data[self.data['name'] == line]
+            line_data = self.data[self.data['name'] == line] \
+            if 'name' in self.data else self.data
             x = line_data.index.tolist()
             for column in line_data.columns:
                 if column == 'mean':

@@ -84,14 +84,15 @@ class FanChart(Plotly):
         else:
             self.data = data
 
-        uniquelines = set(self.data['name']) if 'name' in self.data else ['line']
+        uniquelines = set(self.data['name']) \
+            if 'name' in self.data else ['line']
         lines = []
 
         colors = color_spread(len(uniquelines))
 
         for index, line in enumerate(uniquelines):
             line_data = self.data[self.data['name'] == line] \
-            if 'name' in self.data else self.data
+                if 'name' in self.data else self.data
             x = line_data.index.tolist()
             for column in line_data.columns:
                 if column == 'mean':

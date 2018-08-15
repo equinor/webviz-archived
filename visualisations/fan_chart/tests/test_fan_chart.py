@@ -1,13 +1,17 @@
 import unittest
 import pandas as pd
 from webviz_fan_chart import FanChart, color_spread, format_color, \
-    init_scatter_trace
+    init_scatter_trace, add_observation
 
 
 class TestFanChart(unittest.TestCase):
     def test_parse_columns(self):
         with self.assertRaises(ValueError):
-            FanChart(pd.DataFrame({'name': [1, 2, 3], 'other': [1, 2, 3]}))
+            FanChart(pd.DataFrame({
+                'name': [1, 2, 3],
+                'other': [1, 2, 3]}),
+                pd.DataFrame({'obs': [1, 2, 3]})
+            )
 
     def test_color_spread(self):
         self.assertEqual(1000, len(color_spread(1000)))
@@ -26,6 +30,22 @@ class TestFanChart(unittest.TestCase):
         self.assertIn('name', trace)
         self.assertEqual(trace['name'], 'name')
         self.assertEqual(trace['type'], 'scatter')
+
+    def test_add_observation(self):
+        index = 1
+        value = 4
+        range_value = 2
+        trace = add_observation({
+            'index': index,
+            'value': value,
+            'range': range_value,
+            'name': 'name'
+        })
+        self.assertIn('x', trace)
+        self.assertEqual(trace['x'], [index, index])
+        self.assertEqual(
+            trace['y'], [value + range_value, value - range_value]
+        )
 
 
 if __name__ == '__main__':

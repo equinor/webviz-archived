@@ -61,6 +61,31 @@ def init_scatter_trace(y, mean, x, name, line, color):
     }
 
 
+def add_observation(obs):
+    """Add observation points
+
+    :param data:
+        obs: DataFrame containing fields 'value', 'range', 'index' and 'name'
+    """
+    return {
+        'y': [
+            obs['value'] + obs['range'],
+            obs['value'] - obs['range']
+        ],
+        'x': [
+            obs['index'],
+            obs['index']
+        ],
+        'showlegend': False,
+        'legendgroup': obs['name'],
+        'type': 'scatter',
+        'mode': 'lines+markers',
+        'line': {
+            'color': '#000'
+        }
+    }
+
+
 class FanChart(Plotly):
     """Fan chart page element.
 
@@ -72,7 +97,7 @@ class FanChart(Plotly):
         describes which fan the data belongs to, if no such column, all data
         belongs to same fan.
     """
-    def __init__(self, data):
+    def __init__(self, data, observations):
         if isinstance(data, str):
             self.data = pd.read_csv(data)
             if 'index' in self.data.columns:
@@ -84,6 +109,11 @@ class FanChart(Plotly):
         else:
             self.data = data
 
+        if isinstance(observations, str):
+            self.observations = pd.read_csv(observations)
+        else:
+            self.observations = observations
+
         uniquelines = set(self.data['name']) \
             if 'name' in self.data else ['line']
         lines = []
@@ -94,6 +124,7 @@ class FanChart(Plotly):
             line_data = self.data[self.data['name'] == line] \
                 if 'name' in self.data else self.data
             x = line_data.index.tolist()
+
             for column in line_data.columns:
                 if column == 'mean':
                     lines.append({
@@ -148,4 +179,9 @@ class FanChart(Plotly):
                 else:
                     raise ValueError('An unknown column was passed: ', column)
 
-        super(FanChart, self).__init__(lines)
+        for i, row in self.observations.iterrows():
+            lines.append(add_observation(row))
+
+        plots = lines
+
+        super(FanChart, self).__init__(plots)

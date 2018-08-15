@@ -34,7 +34,7 @@ observations = pd.DataFrame({
   'index': ['2012-01-04', '2012-01-04'],
   'name': ['line-2', 'line-3'],
   'value': [4, 3],
-  'range': 2
+  'error': 2
 })
 
 page.add_content(FanChart(lines, observations))

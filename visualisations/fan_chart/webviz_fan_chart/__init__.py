@@ -65,12 +65,12 @@ def add_observation(obs):
     """Add observation points
 
     :param data:
-        obs: DataFrame containing fields 'value', 'range', 'index' and 'name'
+        obs: DataFrame containing fields 'value', 'error', 'index' and 'name'
     """
     return {
         'y': [
-            obs['value'] + obs['range'],
-            obs['value'] - obs['range']
+            obs['value'] + obs['error'],
+            obs['value'] - obs['error']
         ],
         'x': [
             obs['index'],
@@ -96,8 +96,9 @@ class FanChart(Plotly):
         ``index`` will be used for the horizontal values. The column `name`
         describes which fan the data belongs to, if no such column, all data
         belongs to same fan.
+    :param observations: ...
     """
-    def __init__(self, data, observations):
+    def __init__(self, data, observations=None):
         if isinstance(data, str):
             self.data = pd.read_csv(data)
             if 'index' in self.data.columns:
@@ -111,6 +112,10 @@ class FanChart(Plotly):
 
         if isinstance(observations, str):
             self.observations = pd.read_csv(observations)
+            if 'index' not in self.observations.columns:
+                self.observations = pd.DataFrame(
+                    {'index': [], 'name': [], 'value': [], 'error': []}
+                )
         else:
             self.observations = observations
 

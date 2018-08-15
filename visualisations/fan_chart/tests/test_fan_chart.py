@@ -34,17 +34,17 @@ class TestFanChart(unittest.TestCase):
     def test_add_observation(self):
         index = 1
         value = 4
-        range_value = 2
+        error_value = 2
         trace = add_observation({
             'index': index,
             'value': value,
-            'range': range_value,
+            'error': error_value,
             'name': 'name'
         })
         self.assertIn('x', trace)
         self.assertEqual(trace['x'], [index, index])
         self.assertEqual(
-            trace['y'], [value + range_value, value - range_value]
+            trace['y'], [value + error_value, value - error_value]
         )
 
 

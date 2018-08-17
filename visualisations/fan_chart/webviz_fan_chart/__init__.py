@@ -187,6 +187,4 @@ class FanChart(Plotly):
         for i, row in self.observations.iterrows():
             lines.append(add_observation(row))
 
-        plots = lines
-
-        super(FanChart, self).__init__(plots)
+        super(FanChart, self).__init__(lines)

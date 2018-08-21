@@ -47,6 +47,10 @@ class TestFanChart(unittest.TestCase):
             trace['y'], [value + error_value, value - error_value]
         )
 
+    def test_add_empty_observations(self):
+        with self.assertRaises(ValueError):
+            FanChart(pd.DataFrame(0), pd.DataFrame({'wrong': [1, 2, 3]}))
+
 
 if __name__ == '__main__':
     unittest.main()

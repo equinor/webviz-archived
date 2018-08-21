@@ -153,8 +153,7 @@ class FanChart(Plotly):
         if 'index' in self.observations and len(self.observations.index) > 0:
             if ['index', 'name', 'value', 'error'] != \
                     list(self.observations.columns):
-                raise ValueError('Observation data does not contain \
-                an expected format')
+                raise ValueError('Observation data is not expected format')
 
         uniquelines = set(self.data['name']) \
             if 'name' in self.data else ['line']

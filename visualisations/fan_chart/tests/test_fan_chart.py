@@ -3,18 +3,41 @@ import pandas as pd
 from webviz_fan_chart import FanChart, color_spread, format_color, \
     init_scatter_trace, add_observation
 
+line_mock_data = {
+    'index': ['02-03-2006'],
+    'name': ['line-1'],
+    'mean': [4],
+    'p10': [2],
+    'p90': [4],
+    'max': [6],
+    'min': [1]
+}
+
+obs_mock_data = {
+    'index': ['02-03-2006'],
+    'name': ['line-1'],
+    'value': [4],
+    'error': [2]
+}
+
 
 class TestFanChart(unittest.TestCase):
     def test_parse_columns(self):
         with self.assertRaises(ValueError):
-            FanChart(pd.DataFrame({
-                'name': [1, 2, 3],
-                'other': [1, 2, 3]}),
-                pd.DataFrame({'obs': [1, 2, 3]})
+            FanChart(
+                pd.DataFrame({
+                    'name': [1, 2, 3],
+                    'other': [1, 2, 3]
+                }),
+                pd.DataFrame(obs_mock_data)
             )
 
     def test_color_spread(self):
-        self.assertEqual(1000, len(color_spread(1000)))
+        trace = color_spread({'line-1', 'line-2', 'line-3'})
+        self.assertEqual(
+            trace,
+            color_spread({'line-1', 'line-2', 'line-3'})
+        )
 
     def test_format_color(self):
         self.assertTrue(
@@ -49,7 +72,7 @@ class TestFanChart(unittest.TestCase):
 
     def test_add_empty_observations(self):
         with self.assertRaises(ValueError):
-            FanChart(pd.DataFrame(0), pd.DataFrame({'wrong': [1, 2, 3]}))
+            FanChart(pd.DataFrame(line_mock_data), pd.DataFrame({'wrong'}))
 
 
 if __name__ == '__main__':

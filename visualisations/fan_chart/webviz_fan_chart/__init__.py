@@ -150,7 +150,7 @@ class FanChart(Plotly):
         else:
             self.observations = observations
 
-        if 'index' in self.observations and len(self.observations.index) > 0:
+        if len(self.observations.index) > 0:
             if ['index', 'name', 'value', 'error'] != \
                     list(self.observations.columns):
                 raise ValueError('Observation data is not expected format')
@@ -221,6 +221,12 @@ class FanChart(Plotly):
 
         for i, row in self.observations.iterrows():
             lines.append(add_observation(row))
-            lines.append(add_marker(row, format_color(colors[row['name']], 1)))
+            if row['name'] in uniquelines:
+                lines.append(
+                    add_marker(
+                        row,
+                        format_color(colors[row['name']], 1)
+                    )
+                )
 
         super(FanChart, self).__init__(lines)

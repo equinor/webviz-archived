@@ -26,8 +26,9 @@ class TestFanChart(unittest.TestCase):
         with self.assertRaises(ValueError):
             FanChart(
                 pd.DataFrame({
-                    'name': [1, 2, 3],
-                    'other': [1, 2, 3]
+                    'index': line_mock_data['index'],
+                    'name': line_mock_data['name'],
+                    'aherha': [1]
                 }),
                 pd.DataFrame(obs_mock_data)
             )
@@ -71,8 +72,14 @@ class TestFanChart(unittest.TestCase):
         )
 
     def test_add_empty_observations(self):
+        FanChart(pd.DataFrame(line_mock_data), pd.DataFrame())
+
+    def test_add_wrong_observations(self):
         with self.assertRaises(ValueError):
-            FanChart(pd.DataFrame(line_mock_data), pd.DataFrame({'wrong'}))
+            FanChart(
+                pd.DataFrame(line_mock_data),
+                pd.DataFrame({'wrong': ['i']})
+            )
 
 
 if __name__ == '__main__':

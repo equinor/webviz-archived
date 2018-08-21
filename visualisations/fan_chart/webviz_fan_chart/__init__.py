@@ -1,6 +1,7 @@
 from webviz_plotly import Plotly
 import pandas as pd
 import matplotlib.cm as cm
+import pdb
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -151,8 +152,8 @@ class FanChart(Plotly):
             self.observations = observations
 
         if len(self.observations.index) > 0:
-            if ['index', 'name', 'value', 'error'] != \
-                    list(self.observations.columns):
+            if {'index', 'name', 'value', 'error'} != \
+                    set(self.observations.columns):
                 raise ValueError('Observation data is not expected format')
 
         uniquelines = set(self.data['name']) \

@@ -1,7 +1,6 @@
 from webviz_plotly import Plotly
 import pandas as pd
 import matplotlib.cm as cm
-import pdb
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -132,7 +131,11 @@ class FanChart(Plotly):
         ``index`` will be used for the horizontal values. The column `name`
         describes which fan the data belongs to, if no such column, all data
         belongs to same fan.
-    :param observations: ...
+    :param observations: File or path to `csv` file
+        or a :class:`pandas.DataFrame`. Each dataframe is one observation.
+        Expects `index` parameter to be used as 'x' value, a `name` parameter
+        to correspond with a name in the data dataframe, a `value` and `value`
+        that will determine the size of the marker (in height)
     """
     def __init__(self, data, observations=None):
         if isinstance(data, str):

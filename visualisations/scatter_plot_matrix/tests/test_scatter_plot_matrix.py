@@ -1,13 +1,21 @@
 import unittest
 import pandas as pd
 from webviz_scatter_plot_matrix import ScatterPlotMatrix, color_spread, \
-    format_color, create_trace
+    format_color, create_trace, validate_data_format
 
 
 class TestScatterPlotMatrix(unittest.TestCase):
-    def test_parse(self):
+    def test_init_empty(self):
         with self.assertRaises(TypeError):
             ScatterPlotMatrix()
+
+    def test_parse_wrong_type(self):
+        with self.assertRaises(ValueError):
+            validate_data_format(pd.DataFrame({
+                'x': [2.5, 1.5, 6.1],
+                'y': [6.1, 6.6, 'g'],
+                'name': ['name1', 'name2', 'name3']
+            }))
 
     def test_color_spread(self):
         trace = color_spread({'name1', 'name2', 'name3'})

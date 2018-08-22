@@ -1,14 +1,15 @@
 from webviz_plotly import Plotly
 import pandas as pd
 import matplotlib.cm as cm
+import numbers
 
 color_scheme = cm.get_cmap('Set1')
 
 
 def color_spread(lines):
     """Color generator function
-    :param lines:
-        list containing all separate line names
+
+    :param lines: list containing all separate line names
         Returns dictionary with format {'name': ['r','g','b']}
     """
     colorlist = {}
@@ -23,8 +24,8 @@ def color_spread(lines):
 
 def format_color(color):
     """Color formatting function
-    :param
-        color: list with three strings to represent an rgb color,
+
+    :param color: list with three strings to represent an rgb color,
         Returns color as 'rgb(r,g,b)' string
     """
     return "rgb({})".format(','.join(color))
@@ -47,6 +48,15 @@ def create_trace(dimensions, text, color):
     }
 
 
+def validate_data_format(data):
+    for i in (y for y in data.columns if y != 'name'):
+        for s in (y for y in data[i].values
+                  if not isinstance(y, numbers.Number)):
+            raise ValueError(
+                'Column `' + i + '` passed a value that is not a number!'
+            )
+
+
 class ScatterPlotMatrix(Plotly):
     """Scatter plot matrix page element.
 
@@ -57,14 +67,12 @@ class ScatterPlotMatrix(Plotly):
     def __init__(self, data):
         if isinstance(data, str):
             self.data = pd.read_csv(data)
+            validate_data_format(self.data)
         else:
             self.data = data
 
         uniquenames = list(set(self.data['name'])) \
             if 'name' in self.data else ['Point']
-
-        if not uniquenames:
-            raise ValueError('There were no column `name` in DataFrame')
 
         colors = color_spread(uniquenames)
         color_vals = [format_color(colors[cl]) for cl in self.data['name']]
@@ -73,6 +81,13 @@ class ScatterPlotMatrix(Plotly):
             'label': i,
             'values': list(self.data[i].values)
         } for i in self.data.columns if i != 'name']
+
+        for i in (y for y in self.data.columns if y != 'name'):
+            for s in (y for y in self.data[i].values
+                      if not isinstance(y, numbers.Number)):
+                raise ValueError(
+                    'Column `' + i + '` passed a value that is not a number!'
+                )
 
         axis = {
             'showline': True,
@@ -84,8 +99,6 @@ class ScatterPlotMatrix(Plotly):
         layout = {
             'title': 'Scatter plot matrix',
             'dragmode': 'select',
-            'height': 800,
-            'width': 900,
             'autosize': True,
             'xaxis1': axis,
             'xaxis2': axis,
@@ -97,6 +110,9 @@ class ScatterPlotMatrix(Plotly):
             'yaxis4': axis
         }
 
-        fig1 = {'data': [create_trace(dimensions, text, color_vals)], 'layout': layout}
+        fig1 = {
+            'data': [create_trace(dimensions, text, color_vals)],
+            'layout': layout
+        }
 
         super(ScatterPlotMatrix, self).__init__(fig1)

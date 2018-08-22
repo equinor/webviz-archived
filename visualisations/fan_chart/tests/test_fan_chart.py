@@ -1,16 +1,44 @@
 import unittest
 import pandas as pd
 from webviz_fan_chart import FanChart, color_spread, format_color, \
-    init_scatter_trace
+    init_scatter_trace, add_observation
+
+line_mock_data = {
+    'index': ['02-03-2006'],
+    'name': ['line-1'],
+    'mean': [4],
+    'p10': [2],
+    'p90': [4],
+    'max': [6],
+    'min': [1]
+}
+
+obs_mock_data = {
+    'index': ['02-03-2006'],
+    'name': ['line-1'],
+    'value': [4],
+    'error': [2]
+}
 
 
 class TestFanChart(unittest.TestCase):
     def test_parse_columns(self):
         with self.assertRaises(ValueError):
-            FanChart(pd.DataFrame({'name': [1, 2, 3], 'other': [1, 2, 3]}))
+            FanChart(
+                pd.DataFrame({
+                    'index': line_mock_data['index'],
+                    'name': line_mock_data['name'],
+                    'aherha': [1]
+                }),
+                pd.DataFrame(obs_mock_data)
+            )
 
     def test_color_spread(self):
-        self.assertEqual(1000, len(color_spread(1000)))
+        trace = color_spread({'line-1', 'line-2', 'line-3'})
+        self.assertEqual(
+            len(trace),
+            len({'line-1', 'line-2', 'line-3'})
+        )
 
     def test_format_color(self):
         self.assertTrue(
@@ -26,6 +54,32 @@ class TestFanChart(unittest.TestCase):
         self.assertIn('name', trace)
         self.assertEqual(trace['name'], 'name')
         self.assertEqual(trace['type'], 'scatter')
+
+    def test_add_observation(self):
+        index = 1
+        value = 4
+        error_value = 2
+        trace = add_observation({
+            'index': index,
+            'value': value,
+            'error': error_value,
+            'name': 'name'
+        })
+        self.assertIn('x', trace)
+        self.assertEqual(trace['x'], [index, index])
+        self.assertEqual(
+            trace['y'], [value + error_value, value - error_value]
+        )
+
+    def test_add_empty_observations(self):
+        FanChart(pd.DataFrame(line_mock_data), pd.DataFrame())
+
+    def test_add_wrong_observations(self):
+        with self.assertRaises(ValueError):
+            FanChart(
+                pd.DataFrame(line_mock_data),
+                pd.DataFrame({'wrong': ['i']})
+            )
 
 
 if __name__ == '__main__':

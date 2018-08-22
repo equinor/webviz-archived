@@ -50,7 +50,7 @@ index,data1,data2
     def testJsDep(self):
         filtered = MockElement(self.data, check_box_columns=['data2'])
         self.assertTrue(any(
-            'plotly_checkboxes.js'
+            'filtered_plotly.js'
             in file for file in filtered.get_js_dep()))
 
 

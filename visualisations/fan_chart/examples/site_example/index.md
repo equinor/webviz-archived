@@ -1,1 +1,1 @@
-{{ page_element('FanChart', './test.csv') }}
+{{ page_element('FanChart', './test.csv', './observations.csv') }}

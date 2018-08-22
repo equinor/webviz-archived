@@ -55,8 +55,11 @@ class FilteredPlotly(Plotly):
     :param data: A dataframe that can be processed by
        `process_data`.
     :param check_box_columns: Columns in the dataframe
-        that should be interpreted as labels to be filtered
+        that contain labels to be filtered
         on by check boxes.
+    :param slider_columns: Columns in the dataframe
+        that  contain labels to be filtered
+        on by a slider.
     :param check_box: True if all traces should
         have a corresponding check box, including or
         excluding that trace.
@@ -67,6 +70,7 @@ class FilteredPlotly(Plotly):
             self,
             data,
             check_box_columns=[],
+            slider_columns=[],
             check_box=False,
             *args,
             **kwargs):
@@ -82,18 +86,19 @@ class FilteredPlotly(Plotly):
 
         filtered_data = []
         self.labels = {}
-        if len(check_box_columns):
-            grouped = self.data.groupby(check_box_columns)
+        filters = check_box_columns + slider_columns
+        if filters:
+            grouped = self.data.groupby(filters)
             self.labels = {}
             for names, group in grouped:
-                if len(check_box_columns) == 1:
+                if len(filters) == 1:
                     names = [names]
                 processed = self.process_data(
-                    group.drop(check_box_columns, axis=1)
+                    group.drop(filters, axis=1)
                 )
                 for point in processed:
                     point['labels'] = {}
-                    for key, label in zip(check_box_columns, names):
+                    for key, label in zip(filters, names):
                         point['labels'][key] = label
                         if key not in self.labels:
                             self.labels[key] = []
@@ -101,25 +106,28 @@ class FilteredPlotly(Plotly):
                             self.labels[key].append(label)
                 filtered_data.extend(processed)
         else:
-                processed = self.process_data(self.data)
-                for data in processed:
-                    data['labels'] = {}
-                filtered_data.extend(processed)
-
-        self.check_box_filters = check_box_columns[:]
-        if check_box:
-            self.labels['name'] = []
-            self.check_box_filters.append('name')
-            for point in filtered_data:
-                if point['name'] not in self.labels['name']:
-                    self.labels['name'].append(point['name'])
-                point['labels']['name'] = point['name']
+            processed = self.process_data(self.data)
+            for data in processed:
+                data['labels'] = {}
+            filtered_data.extend(processed)
 
         super(FilteredPlotly, self).__init__(
             filtered_data,
             *args,
             **kwargs)
+
+        self['check_box_filters'] = check_box_columns[:]
+        if check_box:
+            self.labels['name'] = []
+            self['check_box_filters'].append('name')
+            for point in filtered_data:
+                if point['name'] not in self.labels['name']:
+                    self.labels['name'].append(point['name'])
+                point['labels']['name'] = point['name']
+
         self['labels'] = self.labels
+        self['slider_filters'] = {key: self.labels[key] for
+                                  key in slider_columns[:]}
 
     def get_js_dep(self):
         """Extends :py:meth:webviz.PageElement.get_js_dep"""
@@ -128,7 +136,7 @@ class FilteredPlotly(Plotly):
             path.dirname(__file__),
             'resources',
             'js',
-            'plotly_checkboxes.js')
+            'filtered_plotly.js')
         deps.append(plotly_js)
         return deps
 

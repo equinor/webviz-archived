@@ -52,7 +52,7 @@ class ScatterPlotMatrix(Plotly):
 
         class_code = {classes[k]: k for k in range(3)}
         color_vals = [class_code[cl] for cl in self.data['class']]
-        text = [self.data.loc[ k, 'class'] for k in range(len(self.data))]
+        text = [self.data.loc[k, 'class'] for k in range(len(self.data))]
         
         trace1 = {
             'type': 'splom',
@@ -65,10 +65,10 @@ class ScatterPlotMatrix(Plotly):
                     'values': list(self.data['sepal width'].values)
                 }, {
                     'label': 'petal length',
-                    'value': list(self.data['petal length'].values)
+                    'values': list(self.data['petal length'].values)
                 }, {
                     'label': 'petal width',
-                    'value': list(self.data['petal width'].values)
+                    'values': list(self.data['petal width'].values)
                 }
             ],
             'text': text,
@@ -92,7 +92,7 @@ class ScatterPlotMatrix(Plotly):
             }
 
         layout = {
-            'title': 'Iris data set',
+            'title': 'Scatter plot matrix',
             'dragmode': 'select',
             'height': 800,
             'width': 900,
@@ -108,5 +108,5 @@ class ScatterPlotMatrix(Plotly):
         }
 
         fig1 = {'data': [trace1], 'layout': layout}
-        
+
         super(ScatterPlotMatrix, self).__init__(fig1)

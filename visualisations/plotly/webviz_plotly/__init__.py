@@ -55,10 +55,10 @@ class FilteredPlotly(Plotly):
     :param data: A dataframe that can be processed by
        `process_data`.
     :param check_box_columns: Columns in the dataframe
-        that should be interpreted as labels to be filtered
+        that contain labels to be filtered
         on by check boxes.
     :param slider_columns: Columns in the dataframe
-        that should be interpreted as labels to be filtered
+        that  contain labels to be filtered
         on by a slider.
     :param check_box: True if all traces should
         have a corresponding check box, including or
@@ -106,10 +106,10 @@ class FilteredPlotly(Plotly):
                             self.labels[key].append(label)
                 filtered_data.extend(processed)
         else:
-                processed = self.process_data(self.data)
-                for data in processed:
-                    data['labels'] = {}
-                filtered_data.extend(processed)
+            processed = self.process_data(self.data)
+            for data in processed:
+                data['labels'] = {}
+            filtered_data.extend(processed)
 
         super(FilteredPlotly, self).__init__(
             filtered_data,
@@ -136,7 +136,7 @@ class FilteredPlotly(Plotly):
             path.dirname(__file__),
             'resources',
             'js',
-            'plotly_checkboxes.js')
+            'filtered_plotly.js')
         deps.append(plotly_js)
         return deps
 

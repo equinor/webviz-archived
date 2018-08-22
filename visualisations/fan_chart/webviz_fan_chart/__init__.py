@@ -5,16 +5,16 @@ import matplotlib.cm as cm
 color_scheme = cm.get_cmap('Set1')
 
 
-def color_spread(n):
+def color_spread(lines):
     """Color generator function
 
-    :param n:
-        n = object containing all separate line names
+    :param lines:
+        list containing all separate line names
         Returns dictionary with format {'line-name': ['r','g','b']}
     """
     colorlist = {}
-    for i, name in enumerate(n):
-        single_color = color_scheme(float(i) / len(n))
+    for i, name in enumerate(lines):
+        single_color = color_scheme(float(i) / len(lines))
         formatted_color = []
         for y in single_color[:-1]:
             formatted_color.append(str(y))
@@ -160,7 +160,7 @@ class FanChart(Plotly):
                 raise ValueError('Observation data is not expected format')
 
         uniquelines = set(self.data['name']) \
-            if 'name' in self.data else ['line']
+            if 'name' in self.data else {'line'}
         lines = []
         colors = color_spread(uniquelines)
 

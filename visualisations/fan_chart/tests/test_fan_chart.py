@@ -36,8 +36,8 @@ class TestFanChart(unittest.TestCase):
     def test_color_spread(self):
         trace = color_spread({'line-1', 'line-2', 'line-3'})
         self.assertEqual(
-            trace,
-            color_spread({'line-1', 'line-2', 'line-3'})
+            len(trace),
+            len({'line-1', 'line-2', 'line-3'})
         )
 
     def test_format_color(self):

@@ -121,13 +121,6 @@ class ScatterPlotMatrix(Plotly):
             'values': list(self.data[i].values)
         } for i in self.data.columns if i != 'name']
 
-        for i in (y for y in self.data.columns if y != 'name'):
-            for s in (y for y in self.data[i].values
-                      if not isinstance(y, numbers.Number)):
-                raise ValueError(
-                    'Column `' + i + '` passed a value that is not a number!'
-                )
-
         figure = {
             'data': [create_trace(dimensions, text, color_vals)],
             'layout': create_layout(self.data.columns)

@@ -114,7 +114,8 @@ class ScatterPlotMatrix(Plotly):
             if 'name' in self.data else ['Point']
 
         colors = color_spread(uniquenames)
-        color_vals = [format_color(colors[row['name']]) for idx, row in self.data.iterrows()]
+        color_vals = [format_color(colors[row['name']]) for
+                      idx, row in self.data.iterrows()]
         text = [self.data.loc[k, 'name'] for k in range(len(self.data))]
         dimensions = [{
             'label': i,

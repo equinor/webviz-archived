@@ -16,7 +16,6 @@ test_data = pd.DataFrame({
 class TestScatterPlotMatrix(unittest.TestCase):
     def test_create_layout(self):
         trace = create_layout(test_data.columns)
-        print(trace)
         self.assertIn('xaxis1', trace)
         self.assertIn('yaxis1', trace)
 

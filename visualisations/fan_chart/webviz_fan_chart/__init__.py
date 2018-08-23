@@ -154,11 +154,6 @@ class FanChart(Plotly):
         else:
             self.observations = observations
 
-        if len(self.observations.index) > 0:
-            if {'index', 'name', 'value', 'error'} != \
-                    set(self.observations.columns):
-                raise ValueError('Observation data is not expected format')
-
         uniquelines = set(self.data['name']) \
             if 'name' in self.data else {'line'}
         lines = []
@@ -223,14 +218,19 @@ class FanChart(Plotly):
                 else:
                     raise ValueError('An unknown column was passed: ', column)
 
-        for i, row in self.observations.iterrows():
-            lines.append(add_observation(row))
-            if row['name'] in uniquelines:
-                lines.append(
-                    add_marker(
-                        row,
-                        format_color(colors[row['name']], 1)
-                    )
-                )
+        if self.observations is not None and len(self.observations.index) > 0:
+            if {'index', 'name', 'value', 'error'} != \
+                    set(self.observations.columns):
+                raise ValueError('Observation data is not expected format')
+            else:
+                for i, row in self.observations.iterrows():
+                    lines.append(add_observation(row))
+                    if row['name'] in uniquelines:
+                        lines.append(
+                            add_marker(
+                                row,
+                                format_color(colors[row['name']], 1)
+                            )
+                        )
 
         super(FanChart, self).__init__(lines)

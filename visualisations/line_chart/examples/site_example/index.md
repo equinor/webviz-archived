@@ -1,5 +1,6 @@
 {{ page_element('LineChart',
                 './test.csv',
                 check_box=true,
-                slider_columns=['category', 'iteration', 'dateslider'])
+                slider_columns=['dateslider'],
+                dropdown_columns=['category'])
 }}

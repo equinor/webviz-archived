@@ -24,6 +24,11 @@ class TestScatterPlotMatrix(unittest.TestCase):
         with self.assertRaises(TypeError):
             ScatterPlotMatrix(None)
 
+    def test_empty_dataframe_gives_empty_visualisation(self):
+        splom = ScatterPlotMatrix(pd.DataFrame())
+        self.assertEqual(len(splom['data']), 1)
+        self.assertEqual(len(splom['data'][0]['dimensions']), 0)
+
     def test_parse_wrong_type(self):
         with self.assertRaises(ValueError):
             validate_data_format(pd.DataFrame({
@@ -54,3 +59,7 @@ class TestScatterPlotMatrix(unittest.TestCase):
         trace = create_trace(dimensions, text, color)
         self.assertEqual(trace['dimensions'], dimensions)
         self.assertEqual(trace['text'], text)
+
+
+if __name__ == '__main__':
+    unittest.main()

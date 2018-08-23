@@ -114,16 +114,13 @@ class ScatterPlotMatrix(Plotly):
             if 'name' in self.data else ['Point']
 
         colors = color_spread(uniquenames)
-        color_vals = [format_color(colors[cl]) for cl in self.data['name']]
+        color_vals = [format_color(colors[row['name']]) for idx, row in self.data.iterrows()]
         text = [self.data.loc[k, 'name'] for k in range(len(self.data))]
         dimensions = [{
             'label': i,
             'values': list(self.data[i].values)
         } for i in self.data.columns if i != 'name']
 
-        figure = {
-            'data': [create_trace(dimensions, text, color_vals)],
-            'layout': create_layout(self.data.columns)
-        }
-
-        super(ScatterPlotMatrix, self).__init__(figure)
+        super(ScatterPlotMatrix, self).__init__(
+            data=[create_trace(dimensions, text, color_vals)],
+            layout=create_layout(self.data.columns))

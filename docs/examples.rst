@@ -6,7 +6,7 @@ be imported using e.g.
 
 .. code-block:: python
 
-   from webviz.page_elements import BarChart, LineChart, PieChart
+   from webviz.page_elements import BarChart, LineChart, PieChart, ScatterPlotMatrix
 
 Bar chart
 ^^^^^^^^^
@@ -42,6 +42,11 @@ Scatter plot
 ^^^^^^^^^^^^
 
 .. literalinclude:: ../visualisations/scatter_plot/examples/scatter_plot_example.py
+
+Scatter plot matrix
+^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../visualisations/scatter_plot_matrix/examples/scatter_plot_matrix_example.py
 
 Tornado plot
 ^^^^^^^^^^^^

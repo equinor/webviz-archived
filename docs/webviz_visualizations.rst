@@ -43,6 +43,11 @@ webviz visualizations
     :undoc-members:
     :show-inheritance:
 
+.. automodule:: webviz_scatter_plot_matrix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 .. automodule:: webviz_tornado_plot
     :members:
     :undoc-members:

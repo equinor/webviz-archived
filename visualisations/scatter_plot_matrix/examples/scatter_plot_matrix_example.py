@@ -6,7 +6,7 @@ web = Webviz('Scatter Plot Matrix Example')
 
 page = Page('Scatter Plot Matrix')
 
-point1 = [10.6, 15, 13.4, 17],
+point1 = [10.6, 15, 13.4, 17]
 point2 = [16, 5, 11, 9.7]
 point3 = [51, 25.6, 51, 23]
 point4 = [19, 75.1, 23, 49]

@@ -10,7 +10,7 @@ def color_spread(lines):
     """Color generator function
 
     :param lines: list containing all separate line names
-        Returns dictionary with format {'name': ['r','g','b']}
+    :return: dictionary with format {'name': ['r','g','b']}
     """
     colorlist = {}
     for i, name in enumerate(lines):
@@ -26,12 +26,46 @@ def format_color(color):
     """Color formatting function
 
     :param color: list with three strings to represent an rgb color,
-        Returns color as 'rgb(r,g,b)' string
+    :return: color as 'rgb(r,g,b)' string
     """
     return "rgb({})".format(','.join(color))
 
 
+def create_layout(columns):
+    """Create layout object for Plotly
+
+    :param columns: all columns from DataFrame
+    :return: layout object in required Plotly format
+    """
+    axis = {
+        'showline': True,
+        'zeroline': False,
+        'gridcolor': '#fff',
+        'ticklen': 4
+    }
+    layout = {
+        'title': 'Scatter plot matrix',
+        'dragmode': 'select',
+        'autosize': True,
+    }
+
+    data_colums = 0
+    for i in (y for y in columns if y != 'name'):
+        data_colums += 1
+        layout[str('xaxis' + str(data_colums))] = axis
+        layout[str('yaxis' + str(data_colums))] = axis
+
+    return layout
+
+
 def create_trace(dimensions, text, color):
+    """Create trace with data points in required format
+
+    :param dimensions: dict with label and values for markers
+    :param text: list with text for each marker
+    :param color: list with color for each marker
+    :return: trace object in required Plotly format
+    """
     return {
         'type': 'splom',
         'dimensions': dimensions,
@@ -49,12 +83,18 @@ def create_trace(dimensions, text, color):
 
 
 def validate_data_format(data):
+    """Function to validate that data input has required format
+
+    :param data: DataFrame object direcly from CSV file
+    :return: unprocessed data if correct, cast ValueError if wrong
+    """
     for i in (y for y in data.columns if y != 'name'):
         for s in (y for y in data[i].values
                   if not isinstance(y, numbers.Number)):
             raise ValueError(
                 'Column `' + i + '` passed a value that is not a number!'
             )
+    return data
 
 
 class ScatterPlotMatrix(Plotly):
@@ -66,8 +106,7 @@ class ScatterPlotMatrix(Plotly):
     """
     def __init__(self, data):
         if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            validate_data_format(self.data)
+            self.data = validate_data_format(pd.read_csv(data))
         else:
             self.data = data
 
@@ -89,30 +128,9 @@ class ScatterPlotMatrix(Plotly):
                     'Column `' + i + '` passed a value that is not a number!'
                 )
 
-        axis = {
-            'showline': True,
-            'zeroline': False,
-            'gridcolor': '#fff',
-            'ticklen': 4
-            }
-
-        layout = {
-            'title': 'Scatter plot matrix',
-            'dragmode': 'select',
-            'autosize': True,
-            'xaxis1': axis,
-            'xaxis2': axis,
-            'xaxis3': axis,
-            'xaxis4': axis,
-            'yaxis1': axis,
-            'yaxis2': axis,
-            'yaxis3': axis,
-            'yaxis4': axis
-        }
-
-        fig1 = {
+        figure = {
             'data': [create_trace(dimensions, text, color_vals)],
-            'layout': layout
+            'layout': create_layout(self.data.columns)
         }
 
-        super(ScatterPlotMatrix, self).__init__(fig1)
+        super(ScatterPlotMatrix, self).__init__(figure)

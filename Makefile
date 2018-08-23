@@ -7,6 +7,7 @@ projects = \
     visualisations/pie_chart\
     visualisations/tornado_plot\
 	visualisations/fan_chart\
+	visualisations/scatter_plot_matrix\
 
 
 build:

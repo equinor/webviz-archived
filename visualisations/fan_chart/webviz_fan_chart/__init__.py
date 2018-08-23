@@ -121,6 +121,16 @@ def add_marker(obs, color):
     }
 
 
+def validate_observation_data(obs):
+    if obs is not None and len(obs.index) > 0:
+        if {'index', 'name', 'value', 'error'} != set(obs.columns):
+            raise ValueError('Observation data is not expected format')
+        else:
+            return True
+    else:
+        return False
+
+
 class FanChart(Plotly):
     """Fan chart page element.
 
@@ -218,19 +228,15 @@ class FanChart(Plotly):
                 else:
                     raise ValueError('An unknown column was passed: ', column)
 
-        if self.observations is not None and len(self.observations.index) > 0:
-            if {'index', 'name', 'value', 'error'} != \
-                    set(self.observations.columns):
-                raise ValueError('Observation data is not expected format')
-            else:
-                for i, row in self.observations.iterrows():
-                    lines.append(add_observation(row))
-                    if row['name'] in uniquelines:
-                        lines.append(
-                            add_marker(
-                                row,
-                                format_color(colors[row['name']], 1)
-                            )
+        if validate_observation_data(self.observations):
+            for i, row in self.observations.iterrows():
+                lines.append(add_observation(row))
+                if row['name'] in uniquelines:
+                    lines.append(
+                        add_marker(
+                            row,
+                            format_color(colors[row['name']], 1)
                         )
+                    )
 
         super(FanChart, self).__init__(lines)

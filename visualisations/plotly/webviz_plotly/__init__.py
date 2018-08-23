@@ -71,6 +71,7 @@ class FilteredPlotly(Plotly):
             data,
             check_box_columns=[],
             slider_columns=[],
+            dropdown_columns=[],
             check_box=False,
             *args,
             **kwargs):
@@ -86,7 +87,9 @@ class FilteredPlotly(Plotly):
 
         filtered_data = []
         self.labels = {}
-        filters = check_box_columns + slider_columns
+        filters = (check_box_columns +
+                   slider_columns +
+                   dropdown_columns)
         if filters:
             grouped = self.data.groupby(filters)
             self.labels = {}
@@ -128,6 +131,8 @@ class FilteredPlotly(Plotly):
         self['labels'] = self.labels
         self['slider_filters'] = {key: self.labels[key] for
                                   key in slider_columns[:]}
+        self['dropdown_filters'] = {key: self.labels[key] for
+                                    key in dropdown_columns[:]}
 
     def get_js_dep(self):
         """Extends :py:meth:webviz.PageElement.get_js_dep"""

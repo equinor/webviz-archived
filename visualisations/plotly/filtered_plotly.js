@@ -20,6 +20,7 @@ global.make_filtered_plotly = function (
     config,
     labels,
     slider_filters,
+    dropdown_filters,
     check_box_filters,
 ) {
     const boxes = make_filter_checkboxes(
@@ -33,7 +34,10 @@ global.make_filtered_plotly = function (
         layout,
         config,
     )
-    Object.entries(slider_filters).forEach(([a, b]) => filtered.add_slider_category(a, b))
+    Object.entries(slider_filters).forEach(([a, b]) =>
+        filtered.add_slider_category(a, b))
+    Object.entries(dropdown_filters).forEach(([a, b]) =>
+        filtered.add_dropdown_category(a, b))
     Object.entries(labels).forEach(([a, b]) => {
         if (check_box_filters.includes(a)) {
             filtered.add_checkbox_category(a, b)

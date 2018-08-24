@@ -16,7 +16,7 @@ Bar chart
 Fan chart
 ^^^^^^^^^
 
-.. literalinclude:: ../visualisations/fan_chart/examples/fan_chart_example.py
+.. literalinclude:: ../visualizations/fan_chart/examples/fan_chart_example.py
 
 Heat map
 ^^^^^^^^
@@ -46,7 +46,7 @@ Scatter plot
 Scatter plot matrix
 ^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../visualisations/scatter_plot_matrix/examples/scatter_plot_matrix_example.py
+.. literalinclude:: ../visualizations/scatter_plot_matrix/examples/scatter_plot_matrix_example.py
 
 Tornado plot
 ^^^^^^^^^^^^

@@ -23,7 +23,7 @@ class TestScatterPlotMatrix(unittest.TestCase):
         with self.assertRaises(TypeError):
             ScatterPlotMatrix(None)
 
-    def test_empty_dataframe_gives_empty_visualisation(self):
+    def test_empty_dataframe_gives_empty_visualization(self):
         splom = ScatterPlotMatrix(pd.DataFrame())
         self.assertEqual(len(splom['data']), 1)
         self.assertEqual(len(splom['data'][0]['dimensions']), 0)

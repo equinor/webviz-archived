@@ -93,7 +93,13 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
                 path.relpath(path.join(root, filename), root_folder))
             collected_elements = []
             untemplated_markdown = templ.render(page_element=page_element)
-            rendered = markdown.markdown(untemplated_markdown)
+            rendered = markdown.markdown(
+                untemplated_markdown,
+                extensions=[
+                    'markdown.extensions.tables',
+                    'markdown.extensions.codehilite'
+                ]
+            )
             page = None
             if filename == 'index.md':
                 page = web.index
@@ -106,6 +112,13 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
                     html.add_js_dep(js)
                 for css in element.get_css_dep():
                     html.add_css_dep(css)
+            html.add_css_dep(
+                path.join(
+                    path.dirname(__file__),
+                    'resources',
+                    'css',
+                    'codehilite.css')
+            )
 
             page.add_content(html)
             if filename != 'index.md':

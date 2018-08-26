@@ -23,6 +23,7 @@ lint:
 dev-install:
 	for project in $(projects); do\
 	    make dev-install -C $$project || exit 1;\
+	    make build -C $$project || exit 1;\
 	done
 
 test:

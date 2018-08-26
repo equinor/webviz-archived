@@ -1,7 +1,7 @@
 {
   "name": "webviz-plotly",
   "version": "0.1.0",
-  "description": "Webviz page element for plotly visualisations.",
+  "description": "Webviz page element for plotly visualizations.",
   "scripts": {
     "build": "npm-run-all browserify move-deps",
     "browserify": "browserify filtered_plotly.js -o webviz_plotly/resources/js/filtered_plotly.js",

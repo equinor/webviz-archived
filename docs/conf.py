@@ -22,7 +22,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.abspath('../core'))
 
-VISUALIZATIONS_DIRECTORY = '../visualisations'
+VISUALIZATIONS_DIRECTORY = '../visualizations'
 for subdir in os.listdir(VISUALIZATIONS_DIRECTORY):
     path = os.path.join(VISUALIZATIONS_DIRECTORY, subdir)
     if os.path.isdir(path):

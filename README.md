@@ -44,7 +44,7 @@ which creates documentation in `docs/_build`.
 
 To run an example written using the python API, run, for instance:
 
-    python core/examples/minimal_example.py
+    python core/exampes/minimal_example.py
 
 To run an example written using markdown, run, for instance:
 

@@ -1,12 +1,13 @@
 projects = \
 	core/\
-    themes/default/\
-    visualisations/plotly\
-    visualisations/line_chart\
-    visualisations/bar_chart\
-    visualisations/pie_chart\
-    visualisations/tornado_plot\
-	visualisations/fan_chart\
+	themes/default/\
+	visualizations/plotly\
+	visualizations/line_chart\
+	visualizations/bar_chart\
+	visualizations/pie_chart\
+	visualizations/tornado_plot\
+	visualizations/fan_chart\
+	visualizations/scatter_plot_matrix\
 
 
 build:

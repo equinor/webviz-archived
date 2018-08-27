@@ -49,6 +49,10 @@ To run an example written using the python API, run, for instance:
 To run an example written using markdown, run, for instance:
 
     python -m webviz core/examples/site_example/
+    
+_Note: Running the webviz module from a directory where there exists a
+`webviz/__init__.py` causes a fail in Python 2.7! For example when running it
+from the `core/` directory._
 
 ## History
 

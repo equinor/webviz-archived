@@ -1,15 +1,15 @@
-all: build
+ifdef ARGS
+    ARGS=$(ARGS)
+endif
 
+all: build
 
 .PHONY: build install
 build:
 	npm install && npm run build && python setup.py build
 
-dev-install:
-	pip install -e .
-
 install: build
-	python setup.py install
+	pip install $(ARGS) .
 
 test:
 	py.test --cov=webviz_default_theme --cov-fail-under=95 tests/

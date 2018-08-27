@@ -1,3 +1,8 @@
+ifdef ARGS
+    ARGS=$(ARGS)
+endif
+export ARGS
+
 projects = \
 	core/\
 	themes/default/\
@@ -21,21 +26,21 @@ lint:
 	    make lint -C $$project || exit 1;\
 	done
 
-dev-install:
-	for project in $(projects); do\
-	    make dev-install -C $$project || exit 1;\
-	    make build -C $$project || exit 1;\
-	done
-
 test:
 	for project in $(projects); do\
 	    make test -C $$project || exit 1;\
 	done
 
 install:
+ifdef ARGS 
 	for project in $(projects); do\
-	    make install -C $$project || exit 1;\
+		make install ARGS=$(ARGS) -C $$project || exit 1;\
 	done
+else
+	for project in $(projects); do\
+		make install -C $$project || exit 1;\
+	done
+endif
 
 
 doc:

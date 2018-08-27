@@ -30,7 +30,7 @@ This involves installing the
 
 Packages can be installed in-place which speeds up your feedback loop:
 
-    make dev-install
+    make install ARGS=-e
 
 ## Documentation
 

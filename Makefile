@@ -14,7 +14,7 @@ projects = \
 	visualizations/fan_chart\
 	visualizations/scatter_plot_matrix\
 
-.PHONY: build test
+.PHONY: build
 
 build:
 	for project in $(projects); do\
@@ -35,6 +35,7 @@ install:
 ifdef ARGS 
 	for project in $(projects); do\
 		make install ARGS=$(ARGS) -C $$project || exit 1;\
+		make build -C $$project || exit 1;\
 	done
 else
 	for project in $(projects); do\

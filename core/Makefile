@@ -4,13 +4,15 @@ endif
 
 all: build
 
-
-.PHONY: build install
 build:
 	python setup.py build
 
 install: build
+ifdef ARGS
 	pip install $(ARGS) .
+else
+	pip install .
+endif
 
 test:
 	py.test --cov=webviz --cov-fail-under=93 tests/

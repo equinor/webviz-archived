@@ -9,10 +9,11 @@ projects = \
 	visualizations/fan_chart\
 	visualizations/scatter_plot_matrix\
 
+.PHONY: build test
 
 build:
 	for project in $(projects); do\
-	    make build -C $$project || exit 1;\
+	    make build -C $$project || (echo 'error building' $$project; exit 1)\
 	done
 
 lint:

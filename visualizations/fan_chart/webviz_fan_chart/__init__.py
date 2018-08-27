@@ -1,6 +1,7 @@
-from webviz_plotly import Plotly
+from webviz_plotly import FilteredPlotly
 import pandas as pd
 import matplotlib.cm as cm
+import math
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -17,7 +18,7 @@ def color_spread(lines):
         single_color = color_scheme(float(i) / len(lines))
         formatted_color = []
         for y in single_color[:-1]:
-            formatted_color.append(str(y))
+            formatted_color.append(str(math.ceil(y*255)))
         colorlist[name] = formatted_color
     return colorlist
 
@@ -84,6 +85,7 @@ def add_observation(obs):
         'text': '',
         'hovermode': False,
         'mode': 'lines',
+        'name': obs['name'],
         'line': {
             'color': '#000',
             'width': 1
@@ -131,7 +133,7 @@ def validate_observation_data(obs):
         return False
 
 
-class FanChart(Plotly):
+class FanChart(FilteredPlotly):
     """Fan chart page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -147,31 +149,32 @@ class FanChart(Plotly):
         to correspond with a name in the data dataframe, a `value` and `value`
         that will determine the size of the marker (in height)
     """
-    def __init__(self, data, observations=None):
-        if isinstance(data, str):
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                    self.data['index'],
-                    inplace=True
-                )
-                del self.data['index']
-        else:
-            self.data = data
-
+    def __init__(self, data, observations=None, *args, **kwargs):
         if isinstance(observations, str):
             self.observations = pd.read_csv(observations)
         else:
             self.observations = observations
 
-        uniquelines = set(self.data['name']) \
-            if 'name' in self.data else {'line'}
+        if len(self.observations.index) > 0:
+            if {'index', 'name', 'value', 'error'} != \
+                    set(self.observations.columns):
+                raise ValueError('Observation data is not expected format')
+
+        super(FanChart, self).__init__(
+            data,
+            *args,
+            **kwargs)
+
+    def process_data(self, data):
+
+        uniquelines = set(data['name']) \
+            if 'name' in data else {'line'}
         lines = []
         colors = color_spread(uniquelines)
 
         for index, line in enumerate(uniquelines):
-            line_data = self.data[self.data['name'] == line] \
-                if 'name' in self.data else self.data
+            line_data = data[data['name'] == line] \
+                if 'name' in data else data
             x = line_data.index.tolist()
 
             for column in line_data.columns:
@@ -192,7 +195,7 @@ class FanChart(Plotly):
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        column,
+                        line,
                         line,
                         format_color(colors[line], '0.5'),
                     ))
@@ -201,7 +204,7 @@ class FanChart(Plotly):
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        column,
+                        line,
                         line,
                         format_color(colors[line], '0.5'),
                     ))
@@ -210,7 +213,7 @@ class FanChart(Plotly):
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        column,
+                        line,
                         line,
                         format_color(colors[line], '0.3'),
                     ))
@@ -219,7 +222,7 @@ class FanChart(Plotly):
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        column,
+                        line,
                         line,
                         format_color(colors[line], '0.3'),
                     ))
@@ -238,5 +241,5 @@ class FanChart(Plotly):
                             format_color(colors[row['name']], 1)
                         )
                     )
-
-        super(FanChart, self).__init__(lines)
+                )
+        return lines

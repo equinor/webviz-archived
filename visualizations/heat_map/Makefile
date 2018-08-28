@@ -9,7 +9,11 @@ dev-install:
 	pip install -e .
 
 install: build
+ifdef ARGS
+	pip install $(ARGS) .
+else
 	python setup.py install
+endif
 
 test:
 	py.test --cov=webviz_heat_map --cov-fail-under=100 tests/

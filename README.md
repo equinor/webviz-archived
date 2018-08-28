@@ -30,6 +30,10 @@ This involves installing the
 
 Packages can be installed in-place which speeds up your feedback loop:
 
+    make dev-install
+    
+Or you can pass in whatever argument you would like by using this format
+
     make install ARGS=-e
 
 ## Documentation

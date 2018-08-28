@@ -2,6 +2,7 @@ import unittest
 import pandas as pd
 import numpy as np
 from pandas.compat import StringIO
+from six import itervalues
 
 from webviz_plotly import FilteredPlotly
 
@@ -66,6 +67,13 @@ index,data1,data2
         self.assertEqual(filtered.frame.index.dtype, 'object')
         for i, (index, row) in enumerate(filtered.frame.iterrows()):
             self.assertEqual(dates[i].strftime('%Y-%m-%d'), index)
+
+    def testNonStringLabels(self):
+        filtered = MockElement(self.data, dropdown_columns=['data2'])
+        filters = filtered['dropdown_filters']
+        self.assertTrue(all(all(isinstance(label, str)
+                        for label in labels)
+                        for labels in itervalues(filters)))
 
 
 if __name__ == '__main__':

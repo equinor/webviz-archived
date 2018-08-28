@@ -7,11 +7,10 @@ color_scheme = cm.get_cmap('Set1')
 
 
 def color_spread(lines):
-    """Color generator function
+    """Generates a color for each given line.
 
-    :param lines:
-        list containing all separate line names
-        Returns dictionary with format {'line-name': ['r','g','b']}
+    :param lines: list of line names
+    :returns: dictionary with format {'line-name': ['r','g','b']}
     """
     colorlist = {}
     for i, name in enumerate(lines):
@@ -24,34 +23,37 @@ def color_spread(lines):
 
 
 def format_color(color, opacity):
-    """Color formatting function
+    """Formats a color: format_color(['r','g','b'],a) = 'rgba(r,g,b,a)'.
 
     :param
-        color: list with three strings to represent an rgb color,
+        color: list with three strings to represent an rgb color.
         opacity: float between 0 and 1.
-        Returns color as 'rgba(r,g,b,a)' string
+
+    :returns: color as 'rgba(r,g,b,a)' string.
     """
     return "rgba({},{})".format(','.join(color), opacity)
 
 
-def init_scatter_trace(y, mean, x, name, line, color):
-    """Plotting function
+def init_confidence_band(y, mean, x, line, color):
+    """
+    Makes a confidence band between mean and the corresponding
+    confidence values (i.e. max, min, p90, p10).
 
     :param
-        y: y-axis plots
+        y: the confidence values.
         mean: mean value to be drawn backwards to fill area
-        x: x-axis plots
-        name: name of line
+        x: x-values both for mean and y values.
         line: id for belonging group
         color: color of line
-        Returns dictionary in plotly format
+
+    :returns: A trace representing a confidence band.
     """
     return {
         'y': y + mean[::-1],
         'x': x + x[::-1],
         'type': 'scatter',
         'legendgroup': line,
-        'name': name,
+        'name': line,
         'fill': 'toself',
         'mode': 'lines',
         'hoverinfo': 'none',
@@ -63,11 +65,10 @@ def init_scatter_trace(y, mean, x, name, line, color):
     }
 
 
-def add_observation(obs):
-    """Add observation points
-
-    :param obs:
-        DataFrame containing fields 'value', 'error', 'index' and 'name'
+def make_observation(obs):
+    """
+    :param obs: DataFrame with columns 'value', 'error', 'index' and 'name'
+    :returns: a line representing the error of the given observation.
     """
     return {
         'y': [
@@ -93,10 +94,13 @@ def add_observation(obs):
     }
 
 
-def add_marker(obs, color):
+def make_marker(obs, color):
     """
-    :param obs: Observation point containing 'value', 'index' and 'name'
-    :param color: Same color as belonging line
+    :param
+        obs: Observation point containing 'value', 'index' and 'name'
+        color: Same color as belonging line
+
+    :returns: a marker for the value of the given observation.
     """
     return {
         'y': [
@@ -155,11 +159,6 @@ class FanChart(FilteredPlotly):
         else:
             self.observations = observations
 
-        if len(self.observations.index) > 0:
-            if {'index', 'name', 'value', 'error'} != \
-                    set(self.observations.columns):
-                raise ValueError('Observation data is not expected format')
-
         super(FanChart, self).__init__(
             data,
             *args,
@@ -191,38 +190,34 @@ class FanChart(FilteredPlotly):
                         }
                     })
                 elif column == 'p90':
-                    lines.append(init_scatter_trace(
+                    lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        line,
                         line,
                         format_color(colors[line], '0.5'),
                     ))
                 elif column == 'p10':
-                    lines.append(init_scatter_trace(
+                    lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        line,
                         line,
                         format_color(colors[line], '0.5'),
                     ))
                 elif column == 'min':
-                    lines.append(init_scatter_trace(
+                    lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        line,
                         line,
                         format_color(colors[line], '0.3'),
                     ))
                 elif column == 'max':
-                    lines.append(init_scatter_trace(
+                    lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
                         x,
-                        line,
                         line,
                         format_color(colors[line], '0.3'),
                     ))
@@ -233,13 +228,12 @@ class FanChart(FilteredPlotly):
 
         if validate_observation_data(self.observations):
             for i, row in self.observations.iterrows():
-                lines.append(add_observation(row))
+                lines.append(make_observation(row))
                 if row['name'] in uniquelines:
                     lines.append(
-                        add_marker(
+                        make_marker(
                             row,
                             format_color(colors[row['name']], 1)
                         )
                     )
-                )
         return lines

@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 from webviz_fan_chart import FanChart, color_spread, format_color, \
-    init_scatter_trace, add_observation, validate_observation_data
+    init_confidence_band, make_observation, validate_observation_data
 
 line_mock_data = {
     'index': ['02-03-2006'],
@@ -61,7 +61,7 @@ class TestFanChart(unittest.TestCase):
         y = [4, 5, 6]
         mean = [7, 8, 9]
         color = format_color(['1', '2', '3'], '0.5')
-        trace = init_scatter_trace(y, mean, x, 'name', 0, color)
+        trace = init_confidence_band(y, mean, x, 'name', color)
         self.assertIn('name', trace)
         self.assertEqual(trace['name'], 'name')
         self.assertEqual(trace['type'], 'scatter')
@@ -70,7 +70,7 @@ class TestFanChart(unittest.TestCase):
         index = 1
         value = 4
         error_value = 2
-        trace = add_observation({
+        trace = make_observation({
             'index': index,
             'value': value,
             'error': error_value,

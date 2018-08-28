@@ -16,4 +16,4 @@ web.add(submenu2)
 page3 = Page('Example 3')
 web.add(page3)
 
-web.write_html("./webviz_example", overwrite=True, display=False)
+web.write_html("./webviz_tutorial", overwrite=True, display=False)

@@ -1,4 +1,4 @@
-site_example
+Introduction
 =====
 
 {{ page_element(

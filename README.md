@@ -48,11 +48,11 @@ which creates documentation in `docs/_build`.
 
 To run an example written using the python API, run, for instance:
 
-    python core/examples/minimal_example.py
+    python core/examples/themed_example.py
 
 To run an example written using markdown, run, for instance:
 
-    python -m webviz core/examples/site_example/
+    python -m webviz core/examples/site_themed_example/
 
 _Note: Running the webviz module from a directory where there exists a
 `webviz/__init__.py` causes a fail in Python 2.7! For example when running it

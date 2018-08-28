@@ -5,11 +5,12 @@ all: build
 build:
 	python setup.py build
 
-dev-install:
-	pip install -e .
-
 install: build
+ifdef ARGS
+	pip install $(ARGS) .
+else
 	python setup.py install
+endif
 
 test:
 	py.test --cov=webviz_histogram --cov-fail-under=100 tests/

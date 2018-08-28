@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import numpy as np
 from pandas.compat import StringIO
 
 from webviz_plotly import FilteredPlotly
@@ -7,6 +8,7 @@ from webviz_plotly import FilteredPlotly
 
 class MockElement(FilteredPlotly):
     def process_data(self, frame):
+        self.frame = frame
         return [
             {
                 'name': column,
@@ -52,6 +54,18 @@ index,data1,data2
         self.assertTrue(any(
             'filtered_plotly.js'
             in file for file in filtered.get_js_dep()))
+
+    def testDateIndex(self):
+        dates = [
+            pd.Timestamp('2012-05-01'),
+            pd.Timestamp('2012-05-02'),
+            pd.Timestamp('2012-05-03')
+        ]
+        ts = pd.DataFrame({'column': np.random.randn(3)}, index=dates)
+        filtered = MockElement(ts)
+        self.assertEqual(filtered.frame.index.dtype, 'object')
+        for i, (index, row) in enumerate(filtered.frame.iterrows()):
+            self.assertEqual(dates[i].strftime('%Y-%m-%d'), index)
 
 
 if __name__ == '__main__':

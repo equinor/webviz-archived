@@ -1,7 +1,3 @@
-ifdef ARGS
-    ARGS=$(ARGS)
-endif
-
 all: build
 
 .PHONY: build install
@@ -9,7 +5,11 @@ build:
 	npm install && npm run build && python setup.py build
 
 install: build
+ifdef ARGS
 	pip install $(ARGS) .
+else
+	python setup.py install
+endif
 
 test:
 	py.test --cov=webviz_default_theme --cov-fail-under=95 tests/

@@ -1,13 +1,9 @@
-ifdef ARGS
-    ARGS=$(ARGS)
-endif
-
 all: build
 
 build:
 	python setup.py build
 
-install: build
+install:
 ifdef ARGS
 	pip install $(ARGS) .
 else

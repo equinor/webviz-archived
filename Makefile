@@ -1,8 +1,3 @@
-ifdef ARGS
-    ARGS=$(ARGS)
-endif
-export ARGS
-
 projects = \
 	core/\
 	themes/default/\
@@ -13,8 +8,6 @@ projects = \
 	visualizations/tornado_plot\
 	visualizations/fan_chart\
 	visualizations/scatter_plot_matrix\
-
-.PHONY: build
 
 build:
 	for project in $(projects); do\

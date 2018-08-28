@@ -1,7 +1,3 @@
-ifdef ARGS
-    ARGS=$(ARGS)
-endif
-
 all: build
 
 

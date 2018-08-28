@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 from webviz_fan_chart import FanChart, color_spread, format_color, \
-    init_scatter_trace, add_observation
+    init_scatter_trace, add_observation, validate_observation_data
 
 line_mock_data = {
     'index': ['02-03-2006'],
@@ -32,6 +32,17 @@ class TestFanChart(unittest.TestCase):
                 }),
                 pd.DataFrame(obs_mock_data)
             )
+
+    def test_parse_without_observations(self):
+        self.assertTrue(FanChart(pd.DataFrame(line_mock_data)))
+
+    def validate_observation(self):
+        with self.assertRaises(ValueError):
+            validate_observation_data(pd.DataFrame({
+                'index': ['3'],
+                'name': ['gkaskng'],
+                'error': [5]
+            }))
 
     def test_color_spread(self):
         trace = color_spread({'line-1', 'line-2', 'line-3'})

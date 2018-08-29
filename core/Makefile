@@ -1,12 +1,13 @@
 all: build
 
+.PHONY: build lint test dev-install install
 build:
 	python setup.py build
 
-dev-install:
+dev-install: build
 	pip install -e .
 
-install:
+install: build
 	pip install $(ARGS) .
 
 test:

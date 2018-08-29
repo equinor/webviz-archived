@@ -1,6 +1,6 @@
 all: build
 
-.PHONY: build install
+.PHONY: build lint test dev-install install
 build:
 	python setup.py build
 

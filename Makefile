@@ -9,7 +9,7 @@ projects = \
 	visualizations/fan_chart\
 	visualizations/scatter_plot_matrix\
 
-.PHONY: build test
+.PHONY: build lint test dev-install install doc
 build:
 	for project in $(projects); do\
 	    make build -C $$project || (echo 'error building' $$project; exit 1)\
@@ -20,26 +20,18 @@ lint:
 	    make lint -C $$project || exit 1;\
 	done
 
-dev-install:
+dev-install: build
 	make install ARGS=-e;\
-	make build
 
 test:
 	for project in $(projects); do\
 	    make test -C $$project || exit 1;\
 	done
 
-install:
-ifdef ARGS
+install: build
 	for project in $(projects); do\
 		make install ARGS=$(ARGS) -C $$project || exit 1;\
-		make build -C $$project || exit 1;\
 	done
-else
-	for project in $(projects); do\
-		make install -C $$project || exit 1;\
-	done
-endif
 
 doc:
 	cd docs && make html && cd ..

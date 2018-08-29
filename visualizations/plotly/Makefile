@@ -1,6 +1,6 @@
 all: build
 
-.PHONY: build install
+.PHONY: build lint test dev-install install
 build:
 	npm install && npm run build && python setup.py build
 

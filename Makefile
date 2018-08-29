@@ -22,9 +22,7 @@ lint:
 
 dev-install:
 	make install ARGS=-e;\
-	for project in $(projects); do\
-	    make build -C $$project || exit 1;\
-	done
+	make build
 
 test:
 	for project in $(projects); do\

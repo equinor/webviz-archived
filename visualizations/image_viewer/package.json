@@ -1,0 +1,22 @@
+{
+  "name": "webviz-image-viewer",
+  "version": "0.1.0",
+  "description": "Webviz page element for images.",
+  "scripts": {
+    "build": "npm-run-all move-deps",
+    "move-deps": "node move_deps.js",
+    "test": "mocha **/*.spec.js"
+  },
+  "author": "Equinor ASA",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "bootstrap-css-only": "^4.1.1",
+    "browserify": "^16.2.2",
+    "d3-selection": "1.3.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "npm-run-all": "^4.1.3",
+    "mocha": "^5.2.0"
+  }
+}

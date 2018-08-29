@@ -21,8 +21,8 @@ lint:
 	done
 
 dev-install:
+	make install ARGS=-e;\
 	for project in $(projects); do\
-		make install ARGS=-e -C $$project || exit 1;\
 	    make build -C $$project || exit 1;\
 	done
 

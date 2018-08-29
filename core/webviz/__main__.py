@@ -10,6 +10,7 @@ from six import itervalues
 
 from ._webviz import Webviz, Page, SubMenu
 from ._html import Html
+from ._markdown import Markdown
 
 
 class FullPaths(argparse.Action):
@@ -91,8 +92,10 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
         if ext == '.md':
             templ = env.get_template(
                 path.relpath(path.join(root, filename), root_folder))
+
             collected_elements = []
             untemplated_markdown = templ.render(page_element=page_element)
+            Markdown(untemplated_markdown)
             rendered = markdown.markdown(
                 untemplated_markdown,
                 extensions=[

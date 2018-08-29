@@ -148,6 +148,14 @@ class SubMenu(object):
         self.subelements.append(page)
 
 
+class MarkDown(object):
+    """
+
+    """
+    def __init__(self):
+        print(self)
+
+
 class Webviz(object):
     """
     An instance of :py:class:`Webviz` is a collection of

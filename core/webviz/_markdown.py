@@ -9,10 +9,12 @@ class Markdown(PageElement):
     A page element for adding `markdown`.
 
     """
-    def __init__(self, md, css_deps=[]):
+    def __init__(self, md):
+        """
+        :param md: Markdown written in triple-quote string.
+        """
         super(Markdown, self).__init__()
         self._md = md
-        self._css_deps = css_deps[:]
 
         self._rendered = markdown.markdown(
             self._md,
@@ -31,11 +33,7 @@ class Markdown(PageElement):
             'css',
             'codehilite.css'
         ))
-        deps.extend(self._css_deps)
         return deps
-
-    def add_css_dep(self, css):
-        self._css_deps.append(css)
 
     def get_template(self):
         return jinja2.Template(self._rendered)

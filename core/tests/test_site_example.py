@@ -78,7 +78,6 @@ class TestSiteExample(unittest.TestCase):
 
     def test_contains_js(self):
         includes = self.driver.find_elements_by_css_selector('script')
-        print(includes)
         filepaths1 = [tag.get_attribute('src') for tag in includes]
         link = self.driver.find_element_by_css_selector('li > a')
         link.click()

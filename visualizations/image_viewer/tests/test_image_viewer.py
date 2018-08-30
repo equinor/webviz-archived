@@ -9,25 +9,29 @@ from webviz_image_viewer import ImageViewer
 
 class MockElement(ImageViewer):
     def get_json_dump(self, frame):
-        return frame.to_dict(orient = 'records')
-    
+        return frame.to_dict(orient='records')
+
 
 class TestFilteredPlotly(unittest.TestCase):
     def setUp(self):
 
         images = []
-        images.append(['Norway', 'Summer', 'https://loremflickr.com/800/600/norway,mountain,summer/all'])
-        images.append(['Norway', 'Winter', 'https://loremflickr.com/800/600/norway,mountain,winter/all'])
-        images.append(['Caribbean', 'Summer', 'https://loremflickr.com/800/600/caribbean,beach,summer/all'])
-        images.append(['Caribbean', 'Winter', 'https://loremflickr.com/800/600/caribbean,beach,winter/all'])
-        
-        self.data = pd.DataFrame(images, columns=['Country', 'Season', 'IMAGEPATH'])
-        
+        url = 'https://loremflickr.com/800/600/'
+        images.append(['Norway', 'Summer', url+'norway,mountain,summer/all'])
+        images.append(
+            ['Norway', 'Winter', url+'norway,mountain,winter/all'])
+        images.append(['Caribbean', 'Summer', url +
+                       'caribbean,beach,summer/all'])
+        images.append(['Caribbean', 'Winter', url +
+                       'caribbean,beach,winter/all'])
+
+        self.data = pd.DataFrame(
+            images, columns=['Country', 'Season', 'IMAGEPATH'])
+
     def testNotMuchToTest(self):
-        dict_data = MockElement(self.data)
-        print(type(dict_data['data']))
-        self.assertEqual(isinstance(dict_data['data'], list), True)
-     
+        dict_data = MockElement(self.data)['data']
+        self.assertEqual(isinstance(dict_data, list), True)
+
     def testJsDep(self):
         filtered = MockElement(self.data)
         self.assertTrue(any(
@@ -48,7 +52,6 @@ class TestFilteredPlotly(unittest.TestCase):
         self.assertTrue(filtered.get_template(), None)
         # return env.get_template('image_viewer.html')
 
+
 if __name__ == '__main__':
     unittest.main()
-
-

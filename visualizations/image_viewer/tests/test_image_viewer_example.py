@@ -32,7 +32,8 @@ class ImageViewerExample(unittest.TestCase):
         cls.driver.close()
 
     def setUp(self):
-        address = 'file://{}/webviz_example/sub_pages/image_viewer_0.html'.format(
+        filename = 'file://{}/webviz_example/sub_pages/image_viewer_0.html'
+        address = filename.format(
             self.tempdir)
         self.driver.get(address)
 
@@ -44,7 +45,8 @@ class ImageViewerExample(unittest.TestCase):
     def test_initialized_with_image(self):
         image_src = self.get_image_src()
         self.assertEqual(
-            image_src, 'https://loremflickr.com/800/600/norway,mountain,summer/all')
+            image_src,
+            'https://loremflickr.com/800/600/norway,mountain,summer/all')
 
     def test_updates_image(self):
         select = Select(self.driver.find_elements_by_id("Country")[0])
@@ -53,7 +55,9 @@ class ImageViewerExample(unittest.TestCase):
         select.select_by_visible_text('Winter')
         image_src = self.get_image_src()
         self.assertEqual(
-            image_src, 'https://loremflickr.com/800/600/caribbean,beach,winter/all')
+            image_src,
+            'https://loremflickr.com/800/600/caribbean,beach,winter/all')
+
 
 if __name__ == '__main__':
     unittest.main()

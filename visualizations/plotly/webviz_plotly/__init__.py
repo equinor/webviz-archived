@@ -3,6 +3,7 @@ from os import path
 from webviz import JSONPageElement
 from abc import ABCMeta, abstractmethod
 import pandas as pd
+from six import iteritems
 
 env = jinja2.Environment(
     loader=jinja2.PackageLoader('webviz_plotly', 'templates'),
@@ -124,7 +125,7 @@ class FilteredPlotly(Plotly):
             *args,
             **kwargs)
 
-        self['check_box_filters'] = check_box_columns[:]
+        self['check_box_filters'] = [str(label) for label in check_box_columns]
         if check_box:
             self.labels['name'] = []
             self['check_box_filters'].append('name')
@@ -133,6 +134,8 @@ class FilteredPlotly(Plotly):
                     self.labels['name'].append(point['name'])
                 point['labels']['name'] = point['name']
 
+        self.labels = {key: [str(label) for label in keylabels]
+                       for key, keylabels in iteritems(self.labels)}
         self['labels'] = self.labels
         self['slider_filters'] = {key: self.labels[key] for
                                   key in slider_columns[:]}

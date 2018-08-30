@@ -1,13 +1,14 @@
 all: build
 
+.PHONY: build lint test dev-install install
 build:
 	python setup.py build
 
-dev-install:
+dev-install: build
 	pip install -e .
 
-install:
-	pip install .
+install: build
+	pip install $(ARGS) .
 
 test:
 	py.test --cov=webviz --cov-fail-under=93 tests/

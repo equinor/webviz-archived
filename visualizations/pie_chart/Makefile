@@ -1,7 +1,6 @@
 all: build
 
-
-.PHONY: build install
+.PHONY: build lint test dev-install install
 build:
 	python setup.py build
 
@@ -9,7 +8,7 @@ dev-install:
 	pip install -e .
 
 install: build
-	python setup.py install
+	pip install $(ARGS) .
 
 test:
 	py.test --cov=webviz_pie_chart --cov-fail-under=100 tests/

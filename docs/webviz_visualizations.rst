@@ -52,3 +52,8 @@ webviz visualizations
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. automodule:: webviz_image_viewer
+    :members:
+    :undoc-members:
+    :show-inheritance:

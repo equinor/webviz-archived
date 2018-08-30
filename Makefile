@@ -8,6 +8,7 @@ projects = \
 	visualizations/tornado_plot\
 	visualizations/fan_chart\
 	visualizations/scatter_plot_matrix\
+	visualizations/image_viewer\
 
 .PHONY: build lint test dev-install install doc
 build:

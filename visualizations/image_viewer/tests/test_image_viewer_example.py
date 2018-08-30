@@ -24,7 +24,7 @@ class ImageViewerExample(unittest.TestCase):
         chromeOptions.add_argument("--no-sandbox")
         chromeOptions.add_argument("--disable-gpu")
         cls.driver = webdriver.Chrome(
-            chrome_options=chromeOptions, executable_path='/usr/lib/chromium-browser/chromedriver')
+            chrome_options=chromeOptions)
 
     @classmethod
     def tearDownClass(cls):

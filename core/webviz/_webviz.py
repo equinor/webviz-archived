@@ -24,7 +24,7 @@ def escape_all(html):
     Escapes any html or utf8 character in the given
     string.
 
-    :param s: Any string to be escaped.
+    :param html: Any string to be escaped.
     :returns: A jinja2 markup object that will not be auto-escaped
         by jinja2.
     """
@@ -146,14 +146,6 @@ class SubMenu(object):
         if not isinstance(page, Page):
             raise ValueError('Can only add a Page to a SubMenu')
         self.subelements.append(page)
-
-
-class MarkDown(object):
-    """
-
-    """
-    def __init__(self):
-        print(self)
 
 
 class Webviz(object):

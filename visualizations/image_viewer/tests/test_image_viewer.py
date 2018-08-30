@@ -12,7 +12,7 @@ class MockElement(ImageViewer):
         return frame.to_dict(orient='records')
 
 
-class TestFilteredPlotly(unittest.TestCase):
+class TestImageViewer(unittest.TestCase):
     def setUp(self):
 
         images = []

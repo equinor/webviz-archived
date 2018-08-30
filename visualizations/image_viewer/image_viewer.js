@@ -1,3 +1,10 @@
+// var d3
+// if (typeof window === 'undefined') {
+    
+//     d3 = Object.assign({}, require('d3-selection'));    
+// }
+
+
 function image_viewer(containerId, imageData) {
     
     var selectors = Object.keys(imageData[0]).filter(item => item !=='IMAGEPATH')
@@ -102,4 +109,10 @@ function image_viewer(containerId, imageData) {
     changeImage('image0')
     
 
+}
+if (typeof window === 'undefined') {
+    exports.image_viewer = image_viewer;
+
+} else {
+    window.image_viewer = image_viewer;
 }

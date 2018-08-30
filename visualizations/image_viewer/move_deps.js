@@ -10,6 +10,7 @@ function copyFile(src, dest) {
 
 const moveToJs = [
     'node_modules/d3-selection/dist/d3-selection.min.js',
+    'image_viewer.js',
 ]
 const moveToCss = [
     'node_modules/bootstrap-css-only/css/bootstrap.min.css',

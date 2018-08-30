@@ -21,7 +21,7 @@ class TestLineChartExample(unittest.TestCase):
         chromeOptions.add_argument("--headless")
         chromeOptions.add_argument("--no-sandbox")
         chromeOptions.add_argument("--disable-gpu")
-        cls.driver = webdriver.Chrome(chrome_options=chromeOptions)
+        cls.driver = webdriver.Chrome(chrome_options=chromeOptions, executable_path = '/usr/lib/chromium-browser/chromedriver')
 
     @classmethod
     def tearDownClass(cls):

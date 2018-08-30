@@ -53,3 +53,7 @@ Tornado plot
 
 .. literalinclude:: ../visualizations/tornado_plot/examples/tornado_plot_example.py
 
+Image Viewer
+^^^^^^^^^^^^
+
+.. literalinclude:: ../visualizations/image_viewer/examples/image_viewer_example.py

@@ -6,7 +6,11 @@ setup(
     packages=find_packages("."),
     package_dir={"": "."},
     package_data={
-        'webviz_image_viewer': []},
+        'webviz_image_viewer': [
+            'templates/*',
+            'resources/js/*',
+            'resources/css/*'
+        ]},
     test_suite="setup.discover_test_suite",
     install_requires=['jinja2', 'webviz', 'pandas'],
     setup_requires=['pytest-runner'],

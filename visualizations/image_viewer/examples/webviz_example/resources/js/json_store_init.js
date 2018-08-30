@@ -1,1 +1,0 @@
-var json_store={};

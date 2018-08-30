@@ -9,13 +9,24 @@ env = jinja2.Environment(
     undefined=jinja2.StrictUndefined
 )
 class ImageViewer(JSONPageElement):
+    """ImageViewer page element.
+        A viewer of images stored on the local file system.
+
+    :param data: 
+        :class:`pandas.DataFrame`. 
+        A Pandas dataframe that requires one hard coded column 
+        named 'IMAGEPATH' which contains the path to the image.
+        The path can be either absolute or relative to the webviz 
+        html folder/subfolder. Additional columns will be used to 
+        display css selectors to select between images. Each column 
+        will render a selector containing all unique values found in 
+        that column.  
     """
-    Plotly page element. Arguments are the same as ``plotly.plot()`` from
-    `plotly.js`. See https://plot.ly/javascript/ for usage.
-    """
+
     def __init__(self, data):
         super(ImageViewer, self).__init__()
-        self['data'] = data
+        self['data'] = data.to_dict(orient='records')
+        
 
 
     def get_template(self):

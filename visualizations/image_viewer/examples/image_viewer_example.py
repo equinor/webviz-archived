@@ -15,7 +15,7 @@ images.append(['Caribbean', 'Summer',
 images.append(['Caribbean', 'Winter',
                'https://loremflickr.com/800/600/caribbean,beach,winter/all'])
 
-data = pd.DataFrame(images, columns=['Country', 'Season', 'IMAGEPATH'])
+data = pd.DataFrame(images, columns=['Location', 'Season', 'IMAGEPATH'])
 
 
 imageview = ImageViewer(data)

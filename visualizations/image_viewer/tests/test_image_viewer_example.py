@@ -49,7 +49,7 @@ class ImageViewerExample(unittest.TestCase):
             'https://loremflickr.com/800/600/norway,mountain,summer/all')
 
     def test_updates_image(self):
-        select = Select(self.driver.find_elements_by_id("Country")[0])
+        select = Select(self.driver.find_elements_by_id("Location")[0])
         select.select_by_visible_text('Caribbean')
         select = Select(self.driver.find_elements_by_id("Season")[0])
         select.select_by_visible_text('Winter')

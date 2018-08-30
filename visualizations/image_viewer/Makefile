@@ -12,7 +12,7 @@ install: build
 	python setup.py install
 
 test:
-	py.test --cov=webviz_image_viewer --cov-fail-under=1 tests/
+	py.test --cov=webviz_image_viewer --cov-fail-under=93 tests/
 
 lint:
 	pycodestyle webviz_image_viewer examples tests

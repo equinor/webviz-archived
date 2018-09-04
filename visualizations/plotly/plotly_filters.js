@@ -1,3 +1,7 @@
+/* global Plotly */
+function contains(obj, prop) {
+    return Object.prototype.hasOwnProperty.call(obj, prop)
+}
 /**
  * The PlotlyFilters class updates a plotly graph by filtering the
  * data based on what is selected with checkboxes and sliders.
@@ -6,30 +10,30 @@
  * where all labels are selected are shown.
  *
  */
-class PlotlyFilters {
+export default class PlotlyFilters {
     /**
      * @param {string} containerDiv the id of the container where
      *    the graph is drawn.
-     * @param {object[]} labeled_data The list of traces for the
+     * @param {object[]} labeledData The list of traces for the
      *    plotly graph. Each trace has an attribute labels where
      *    labels for each category is looked up. Only traces where
      *    all labels are selected are shown.
      * @param {object} layout The layout to be given to plotly.
      * @param {object} config The config to be given to plotly.
      */
-    constructor(containerDiv, labeled_data, layout, config) {
+    constructor(containerDiv, labeledData, layout, config) {
         this.containerDiv = containerDiv
-        this._slider_position = {}
-        this._slider_labels = {}
-        this._dropdown_position = {}
-        this._dropdown_labels = {}
-        this._checkbox_labels = {}
-        this.data = labeled_data
+        this._sliderPosition = {}
+        this._sliderLabels = {}
+        this._dropdownPosition = {}
+        this._dropdownLabels = {}
+        this._checkboxLabels = {}
+        this.data = labeledData
         this.layout = layout
         if (!this.layout) this.layout = {}
         if (!this.layout.sliders) this.layout.sliders = []
         if (!this.layout.updatemenus) this.layout.updatemenus = []
-        this.orig_menu = this.layout.updatemenus
+        this.origMenu = this.layout.updatemenus
         this.config = config
     }
 
@@ -37,90 +41,92 @@ class PlotlyFilters {
      * @returns true if the label under the given category is
      * selected by a checkbox.
      */
-    is_selected_checkbox(category, label) {
-        return this._checkbox_labels.hasOwnProperty(category)
-               && this._checkbox_labels[category].includes(label)
+    isSelectedCheckbox(category, label) {
+        return contains(this._checkboxLabels, category)
+               && this._checkboxLabels[category].includes(label)
     }
 
     /**
      * selects a label under the given checkbox category.
      */
-    select_checkbox(category, label) {
-        if (this.is_selected_checkbox(category, label)) return
-        if (!this._checkbox_labels.hasOwnProperty(category)) this._checkbox_labels[category] = []
-        this._checkbox_labels[category].push(label)
+    selectCheckbox(category, label) {
+        if (this.isSelectedCheckbox(category, label)) return
+        if (!contains(this._checkboxLabels, category)) {
+            this._checkboxLabels[category] = []
+        }
+        this._checkboxLabels[category].push(label)
     }
 
     /**
      * unselects a label under the given checkbox category.
      */
-    unselect_checkbox(category, label) {
-        if (!this.is_selected_checkbox(category, label)) return
-        this._checkbox_labels[category] = this._checkbox_labels[category].filter(l => l !== label)
+    unselectCheckbox(category, label) {
+        if (!this.isSelectedCheckbox(category, label)) return
+        this._checkboxLabels[category] = this._checkboxLabels[category].filter(l => l !== label)
     }
 
     /**
      * @returns true if the label under the given category is
      * selected by a slider.
      */
-    is_selected_slider(category, label) {
-        if (!this._slider_position.hasOwnProperty(category)
-           || !this._slider_labels.hasOwnProperty(category)) {
+    isSelectedSlider(category, label) {
+        if (!contains(this._sliderPosition, category)
+           || !contains(this._sliderLabels, category)) {
             return false
         }
-        const position = this._slider_position[category]
-        return this._slider_labels[category][position] === label
+        const position = this._sliderPosition[category]
+        return this._sliderLabels[category][position] === label
     }
 
     /**
      * @returns true if the label under the given category is
      * selected by a dropdown menu.
      */
-    is_selected_dropdown(category, label) {
-        if (!this._dropdown_position.hasOwnProperty(category)
-           || !this._dropdown_labels.hasOwnProperty(category)) {
+    isSelectedDropdown(category, label) {
+        if (!contains(this._dropdownPosition, category)
+           || !contains(this._dropdownLabels, category)) {
             return false
         }
-        const position = this._dropdown_position[category]
-        return this._dropdown_labels[category][position] === label
+        const position = this._dropdownPosition[category]
+        return this._dropdownLabels[category][position] === label
     }
 
     /**
      * @returns true if the label under the given category is
      * selected.
      */
-    is_selected(category, label) {
-        return this.is_selected_checkbox(category, label)
-               || this.is_selected_slider(category, label)
-               || this.is_selected_dropdown(category, label)
+    isSelected(category, label) {
+        return this.isSelectedCheckbox(category, label)
+               || this.isSelectedSlider(category, label)
+               || this.isSelectedDropdown(category, label)
     }
 
     /**
      * Adds a checkbox category with the given labels. Initially,
      * all labels are selected.
      */
-    add_checkbox_category(name, labels) {
-        this._checkbox_labels[name] = labels
+    addCheckboxCategory(name, labels) {
+        this._checkboxLabels[name] = labels
     }
 
     /**
      * Adds a slider category with the given labels. Initially,
      * the first label is selected.
      */
-    add_slider_category(name, labels) {
-        this._slider_position[name] = 0
-        labels.sort(this.compare_labels)
-        this._slider_labels[name] = labels
+    addSliderCategory(name, labels) {
+        this._sliderPosition[name] = 0
+        labels.sort(this.compareLabels)
+        this._sliderLabels[name] = labels
     }
 
     /**
      * Adds a dropdown category with the given labels. Initially,
      * the first label is selected.
      */
-    add_dropdown_category(name, labels) {
-        this._dropdown_position[name] = 0
-        labels.sort(this.compare_labels)
-        this._dropdown_labels[name] = labels
+    addDropdownCategory(name, labels) {
+        this._dropdownPosition[name] = 0
+        labels.sort(this.compareLabels)
+        this._dropdownLabels[name] = labels
     }
 
     /**
@@ -129,71 +135,75 @@ class PlotlyFilters {
      * the target and that the category is in the name attribute
      * of the target.
      */
-    handle_checkbox_click(e) {
-        const target = e.target
+    handleCheckboxClick(e) {
+        const { target } = e
         const label = target.getAttribute('value')
         const category = target.getAttribute('name')
         if (target.checked) {
-            this.select_checkbox(category, label)
+            this.selectCheckbox(category, label)
         } else {
-            this.unselect_checkbox(category, label)
+            this.unselectCheckbox(category, label)
         }
-        this.update_plot()
+        this.updatePlot()
     }
 
     /**
      * Handles a 'plotly_sliderchange' event. Sets the selected
      * label.
      */
-    handle_slider_changed(e) {
-        this._slider_position[e.slider.name] = e.slider.active
-        this.update_plot()
+    handleSliderChanged(e) {
+        this._sliderPosition[e.slider.name] = e.slider.active
+        this.updatePlot()
     }
 
     /**
      * Handles a 'plotly_buttonclicked' event. Sets the selected
      * label.
      */
-    handle_button_clicked(e) {
-        this._dropdown_position[e.menu.name] = e.active
-        this.update_plot()
+    handleButtonClicked(e) {
+        this._dropdownPosition[e.menu.name] = e.active
+        this.updatePlot()
     }
 
     /**
      * @returns the list of datatraces where all labels are selected.
      */
-    filtered_data() {
+    filteredData() {
         const self = this
-        return this.data.filter(point => Object.entries(point.labels).every(([category, label]) => self.is_selected(category, label)))
+        return this.data.filter(
+            point => Object.entries(point.labels).every(
+                ([category, label]) => self.isSelected(category, label),
+            ),
+        )
     }
 
     /**
      * Redraws the plot.
      */
-    update_plot() {
-        const orig_sliders = this.layout.sliders
+    updatePlot() {
+        const origSliders = this.layout.sliders
         this.layout.sliders = this.layout.sliders.concat(
-            this.slider_layout(),
+            this.sliderLayout(),
         )
-        this.layout.updatemenus = this.orig_menu.concat([])
+        this.layout.updatemenus = this.origMenu.concat([])
         this.layout.updatemenus = this.layout.updatemenus.concat(
-            this.dropdown_layout(),
+            this.dropdownLayout(),
         )
         Plotly.newPlot(
             this.containerDiv,
-            this.filtered_data(),
+            this.filteredData(),
             this.layout,
             this.config,
         )
-        this.layout.sliders = orig_sliders
+        this.layout.sliders = origSliders
         const thePlot = document.getElementById(this.containerDiv)
         thePlot.on(
             'plotly_sliderchange',
-            this.handle_slider_changed.bind(this),
+            this.handleSliderChanged.bind(this),
         )
         thePlot.on(
             'plotly_buttonclicked',
-            this.handle_button_clicked.bind(this),
+            this.handleButtonClicked.bind(this),
         )
     }
 
@@ -201,12 +211,12 @@ class PlotlyFilters {
      * @returns The list of dropdown buttons as given in the layout parameter of
      *      plotly.newPlot.
      */
-    dropdown_layout() {
-        return Object.entries(this._dropdown_labels).map(([key, labels], idx) => ({
+    dropdownLayout() {
+        return Object.entries(this._dropdownLabels).map(([key, labels], idx) => ({
             type: 'dropdown',
             name: key,
             y: -idx * 0.10 + 1,
-            active: this._dropdown_position[key],
+            active: this._dropdownPosition[key],
             buttons: labels.map(label => ({
                 label,
                 method: 'skip',
@@ -219,13 +229,13 @@ class PlotlyFilters {
      * @returns The list of sliders as given in the layout parameter of
      *      plotly.newPlot.
      */
-    slider_layout() {
-        return Object.entries(this._slider_labels).map(([key, labels], idx) => ({
+    sliderLayout() {
+        return Object.entries(this._sliderLabels).map(([key, labels], idx) => ({
             name: key,
             y: -idx * 0.75,
             pad: { t: 40 },
             currentvalue: { prefix: `${key}: ` },
-            active: this._slider_position[key],
+            active: this._sliderPosition[key],
             steps: labels.map(label => ({
                 label,
                 method: 'skip',
@@ -238,13 +248,11 @@ class PlotlyFilters {
     /**
      * Compares two labels, used to sort labels for the slider.
      */
-    compare_labels(a, b) {
+    compareLabels(a, b) {
         if (typeof a === 'string') {
-            let adate
-
-
-            let bdate
-            if ((adate = Date.parse(a)) && (bdate = Date.parse(b))) {
+            const adate = Date.parse(a)
+            const bdate = Date.parse(b)
+            if (adate && bdate) {
                 return adate - bdate
             }
             return a.localeCompare(b)
@@ -252,4 +260,3 @@ class PlotlyFilters {
         return a - b
     }
 }
-module.exports = { PlotlyFilters }

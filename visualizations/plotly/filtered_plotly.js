@@ -1,6 +1,6 @@
-const { PlotlyFilters } = require('./plotly_filters')
+import PlotlyFilters from './plotly_filters'
 
-function make_filter_checkboxes(containerId, labels, filters) {
+function makeFilterCheckboxes(containerId, labels, filters) {
     const boxes = {}
     filters.forEach((key, ki) => labels[key].forEach((label, li) => {
         if (!boxes[key]) boxes[key] = {}
@@ -13,20 +13,20 @@ function make_filter_checkboxes(containerId, labels, filters) {
 
 const global = window || {}
 
-global.make_filtered_plotly = function (
+global.makeFilteredPlotly = function makeFilteredPlotly(
     containerId,
     data,
     layout,
     config,
     labels,
-    slider_filters,
-    dropdown_filters,
-    check_box_filters,
+    sliderFilters,
+    dropdownFilters,
+    checkBoxFilters,
 ) {
-    const boxes = make_filter_checkboxes(
+    const boxes = makeFilterCheckboxes(
         containerId,
         labels,
-        check_box_filters,
+        checkBoxFilters,
     )
     const filtered = new PlotlyFilters(
         containerId,
@@ -34,19 +34,21 @@ global.make_filtered_plotly = function (
         layout,
         config,
     )
-    Object.entries(slider_filters).forEach(([a, b]) =>
-        filtered.add_slider_category(a, b))
-    Object.entries(dropdown_filters).forEach(([a, b]) =>
-        filtered.add_dropdown_category(a, b))
+    Object.entries(sliderFilters).forEach(
+        ([a, b]) => filtered.addSliderCategory(a, b),
+    )
+    Object.entries(dropdownFilters).forEach(
+        ([a, b]) => filtered.addDropdownCategory(a, b),
+    )
     Object.entries(labels).forEach(([a, b]) => {
-        if (check_box_filters.includes(a)) {
-            filtered.add_checkbox_category(a, b)
+        if (checkBoxFilters.includes(a)) {
+            filtered.addCheckboxCategory(a, b)
         }
     })
     Object.values(boxes).forEach(y => (
         Object.values(y).forEach(x => (
-            x.addEventListener('click', filtered.handle_checkbox_click.bind(filtered))
+            x.addEventListener('click', filtered.handleCheckboxClick.bind(filtered))
         ))
     ))
-    filtered.update_plot()
+    filtered.updatePlot()
 }

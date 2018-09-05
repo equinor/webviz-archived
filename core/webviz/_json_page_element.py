@@ -2,6 +2,7 @@ import json
 from io import StringIO
 from uuid import uuid4
 import numpy
+import datetime
 
 from six import iteritems, itervalues
 
@@ -11,15 +12,16 @@ from builtins import str as text
 _json_store_init = StringIO(u'var json_store={};')
 _json_store_init.name = 'json_store_init.js'
 
+def default(data):
+    if isinstance(data, numpy.int64):
+        return int(data)
+    if isinstance(data, datetime.datetime):
+        return data.__str__()
+    raise TypeError('Given data can not be converted to a json format')
 
-def default(o):
-    if isinstance(o, numpy.int64):
-        return int(o)
-    raise TypeError
 
-
-def dump_json(o):
-    return json.dumps(o, separators=(',', ':'), default=default)
+def dump_json(data):
+    return json.dumps(data, separators=(',', ':'), default=default)
 
 
 class JSONPageElement(PageElement):

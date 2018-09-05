@@ -14,4 +14,4 @@ points = pd.DataFrame([point1, point2])
 page.add_content(ScatterPlot(points, logy=True))
 
 web.add(page)
-web.write_html("./webviz_example", overwrite=True, display=True)
+web.write_html("./webviz_example", overwrite=True, display=False)

@@ -16,7 +16,7 @@ _json_store_init.name = 'json_store_init.js'
 def default(data):
     if isinstance(data, numpy.int64):
         return int(data)
-    if isinstance(data, datetime.datetime):
+    if isinstance(data, (datetime.datetime, datetime.date)):
         return data.__str__()
     raise TypeError('Given data can not be converted to a json format')
 

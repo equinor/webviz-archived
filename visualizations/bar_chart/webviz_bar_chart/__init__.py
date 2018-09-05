@@ -23,7 +23,7 @@ class BarChart(FilteredPlotly):
                         'modeBarButtonsToRemove': ['sendDataToCloud',
                                                    'lasso2d',
                                                    'resetAxes']
-                       },
+                        },
                 **kwargs)
 
     def process_data(self, frame):

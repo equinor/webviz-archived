@@ -12,6 +12,7 @@ from builtins import str as text
 _json_store_init = StringIO(u'var json_store={};')
 _json_store_init.name = 'json_store_init.js'
 
+
 def default(data):
     if isinstance(data, numpy.int64):
         return int(data)

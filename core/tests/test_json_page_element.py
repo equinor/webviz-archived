@@ -70,8 +70,14 @@ class TestPage(unittest.TestCase):
 
 
     def test_dump_json_should_allow_datettime(self):
-        self.assertEqual(dump_json(datetime.datetime(2018, 10, 20)), '"2018-10-20 00:00:00"')
-        self.assertEqual(dump_json({'datetime': datetime.datetime(2018, 10, 20)}), '{"datetime":"2018-10-20 00:00:00"}')
+        self.assertEqual(dump_json(
+            datetime.datetime(2018, 10, 20)),
+            '"2018-10-20 00:00:00"'
+        )
+        self.assertEqual(dump_json(
+            {'datetime': datetime.datetime(2018, 10, 20)}),
+            '{"datetime":"2018-10-20 00:00:00"}'
+        )
 
 
     def test_multiple_dumps(self):

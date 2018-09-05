@@ -2,7 +2,7 @@ from webviz import Webviz, Page
 from webviz.page_elements import ScatterPlot
 import pandas as pd
 
-web = Webviz('Scatter Plot Example', theme='equinor')
+web = Webviz('Scatter Plot Example')
 
 page = Page('Scatter Plot')
 

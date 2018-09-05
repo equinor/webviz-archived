@@ -3,9 +3,19 @@
 
 <script>
 {
+    let elem = document.getElementById("{{element.containerId}}");
+    let font_family = window.getComputedStyle(elem,null).getPropertyValue("font-family");
+
+    let layout = Object.assign({}, 
+                               {{element.get_json_dump("layout")}},
+                               {
+                                font: {family: font_family},
+                                hoverlabel: {font: {family: font_family}}
+                               });
+
     Plotly.newPlot("{{element.containerId}}",
                    {{element.get_json_dump("data")}},
-                   {{element.get_json_dump("layout")}},
+                   layout,
                    {{element.get_json_dump("config")}});
 };
 </script>

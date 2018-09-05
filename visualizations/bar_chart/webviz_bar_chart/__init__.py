@@ -19,7 +19,11 @@ class BarChart(FilteredPlotly):
                 data,
                 *args,
                 layout={'barmode': barmode},
-                config={},
+                config={'displaylogo': False,
+                        'modeBarButtonsToRemove': ['sendDataToCloud',
+                                                   'lasso2d',
+                                                   'resetAxes']
+                       },
                 **kwargs)
 
     def process_data(self, frame):

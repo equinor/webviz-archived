@@ -104,6 +104,7 @@ env.sh
 .idea/
 *.iml
 jsconfig.json
+.vscode/
 
 # Example build
 webviz_example/

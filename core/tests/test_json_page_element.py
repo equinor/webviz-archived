@@ -63,11 +63,9 @@ class TestPage(unittest.TestCase):
         for key, value in iteritems(data):
             self.assertEqual(data[key], roundtrip[key])
 
-
     def test_dump_json_should_allow_numpy_int64(self):
         self.assertEqual(dump_json(numpy.int64(1)), '1')
         self.assertEqual(dump_json({'num': numpy.int64(1)}), '{"num":1}')
-
 
     def test_dump_json_should_allow_datettime(self):
         self.assertEqual(dump_json(
@@ -78,7 +76,6 @@ class TestPage(unittest.TestCase):
             {'datetime': datetime.datetime(2018, 10, 20)}),
             '{"datetime":"2018-10-20 00:00:00"}'
         )
-
 
     def test_multiple_dumps(self):
         content1 = JSONContent()

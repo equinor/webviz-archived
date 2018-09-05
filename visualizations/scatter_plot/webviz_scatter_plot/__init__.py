@@ -10,11 +10,15 @@ class ScatterPlot(FilteredPlotly):
         horizontal values. Similarly for the `csv` file, where a special column
         named ``index`` will be used for the horizontal values.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, data, logx=False, logy=False, *args, **kwargs):
         super(ScatterPlot, self).__init__(
-            *args,
-            layout={},
+            data,
+            layout={
+                    'xaxis': {'type': 'log' if logx else '-'},
+                    'yaxis': {'type': 'log' if logy else '-'}
+                   },
             config={},
+            *args,
             **kwargs)
 
     def process_data(self, data):

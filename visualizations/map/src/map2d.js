@@ -8,12 +8,30 @@ import VerticalSlider from './vertical-slider'
 import Component from './component'
 
 export default class Map2D extends Component {
-    constructor(config, height) {
+    constructor({
+        elementSelector,
+        layers,
+        height = 800,
+        width = undefined,
+        colorMap = 'viridis',
+        valUnit = '',
+        layerNames = [],
+    }) {
         super()
-        this.elementSelector = config.elementSelector
-        this.plotOptions = config.plotOptions
-        this.coords = config.coords
-        this.values = config.values
+        this.elementSelector = elementSelector
+        this._calcMinMax(layers)
+        this.colorMap = colorMap
+        this.valUnit = valUnit
+        this.layerNames = layerNames
+        this.layers = layers
+        this.coords = layers.map(cells => cells.map(cell => cell.points))
+        this.values = layers.map(cells => cells.map(cell => cell.value))
+        this.height = height
+        if (width) {
+            this.width = width
+        } else {
+            this.width = d3.select(elementSelector).node().offsetWidth
+        }
 
         this.MARGIN = {
             TOP: 50,
@@ -22,29 +40,35 @@ export default class Map2D extends Component {
             LEFT: 40,
         }
 
-        this._calculateDimensions(height)
+        this._calculateDimensions()
     }
 
-    _calculateDimensions(height) {
-        this.width = d3.select(this.elementSelector).node().offsetWidth
-        this.height = height
+    _calcMinMaxX(layers) {
+        const cells = d3.merge(layers)
+        const points = d3.merge(cells.map(cell => cell.points));
 
-        const xRange = this.plotOptions.xMax - this.plotOptions.xMin
-        const yRange = this.plotOptions.yMax - this.plotOptions.yMin
+        [this.maxX, this.minX] = d3.extent(points, point => point[0]);
+        [this.maxY, this.minY] = d3.extent(points, point => point[1]);
+        [this.maxVal, this.minVal] = d3.extent(cells, cell => cell.value)
+    }
+
+    _calculateDimensions() {
+        const xRange = this.xMax - this.xMin
+        const yRange = this.yMax - this.yMin
 
         if (xRange / this.width > yRange / this.height) {
-            this.kInit = this.width / this.plotOptions.precisionCoord
+            this.kInit = this.width
             if (yRange > xRange) {
                 this.kInit *= yRange / xRange
             }
-            this.scaleToRealCoord = xRange / this.plotOptions.precisionCoord
+            this.scaleToRealCoord = xRange
             this.origMeter2Px = this.width / xRange / this.kInit
         } else {
-            this.kInit = this.height / this.plotOptions.precisionCoord
+            this.kInit = this.height
             if (xRange > yRange) {
                 this.kInit *= xRange / yRange
             }
-            this.scaleToRealCoord = yRange / this.plotOptions.precisionCoord
+            this.scaleToRealCoord = yRange
             this.origMeter2Px = this.height / yRange / this.kInit
         }
 
@@ -57,8 +81,8 @@ export default class Map2D extends Component {
     }
 
     _isHorizontal() {
-        const xRange = this.plotOptions.xMax - this.plotOptions.xMin
-        const yRange = this.plotOptions.yMax - this.plotOptions.yMin
+        const xRange = this.xMax - this.xMin
+        const yRange = this.yMax - this.yMin
 
         return xRange / this.width > yRange / this.height
     }
@@ -82,7 +106,7 @@ export default class Map2D extends Component {
 
     initColorScale() {
         let colorScale
-        switch (this.plotOptions.colorMap) {
+        switch (this.colorMap) {
             case 'viridis':
                 colorScale = d3.interpolateViridis
                 break
@@ -137,6 +161,8 @@ export default class Map2D extends Component {
             parentElement: this.containerMap,
             coords: this.coords,
             values: this.values,
+            valMax: this.valMax,
+            valMin: this.valMin,
             colorScale: this.colorScale,
         })
 
@@ -148,7 +174,7 @@ export default class Map2D extends Component {
             this.infoBox.setX(`x = ${this._calculateXCoord(info.x)}`)
             this.infoBox.setY(`y = ${this._calculateYCoord(info.y)}`)
             this.infoBox.setValue(
-                `${this._calculateValue(info.value)} ${this.plotOptions.valUnit}`,
+                `${info.value} ${this.valUnit}`,
             )
         })
 
@@ -160,19 +186,13 @@ export default class Map2D extends Component {
     }
 
     _calculateXCoord(x) {
-        return parseFloat(((this.scaleToRealCoord * x + this.plotOptions.xMin))
+        return parseFloat(((this.scaleToRealCoord * x + this.xMin))
             .toPrecision(4))
     }
 
     _calculateYCoord(y) {
-        return parseFloat(((this.plotOptions.yMax - this.scaleToRealCoord * y))
+        return parseFloat(((this.yMax - this.scaleToRealCoord * y))
             .toPrecision(4))
-    }
-
-    _calculateValue(value) {
-        return parseFloat((((this.plotOptions.maxVal - this.plotOptions.minVal)
-            * (value / this.plotOptions.precisionValues) + this.plotOptions.minVal))
-            .toPrecision(3))
     }
 
     initZoom() {
@@ -215,14 +235,14 @@ export default class Map2D extends Component {
     }
 
     initLayerSlider() {
-        if (this.plotOptions.layerNames.length > 1) {
+        if (this.layerNames.length > 1) {
             this.layerSlider = new VerticalSlider({
                 parentElement: this.containerControls,
                 initialPosition: {
                     x: this.width - 20,
                     y: this.MARGIN.TOP + 160,
                 },
-                values: this.plotOptions.layerNames,
+                values: this.layerNames,
                 height: this.height - this.MARGIN.TOP - this.MARGIN.BOTTOM - 160,
             })
 
@@ -268,19 +288,19 @@ export default class Map2D extends Component {
                 x: 45,
                 y: 60,
             },
-            labelMin: `${this._calculateMinVal()} ${this.plotOptions.valUnit}`,
-            labelMax: `${this._calculateMaxVal()} ${this.plotOptions.valUnit}`,
+            labelMin: `${this._calculateMinVal()} ${this.valUnit}`,
+            labelMax: `${this._calculateMaxVal()} ${this.valUnit}`,
         })
 
         this.depthScale.render()
     }
 
     _calculateMinVal() {
-        return parseFloat(this.plotOptions.minVal.toPrecision(3))
+        return parseFloat(this.minVal.toPrecision(3))
     }
 
     _calculateMaxVal() {
-        return parseFloat(this.plotOptions.maxVal.toPrecision(3))
+        return parseFloat(this.maxVal.toPrecision(3))
     }
 
     initResize() {

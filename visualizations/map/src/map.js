@@ -11,6 +11,8 @@ export default class Map extends Component {
         this.parentElement = config.parentElement
         this.coords = config.coords
         this.values = config.values
+        this.valMin = config.valMin
+        this.valMax = config.valMax
         this.colorScale = config.colorScale
         this.mapTransform = {
             x: 0,
@@ -48,6 +50,13 @@ export default class Map extends Component {
             .attr('id', 'g_map_cells')
     }
 
+    color(i) {
+        return this.colorScale(
+            (this.values[this.layer][i] - this.valMin)
+            / (this.valMax - this.valMin),
+        )
+    }
+
     renderCells() {
         const self = this
 
@@ -57,8 +66,8 @@ export default class Map extends Component {
         this.map.enter()
             .append('polygon')
             .merge(this.map)
-            .attr('points', (d) => d)
-            .attr('fill', (d, i) => this.colorScale(this.values[this.layer][i] / 1000))
+            .attr('points', (d) => d.map(x => x.join(',')).map(x => x.join(' ')))
+            .attr('fill', (d, i) => this.color(i))
             .on('mousemove', (d, i) => self.emit('mousemove', {
                 x: d3.mouse(this)[0],
                 y: d3.mouse(this)[1],

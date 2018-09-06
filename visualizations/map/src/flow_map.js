@@ -7,17 +7,19 @@ import Field from './field'
 import ParticleGenerator from './particle_generator'
 
 export default class FlowMap extends Map2D {
-    constructor(canvasElement, cellData, config, height) {
-        super(config, height)
+    constructor({
+        canvasElement,
+        layers,
+        ...rest
+    }) {
+        super({ layers, rest })
         if (typeof canvasElement === 'string') {
             this._canvas = d3.select(canvasElement)
                 .attr('width', this.width)
-                .attr('height', height)
+                .attr('height', this.height)
 
             this._canvasNode = this._canvas.node()
         }
-
-        this._cellData = cellData
 
         this._setLayer(0)
         this._flowAnimation = new FlowAnimation(
@@ -32,15 +34,9 @@ export default class FlowMap extends Map2D {
 
     _setLayer(i) {
         const cells = []
-        this._cellData[i].forEach((cell, index) => {
-            const scaledPoints = []
-            this.coords[i][index].split(' ').forEach((d) => {
-                const coordinates = d.split(',')
-                scaledPoints.push([+coordinates[0], +coordinates[1]])
-            })
-
+        this.layers[i].forEach((cell, index) => {
             cells.push(new Cell(
-                scaledPoints,
+                cell.points,
                 cell.i,
                 cell.j,
                 cell['FLOWI-'],

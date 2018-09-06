@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='webviz_plotly',
+    name='webviz_map',
     version='0.1.0',
     packages=find_packages("."),
     package_dir={"": "."},
     package_data={
-        'webviz_plotly': [
+        'webviz_map': [
             'templates/*',
             'resources/js/*'
         ]},
@@ -16,8 +16,7 @@ setup(
     tests_require=['pytest', 'mock', 'pycodestyle', 'selenium'],
     entry_points={
         'webviz_page_elements': [
-            'Plotly = webviz_plotly:Plotly',
-            'FilteredPlotly = webviz_plotly:FilteredPlotly'
+            'Map = webviz_map:Map',
         ]
     },
     zip_safe=False

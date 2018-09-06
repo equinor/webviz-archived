@@ -18,7 +18,7 @@ class HeatMap(FilteredPlotly):
 
     def process_data(self, data):
         return [{
-            'z': data.to_dict(orient='list').values(),
+            'z': data.values.transpose().tolist(),
             'x': list(self.data.index),
             'y': list(self.data.columns),
             'type': 'heatmap'}]

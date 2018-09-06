@@ -105,6 +105,7 @@ env.sh
 *.iml
 jsconfig.json
 .vscode/
+*.DS_Store
 
 # Example build
 webviz_example/

@@ -78,11 +78,6 @@ class FilteredPlotly(Plotly):
             **kwargs):
         if isinstance(data, pd.DataFrame):
             self.data = data.copy()
-            index = self.data.index
-            if isinstance(index, pd.core.indexes.datetimes.DatetimeIndex):
-                string_index = index.to_series().map(
-                    lambda x: x.strftime('%Y-%m-%d'))
-                self.data.set_index(string_index, inplace=True)
         else:
             self.data = pd.read_csv(data)
             if 'index' in self.data.columns:

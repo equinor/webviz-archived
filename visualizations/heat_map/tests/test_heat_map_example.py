@@ -14,7 +14,7 @@ class TestHeatMapExample(unittest.TestCase):
         cls.tempdir = tempfile.mkdtemp()
         os.chdir(cls.tempdir)
 
-        command = 'python {/../examples/heat_map_example.py'.format(thisdir)
+        command = 'python {}/../examples/heat_map_example.py'.format(thisdir)
         cls.ret = os.system(command)
 
         chromeOptions = Options()

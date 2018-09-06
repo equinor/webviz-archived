@@ -18,7 +18,10 @@ def default(data):
         return int(data)
     if isinstance(data, (datetime.datetime, datetime.date)):
         return data.__str__()
-    raise TypeError('Given data of type {0} can not be converted to a json format'.format(type(data)))
+    raise TypeError(
+        'Given data of type {0} can not be converted to a json format'
+        .format(type(data))
+    )
 
 
 def dump_json(data):

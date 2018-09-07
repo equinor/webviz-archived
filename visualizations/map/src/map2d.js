@@ -43,13 +43,13 @@ export default class Map2D extends Component {
         this._calculateDimensions()
     }
 
-    _calcMinMaxX(layers) {
+    _calcMinMax(layers) {
         const cells = d3.merge(layers)
         const points = d3.merge(cells.map(cell => cell.points));
 
-        [this.maxX, this.minX] = d3.extent(points, point => point[0]);
-        [this.maxY, this.minY] = d3.extent(points, point => point[1]);
-        [this.maxVal, this.minVal] = d3.extent(cells, cell => cell.value)
+        [this.xMin, this.xMax] = d3.extent(points, point => point[0]);
+        [this.yMin, this.yMax] = d3.extent(points, point => point[1]);
+        [this.valMax, this.valMin] = d3.extent(cells, cell => cell.value)
     }
 
     _calculateDimensions() {
@@ -57,14 +57,14 @@ export default class Map2D extends Component {
         const yRange = this.yMax - this.yMin
 
         if (xRange / this.width > yRange / this.height) {
-            this.kInit = this.width
+            this.kInit = this.width / xRange
             if (yRange > xRange) {
                 this.kInit *= yRange / xRange
             }
             this.scaleToRealCoord = xRange
             this.origMeter2Px = this.width / xRange / this.kInit
         } else {
-            this.kInit = this.height
+            this.kInit = this.height / yRange
             if (xRange > yRange) {
                 this.kInit *= xRange / yRange
             }
@@ -296,11 +296,11 @@ export default class Map2D extends Component {
     }
 
     _calculateMinVal() {
-        return parseFloat(this.minVal.toPrecision(3))
+        return parseFloat(this.valMin.toPrecision(3))
     }
 
     _calculateMaxVal() {
-        return parseFloat(this.maxVal.toPrecision(3))
+        return parseFloat(this.valMax.toPrecision(3))
     }
 
     initResize() {

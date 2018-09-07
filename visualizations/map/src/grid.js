@@ -43,7 +43,7 @@ export default class Grid {
     }
 
     get maxColumn() {
-        return Math.max(...(range(this.numRows).map(this.numColumn)))
+        return Math.max(...(range(this.numRows).map(this.numColumn.bind(this))))
     }
 
     numColumn(i) {

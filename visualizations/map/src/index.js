@@ -14,20 +14,20 @@ global.initMap = function initMap(
     let map
 
     if (hasFlowLayer) {
-        map = new FlowMap(
+        map = new FlowMap({
             canvasSelector,
             elementSelector,
             layers,
             layerNames,
             height,
-        )
+        })
     } else {
-        map = new Map2D(
+        map = new Map2D({
             elementSelector,
             layers,
             layerNames,
             height,
-        )
+        })
     }
 
     map.init()

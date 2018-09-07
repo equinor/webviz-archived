@@ -63,11 +63,11 @@ export default class DistanceScale {
 
         const gScaleMaxWidth = 400
 
-        let numberScales = null
+        let numberScales = 0
         let distScale = null
         let unit = null
         let remainder = 1.0
-        let distPerScale
+        let distPerScale = 1
 
         if (1000 * meter2px < gScaleMaxWidth) {
             distScale = 1000
@@ -79,7 +79,6 @@ export default class DistanceScale {
             distScale = 1
             unit = ['', ' m']
         }
-
         for (let i = 5; i > 0; i -= 1) {
             const temp = gScaleMaxWidth / meter2px / i / distScale
             if (temp % 1 < remainder && Math.floor(temp) > 0) {

@@ -3,7 +3,33 @@
  */
 export default class SVGTransform {
     constructor(transform) {
+        this.TRANSFORM_REGEX = /(\w+)\(([^,)]+),?([^)]+)?\)/gi
         this.transform = this.parseTransform(transform)
+    }
+
+    /**
+     * Parse the transform attribute into a convenient object for manipulation.
+     *
+     * e.g. "translate(10,50)" => { translate: ['10', '50'] }
+     *
+     * @param { string } transformString
+     */
+    parseTransform(transformString) {
+        const transformObj = {}
+        if (!transformString) {
+            return transformObj
+        }
+
+        const transformations = transformString.match(this.TRANSFORM_REGEX)
+
+        transformations.forEach(transform => {
+            const methodAndValues = transformations[transform].match(/[\w.-]+/g)
+            const method = methodAndValues.shift()
+
+            transformObj[method] = methodAndValues
+        })
+
+        return transformObj
     }
 
     addTransform(type, params) {

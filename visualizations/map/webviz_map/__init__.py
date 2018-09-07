@@ -4,6 +4,7 @@ from webviz import JSONPageElement
 from abc import ABCMeta, abstractmethod
 import pandas as pd
 import pdb
+from six import iteritems, itervalues
 
 env = jinja2.Environment(
     loader=jinja2.PackageLoader('webviz_map', 'templates'),
@@ -14,11 +15,8 @@ env = jinja2.Environment(
 
 
 class Map(JSONPageElement):
-    """
-    """
-    def __init__(self, cells, values, flow=None, layer_names = []):
+    def __init__(self, cells, layer_names = []):
         super(Map, self).__init__()
-        self.has_flow_layer = flow is not None
 
         if isinstance(cells, pd.DataFrame):
             self.cells = cells.copy()
@@ -26,48 +24,47 @@ class Map(JSONPageElement):
             self.cells = pd.read_csv(cells)
             self.cells.set_index(['i', 'j', 'k'], inplace=True)
 
-        if isinstance(values, pd.DataFrame):
-            self.values = values.copy()
-        else:
-            self.values = pd.read_csv(values)
-            self.values.set_index(['i', 'j', 'k'], inplace=True)
-
-        if isinstance(flow, pd.DataFrame):
-            self.flow = flow.copy()
-        else:
-            self.flow = pd.read_csv(flow)
-            self.flow.set_index(['i', 'j', 'k'], inplace=True)
-
 
         self['layerNames'] = layer_names
-        self['layers'] = self.make_layers(self.cells, self.values, self.flow)
-        pdb.set_trace()
+        self['layers'] = self.make_layers(self.cells)
+
+    def make_layers(self, cells):
+        layers = {}
+        for (i, j, k), row in cells.iterrows():
+            if k not in layers:
+                layers[k] = {}
+            if i not in layers[k]:
+                layers[k][i] = {}
+            if j not in layers[k][i]:
+                layers[k][i][j] = {'i':i, 'j':j, 'k':k}
+
+            layers[k][i][j]['points'] = []
+            for n in range(4):
+                layers[k][i][j]['points'].append([row['x{}'.format(n)],row['y{}'.format(n)]])
+            self.has_flow_layer = 'FLOWI+' in row
+            if self.has_flow_layer:
+                layers[k][i][j]['FLOWI+'] = row['FLOWI+']
+                layers[k][i][j]['FLOWJ+'] = row['FLOWJ+']
+            layers[k][i][j]['value'] = row['value']
+
+        self.set_negative_flow(layers)
+        return [[cell for row in itervalues(layer) for cell in itervalues(row)]
+                for layer in itervalues(layers)]
+
 
     @staticmethod
-    def make_layers(cells, values, flows):
-        layers = {}
-        for frame in [cells, values, flows]:
-            for (i, j, k), _ in frame.iterrows():
-                if k not in layers:
-                    layers[k] = {}
-                if (i, j) not in layers[k]:
-                    layers[k][(i, j)] = {'i':i, 'j':j, 'k':k}
-
-        for frame in [values, flows]:
-            for (i, j, k), val in frame.iterrows():
-                for column, value in val.iteritems():
-                    layers[k][(i, j)][column] = value
-
-        for (i, j, k), cell in cells.iterrows():
-            if 'points' not in layers[k][(i, j)]:
-                layers[k][(i, j)]['points'] = {}
-            layers[k][(i, j)]['points'][cell['n']] = [cell['x'], cell['y']]
-
-        for layer in layers.values():
-            for cell in layer.values():
-                cell['points'] = list(cell['points'].values())
-
-        return [list(layer.values()) for layer in layers.values()]
+    def set_negative_flow(layers):
+        for k, layer in iteritems(layers):
+            for i, row in iteritems(layer):
+                for j, cell in iteritems(row):
+                    if i-1 in layers[k] and j in layers[k][i-1]:
+                        cell['FLOWI-'] = layers[k][i-1][j]['FLOWI+']
+                    else:
+                        cell['FLOWI-'] = 0
+                    if i in layers[k] and j-1 in layers[k][i]:
+                        cell['FLOWJ-'] = layers[k][i][j-1]['FLOWJ+']
+                    else:
+                        cell['FLOWJ-'] = 0
 
 
     def get_template(self):

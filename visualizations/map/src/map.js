@@ -66,13 +66,15 @@ export default class Map extends Component {
         this.map.enter()
             .append('polygon')
             .merge(this.map)
-            .attr('points', (d) => d.map(x => x.join(',')).map(x => x.join(' ')))
-            .attr('fill', (d, i) => this.color(i))
-            .on('mousemove', (d, i) => self.emit('mousemove', {
-                x: d3.mouse(this)[0],
-                y: d3.mouse(this)[1],
-                value: self.values[self.layer][i],
-            }))
+            .attr('points', (d) => d.map(x => x.join(',')).join(' '))
+            .attr('fill', (d, i) => self.color(i))
+            .on('mousemove', function onmousemove(d, i) {
+                self.emit('mousemove', {
+                    x: d3.mouse(this)[0],
+                    y: d3.mouse(this)[1],
+                    value: self.values[self.layer][i],
+                })
+            })
             .on('mouseleave', () => self.emit('mouseleave'))
 
         this.map.exit()

@@ -8,13 +8,13 @@ import ParticleGenerator from './particle_generator'
 
 export default class FlowMap extends Map2D {
     constructor({
-        canvasElement,
+        canvasSelector,
         layers,
         ...rest
     }) {
-        super({ layers, rest })
-        if (typeof canvasElement === 'string') {
-            this._canvas = d3.select(canvasElement)
+        super(Object.assign(rest, { layers }))
+        if (typeof canvasSelector === 'string') {
+            this._canvas = d3.select(canvasSelector)
                 .attr('width', this.width)
                 .attr('height', this.height)
 
@@ -52,6 +52,8 @@ export default class FlowMap extends Map2D {
 
     init() {
         super.init()
+        this.containerMap.style('position', 'absolute')
+        this.containerControls.style('position', 'absolute')
 
         const self = this
         this.on('zoom', t => {
@@ -66,11 +68,13 @@ export default class FlowMap extends Map2D {
                 [t.k * this.map.mapWidth / 2,
                     t.k * this.map.mapHeight / 2])
         })
-        this.layerSlider.on('change', (value) => {
-            self._setLayer(value)
-            self._flowAnimation.clear()
-            self._flowAnimation.particleGenerator = self._particleGenerator
-        })
+        if (this.layerSlider) {
+            this.layerSlider.on('change', (value) => {
+                self._setLayer(value)
+                self._flowAnimation.clear()
+                self._flowAnimation.particleGenerator = self._particleGenerator
+            })
+        }
         this._flowAnimation.setTransform(0, 0, this.kInit, this.kInit, 0, [0, 0])
         this._flowAnimation.start()
     }

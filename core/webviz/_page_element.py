@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 from uuid import uuid4
 from io import StringIO
 
+
 class PageElement:
     """
     A page element with data and a template which renders to `html`.
@@ -42,9 +43,10 @@ class PageElement:
 
     def get_html(self, include_jslib=True):
         """
-        :param include_jslib: If `True`, include loading of JavaScript libraries
-                  this page element depends on in the `html` string. Set this as
-                  `False` if your html file already contains the libraries.
+        :param include_jslib: If `True`, include loading of JavaScript
+                  libraries this page element depends on in the `html`
+                  string. Set this as `False` if your html file already
+                  contains the libraries.
         :returns: Returns a `html` string representing the page element.
         """
         css_deps = self.get_css_dep()

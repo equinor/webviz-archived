@@ -69,7 +69,7 @@ index,data1,data2
         self.assertTrue('sendDataToCloud' in
                         filtered['config']['modeBarButtonsToRemove'])
 
-    def testSendDataToCloudWarning(self):
+    def testModeBarButtonsRemovalWarning(self):
         with warnings.catch_warnings(record=True) as w:
             MockElement(self.data, config={'modeBarButtonsToRemove': []})
 

@@ -8,6 +8,9 @@ projects = \
 	visualizations/tornado_plot\
 	visualizations/fan_chart\
 	visualizations/scatter_plot_matrix\
+	visualizations/histogram\
+	visualizations/scatter_plot\
+	visualizations/heat_map\
 
 .PHONY: build lint test dev-install install doc
 build:

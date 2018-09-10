@@ -31,9 +31,9 @@ class TestMinimalExample(unittest.TestCase):
         address = 'file://{}/webviz_example/index.html'.format(self.tempdir)
         self.driver.get(address)
 
-    def test_five_menu_items(self):
+    def test_six_menu_items(self):
         menu_items = self.driver.find_elements_by_xpath('//ul//li')
-        self.assertEqual(len(menu_items), 5)
+        self.assertEqual(len(menu_items), 6)
 
     def test_title(self):
         self.assertEqual(
@@ -43,7 +43,7 @@ class TestMinimalExample(unittest.TestCase):
 
     def test_sub_pages(self):
         sub_pages = self.driver.find_elements_by_xpath('//ul//ul//li')
-        self.assertEqual(len(sub_pages), 2)
+        self.assertEqual(len(sub_pages), 3)
 
 
 if __name__ == '__main__':

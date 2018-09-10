@@ -24,7 +24,7 @@ def escape_all(html):
     Escapes any html or utf8 character in the given
     string.
 
-    :param s: Any string to be escaped.
+    :param html: Any string to be escaped.
     :returns: A jinja2 markup object that will not be auto-escaped
         by jinja2.
     """

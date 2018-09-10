@@ -14,7 +14,7 @@ line_mock_data = {
 }
 
 obs_mock_data = {
-    'index': ['02-03-2006'],
+    'x': ['02-03-2006'],
     'name': ['line-1'],
     'value': [4],
     'error': [2]
@@ -39,7 +39,7 @@ class TestFanChart(unittest.TestCase):
     def validate_observation(self):
         with self.assertRaises(ValueError):
             validate_observation_data(pd.DataFrame({
-                'index': ['3'],
+                'x': ['3'],
                 'name': ['gkaskng'],
                 'error': [5]
             }))
@@ -57,33 +57,33 @@ class TestFanChart(unittest.TestCase):
         )
 
     def test_init_scatter_trace(self):
-        x = [1, 2, 3]
+        index = [1, 2, 3]
         y = [4, 5, 6]
         mean = [7, 8, 9]
         color = format_color(['1', '2', '3'], '0.5')
-        trace = init_confidence_band(y, mean, x, 'name', color)
+        trace = init_confidence_band(y, mean, index, 'name', color)
         self.assertIn('name', trace)
         self.assertEqual(trace['name'], 'name')
         self.assertEqual(trace['type'], 'scatter')
 
     def test_add_observation(self):
-        index = 1
+        x = 1
         value = 4
         error_value = 2
         trace = make_observation({
-            'index': index,
+            'x': x,
             'value': value,
             'error': error_value,
             'name': 'name'
         })
         self.assertIn('x', trace)
-        self.assertEqual(trace['x'], [index, index])
+        self.assertEqual(trace['x'], [x, x])
         self.assertEqual(
             trace['y'], [value + error_value, value - error_value]
         )
 
     def test_add_empty_observations(self):
-        FanChart(pd.DataFrame(line_mock_data), pd.DataFrame())
+        FanChart(pd.DataFrame(line_mock_data))
 
     def test_add_wrong_observations(self):
         with self.assertRaises(ValueError):

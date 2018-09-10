@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import warnings
 from pandas.compat import StringIO
 from six import itervalues
 
@@ -67,6 +68,13 @@ index,data1,data2
         self.assertTrue('modeBarButtonsToRemove' in filtered['config'])
         self.assertTrue('sendDataToCloud' in
                         filtered['config']['modeBarButtonsToRemove'])
+
+    def testSendDataToCloudWarning(self):
+        with warnings.catch_warnings(record=True) as w:
+            MockElement(self.data, config={'modeBarButtonsToRemove': []})
+
+            assert len(w) == 2
+            assert 'required' in str(w[-1].message)
 
 
 if __name__ == '__main__':

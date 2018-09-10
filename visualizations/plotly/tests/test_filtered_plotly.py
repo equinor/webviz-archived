@@ -61,6 +61,13 @@ index,data1,data2
                         for label in labels)
                         for labels in itervalues(filters)))
 
+    def testSendDataToCloudRemoved(self):
+        filtered = MockElement(self.data)
+
+        self.assertTrue('modeBarButtonsToRemove' in filtered['config'])
+        self.assertTrue('sendDataToCloud' in
+                        filtered['config']['modeBarButtonsToRemove'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -19,7 +19,9 @@ class BarChart(FilteredPlotly):
                 data,
                 *args,
                 layout={'barmode': barmode},
-                config={'modeBarButtonsToRemove': ['lasso2d']},
+                config={'modeBarButtonsToRemove': ['sendDataToCloud',
+                                                   'resetScale2d',
+                                                   'lasso2d']},
                 **kwargs)
 
     def process_data(self, frame):

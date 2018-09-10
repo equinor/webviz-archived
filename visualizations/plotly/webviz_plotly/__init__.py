@@ -4,6 +4,7 @@ from webviz import JSONPageElement
 from abc import ABCMeta, abstractmethod
 import pandas as pd
 from six import iteritems
+import warnings
 
 env = jinja2.Environment(
     loader=jinja2.PackageLoader('webviz_plotly', 'templates'),
@@ -21,13 +22,19 @@ class Plotly(JSONPageElement):
     def __init__(self, data, layout={}, config={}):
         super(Plotly, self).__init__()
 
-        config['displaylogo'] = False
+        if 'displaylogo' not in config:
+            config['displaylogo'] = False
+
+        disallowed_buttons = ['sendDataToCloud', 'resetScale2d']
 
         if 'modeBarButtonsToRemove' not in config:
-            config['modeBarButtonsToRemove'] = []
-
-        config['modeBarButtonsToRemove'] += ['sendDataToCloud',
-                                             'resetScale2d']
+            config['modeBarButtonsToRemove'] = disallowed_buttons
+        else:
+            for button in disallowed_buttons:
+                if button not in config['modeBarButtonsToRemove']:
+                    config['modeBarButtonsToRemove'].append(button)
+                    warnings.warn('Including {} required.'.format(button),
+                                  Warning)
 
         self['data'] = data
         self['config'] = config

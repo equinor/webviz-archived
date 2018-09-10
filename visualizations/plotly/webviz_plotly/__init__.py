@@ -20,6 +20,15 @@ class Plotly(JSONPageElement):
     """
     def __init__(self, data, layout={}, config={}):
         super(Plotly, self).__init__()
+
+        config['displaylogo'] = False
+
+        if 'modeBarButtonsToRemove' not in config:
+            config['modeBarButtonsToRemove'] = []
+
+        config['modeBarButtonsToRemove'] += ['sendDataToCloud',
+                                             'resetScale2d']
+
         self['data'] = data
         self['config'] = config
         self['layout'] = layout

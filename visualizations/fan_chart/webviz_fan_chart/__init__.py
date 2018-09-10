@@ -76,8 +76,8 @@ def make_observation(obs):
             obs['value'] - obs['error']
         ],
         'x': [
-            obs['index'],
-            obs['index']
+            obs['x'],
+            obs['x']
         ],
         'showlegend': False,
         'legendgroup': obs['name'],
@@ -107,7 +107,7 @@ def make_marker(obs, color):
             obs['value']
         ],
         'x': [
-            obs['index']
+            obs['x']
         ],
         'showlegend': False,
         'legendgroup': obs['name'],
@@ -128,8 +128,8 @@ def make_marker(obs, color):
 
 
 def validate_observation_data(obs):
-    if obs is not None and len(obs.index) > 0:
-        if {'index', 'name', 'value', 'error'} != set(obs.columns):
+    if obs is not None:
+        if {'x', 'name', 'value', 'error'} != set(obs.columns):
             raise ValueError('Observation data is not expected format')
         else:
             return True
@@ -149,15 +149,23 @@ class FanChart(FilteredPlotly):
         belongs to same fan.
     :param observations: File or path to `csv` file
         or a :class:`pandas.DataFrame`. Each dataframe is one observation.
-        Expects `index` parameter to be used as 'x' value, a `name` parameter
+        Expects `x` parameter to be used as x-axis value, a `name` parameter
         to correspond with a name in the data dataframe, a `value` and `value`
         that will determine the size of the marker (in height)
     """
     def __init__(self, data, observations=None, *args, **kwargs):
-        if isinstance(observations, str):
-            self.observations = pd.read_csv(observations)
+        if observations is not None:
+            if isinstance(observations, pd.DataFrame):
+                self.observations = observations.copy()
+            else:
+                self.observations = pd.read_csv(observations)
+                if 'index' in self.observations.columns:
+                    self.observations.set_index(
+                        self.observations['index'],
+                        inplace=True)
+                    del self.observations['index']
         else:
-            self.observations = observations
+            self.observations = None
 
         super(FanChart, self).__init__(
             data,

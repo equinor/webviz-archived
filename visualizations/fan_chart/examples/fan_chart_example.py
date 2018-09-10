@@ -31,7 +31,7 @@ lines = pd.DataFrame({
 })
 
 observations = pd.DataFrame({
-  'index': ['2012-01-04', '2012-01-04'],
+  'x': ['2012-01-04', '2012-01-04'],
   'name': ['line-2', 'line-3'],
   'value': [4, 3],
   'error': 2

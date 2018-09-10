@@ -1,5 +1,5 @@
-const { expect } = require('chai')
-const { PlotlyFilters } = require('./plotly_filters')
+import { expect } from 'chai'
+import PlotlyFilters from './plotly_filters'
 
 describe('PlotlyFilters', () => {
     let filters

@@ -4,9 +4,9 @@
   "description": "Webviz page element for plotly visualizations.",
   "scripts": {
     "build": "npm-run-all browserify move-deps",
-    "browserify": "browserify filtered_plotly.js -o webviz_plotly/resources/js/filtered_plotly.js -t [ babelify --presets [ '@babel/preset-env' ] ]",
+    "browserify": "browserify src/filtered_plotly.js -o webviz_plotly/resources/js/filtered_plotly.js -t [ babelify --presets [ '@babel/preset-env' ] ]",
     "move-deps": "node move_deps.js",
-    "test": "mocha **/*.spec.js",
+    "test": "mocha src/*.spec.js --require @babel/register --require jsdom-global/register",
     "lint": "eslint *.js"
   },
   "author": "Equinor ASA",
@@ -15,17 +15,19 @@
     "plotly.js-dist": "^1.39.1"
   },
   "devDependencies": {
-    "browserify": "^16.2.2",
-    "babelify": "^9.0.0",
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-eslint": "^9.0.0",
+    "babelify": "^9.0.0",
+    "browserify": "^16.2.2",
     "chai": "^4.1.2",
     "eslint": "^5.5.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-chai-expect": "^1.1.1",
     "eslint-plugin-import": "^2.14.0",
+    "jsdom": "^12.0.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^5.2.0",
     "npm-run-all": "^4.1.3"
   }

@@ -17,7 +17,7 @@ env = jinja2.Environment(
 class Plotly(JSONPageElement):
     """
     Plotly page element. Arguments are the same as ``plotly.plot()`` from
-    `plotly.js`. See https://plot.ly/javascript/ for usage. (note that
+    `plotly.js`. See https://plot.ly/javascript/ for usage.
 
     .. note::
 

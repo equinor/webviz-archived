@@ -17,20 +17,28 @@ env = jinja2.Environment(
 class Plotly(JSONPageElement):
     """
     Plotly page element. Arguments are the same as ``plotly.plot()`` from
-    `plotly.js`. See https://plot.ly/javascript/ for usage.
+    `plotly.js`. See https://plot.ly/javascript/ for usage. (note that
+
+    .. note::
+
+       :class:`Plotly` will not allow the modebarbuttons in
+       :const:`DISALLOWED_BUTTONS`, as these are not useful for
+       the visualizations implemented in webviz.
+
     """
+
+    DISALLOWED_BUTTONS = ['sendDataToCloud', 'resetScale2d']
+
     def __init__(self, data, layout={}, config={}):
         super(Plotly, self).__init__()
 
         if 'displaylogo' not in config:
             config['displaylogo'] = False
 
-        disallowed_buttons = ['sendDataToCloud', 'resetScale2d']
-
         if 'modeBarButtonsToRemove' not in config:
-            config['modeBarButtonsToRemove'] = disallowed_buttons
+            config['modeBarButtonsToRemove'] = Plotly.DISALLOWED_BUTTONS
         else:
-            for button in disallowed_buttons:
+            for button in Plotly.DISALLOWED_BUTTONS:
                 if button not in config['modeBarButtonsToRemove']:
                     config['modeBarButtonsToRemove'].append(button)
                     warnings.warn('Including {} required.'.format(button),

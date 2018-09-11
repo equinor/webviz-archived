@@ -35,7 +35,7 @@ test:
 
 install: build
 	for project in $(projects); do\
-		make install ARGS=$(ARGS) -C $$project || exit 1;\
+		make install ARGS="$(ARGS)" -C $$project || exit 1;\
 	done
 
 doc:

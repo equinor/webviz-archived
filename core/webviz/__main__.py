@@ -2,8 +2,9 @@ import argparse
 import os
 from os import path
 import pkg_resources
-import jinja2
+from jinja2 import Environment, FileSystemLoader, meta
 import markdown
+from pandas import DataFrame
 from yaml import load
 
 from six import itervalues
@@ -83,10 +84,34 @@ def create_page(filename, name, web):
         return Page(name)
 
 
+def get_template_arguments(env, path):
+    template_source = env.loader.get_source(env, path)
+    parsed = env.parse(template_source[0])
+    name = parsed.body[0].nodes[0].args[0].value
+    args = tuple(map(lambda arg: arg.value, parsed.body[0].nodes[0].args[1:]))
+    kwargs = {}
+    for kwarg in parsed.body[0].nodes[0].kwargs:
+        try:
+            items = kwarg.value.items
+            kwargs[kwarg.key] = list(map(lambda k: k.value, items))
+        except AttributeError:
+            kwargs[kwarg.key] = kwarg.value.value
+    return {'name': name, 'args': args, 'kwargs': kwargs}
+
+
+def page_element(name, *args, **kwargs):
+    page_elements = {}
+    for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
+        page_elements[entry_point.name] = entry_point.load()
+    element = page_elements[name](*args, **kwargs)
+    template = element.get_template()
+    return template.render(element=element)
+
+
 def main():
     root_folder = init_parser().parse_args().site_folder
-    env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(root_folder),
+    env = Environment(
+        loader=FileSystemLoader(root_folder),
     )
     config = read_config(root_folder=root_folder)
     web = Webviz(config['title'], theme=config['theme'])
@@ -94,6 +119,9 @@ def main():
     submenus = {}
     submenus[root_folder] = web
     os.chdir(root_folder)
+    page_elements = {}
+    for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
+        page_elements[entry_point.name] = entry_point.load()
     for root, dirs, files in os.walk(root_folder, topdown=True):
         dirs[:] = [d for d in dirs if d != 'html_output']
         for dirname in dirs:
@@ -101,18 +129,15 @@ def main():
         for filename in files:
             name, ext = path.splitext(filename)
             if ext == '.md':
-                templ = env.get_template(
-                    path.relpath(path.join(root, filename), root_folder))
-                element = None
-
-                def page_element(name, *args, **kwargs):
-                    page_elements = {}
-                    for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
-                        page_elements[entry_point.name] = entry_point.load()
-                    element = page_elements[name](*args, **kwargs)
-                    template = element.get_template()
-                    return template.render(element=element)
-
+                current_path = path.relpath(path.join(root, filename), root_folder)
+                templ = env.get_template(current_path)
+                page_elements = {}
+                for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
+                    page_elements[entry_point.name] = entry_point.load()
+                template_arguments = get_template_arguments(env=env, path=current_path)
+                element = page_elements[template_arguments['name']](
+                    template_arguments['args'], template_arguments['kwargs'])
+                breakpoint()
                 untemplated_markdown = templ.render(page_element=page_element)
                 html = get_html(
                     untemplated_markdown=untemplated_markdown,

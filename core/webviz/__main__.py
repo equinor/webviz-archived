@@ -96,7 +96,15 @@ def get_template_arguments(env, path):
             kwargs[kwarg.key] = list(map(lambda k: k.value, items))
         except AttributeError:
             kwargs[kwarg.key] = kwarg.value.value
-    return {'name': name, 'args': args, 'kwargs': kwargs}
+    return (name, args, kwargs)
+
+
+def get_element(env, path):
+    page_elements = {}
+    for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
+        page_elements[entry_point.name] = entry_point.load()
+    name, args, kwargs = get_template_arguments(env=env, path=path)
+    return page_elements[name](*args, **kwargs)
 
 
 def page_element(name, *args, **kwargs):
@@ -131,13 +139,7 @@ def main():
             if ext == '.md':
                 current_path = path.relpath(path.join(root, filename), root_folder)
                 templ = env.get_template(current_path)
-                page_elements = {}
-                for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
-                    page_elements[entry_point.name] = entry_point.load()
-                template_arguments = get_template_arguments(env=env, path=current_path)
-                element = page_elements[template_arguments['name']](
-                    template_arguments['args'], template_arguments['kwargs'])
-                breakpoint()
+                element = get_element(env=env, path=current_path)
                 untemplated_markdown = templ.render(page_element=page_element)
                 html = get_html(
                     untemplated_markdown=untemplated_markdown,

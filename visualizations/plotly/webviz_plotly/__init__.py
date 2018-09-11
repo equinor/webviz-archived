@@ -4,6 +4,7 @@ from webviz import JSONPageElement
 from abc import ABCMeta, abstractmethod
 import pandas as pd
 from six import iteritems
+import warnings
 
 env = jinja2.Environment(
     loader=jinja2.PackageLoader('webviz_plotly', 'templates'),
@@ -17,9 +18,32 @@ class Plotly(JSONPageElement):
     """
     Plotly page element. Arguments are the same as ``plotly.plot()`` from
     `plotly.js`. See https://plot.ly/javascript/ for usage.
+
+    .. note::
+
+       :class:`Plotly` will not allow the modebarbuttons in
+       :const:`DISALLOWED_BUTTONS`, as these are not useful for
+       the visualizations implemented in webviz.
+
     """
+
+    DISALLOWED_BUTTONS = ['sendDataToCloud', 'resetScale2d']
+
     def __init__(self, data, layout={}, config={}):
         super(Plotly, self).__init__()
+
+        if 'displaylogo' not in config:
+            config['displaylogo'] = False
+
+        if 'modeBarButtonsToRemove' not in config:
+            config['modeBarButtonsToRemove'] = Plotly.DISALLOWED_BUTTONS
+        else:
+            for button in Plotly.DISALLOWED_BUTTONS:
+                if button not in config['modeBarButtonsToRemove']:
+                    config['modeBarButtonsToRemove'].append(button)
+                    warnings.warn('Including {} required.'.format(button),
+                                  Warning)
+
         self['data'] = data
         self['config'] = config
         self['layout'] = layout

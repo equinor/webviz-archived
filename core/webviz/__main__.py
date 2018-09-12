@@ -110,5 +110,6 @@ def main():
 
     web.write_html(path.join(top_directory, 'html_output'), overwrite=True)
 
+
 if __name__ == '__main__':
     main()

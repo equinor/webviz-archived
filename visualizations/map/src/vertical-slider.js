@@ -67,27 +67,32 @@ export default class VerticalSlider extends Component {
     }
 
     _renderLine() {
+        const self = this
         this.slider = this.element.append('g')
             .attr('class', 'slider')
+            .attr('style', 'stroke-width: 8px; stroke-linecap: round')
 
         this.slider.append('line')
             .attr('class', 'track')
             .attr('y1', this.scale.range()[0])
             .attr('y2', this.scale.range()[1])
+            .attr('style', 'stroke-linecap: round; stroke: #000; stroke-opacity: 0.3; stroke-width: 10px')
             .select(function () {
                 return this.parentNode.appendChild(this.cloneNode(true))
             })
             .attr('class', 'track-inset')
+            .attr('style', 'stroke-linecap: round; stroke: #ddd; stroke-width: 8px')
             .select(function () {
                 return this.parentNode.appendChild(this.cloneNode(true))
             })
             .attr('class', 'track-overlay')
+            .attr('style', 'stroke-linecap: round; pointer-events: stroke; stroke-width: 50px; stroke: transparent; cursor: grab')
             .call(d3.drag()
                 .on('start.interrupt', () => {
-                    this.slider.interrupt()
+                    self.slider.interrupt()
                 })
                 .on('start drag', () => {
-                    this._onDragSlider(this.scale.invert(d3.event.y))
+                    self._onDragSlider(this.scale.invert(d3.event.y))
                 }))
     }
 
@@ -107,6 +112,7 @@ export default class VerticalSlider extends Component {
     _renderHandle() {
         this.handle = this.slider.insert('circle', '.track-overlay')
             .attr('class', 'handle')
+            .attr('style', 'fill: #fff; stroke: #000; stroke-opacity: 0.5; stroke-width: 1.25px')
             .attr('r', 9)
     }
 

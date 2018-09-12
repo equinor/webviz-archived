@@ -235,14 +235,20 @@ export default class Map2D extends Component {
     }
 
     initLayerSlider() {
-        if (this.layerNames.length > 1) {
+        if (this.layers.length > 1) {
+            const values = this.layerNames.slice()
+            for (let i = 0; i < this.layers.length; i += 1) {
+                if (!values[i]) {
+                    values[i] = i
+                }
+            }
             this.layerSlider = new VerticalSlider({
                 parentElement: this.containerControls,
                 initialPosition: {
                     x: this.width - 20,
                     y: this.MARGIN.TOP + 160,
                 },
-                values: this.layerNames,
+                values,
                 height: this.height - this.MARGIN.TOP - this.MARGIN.BOTTOM - 160,
             })
 

@@ -17,7 +17,7 @@ class TestWebviz(unittest.TestCase):
     def test_get_page_elements(self):
         '''
             should return a dict containing
-            all entry points from pkg_resources 
+            all entry points from pkg_resources
         '''
         entry_point_1 = Mock()
         entry_point_1.configure_mock(name='entry_point_name_1')
@@ -39,7 +39,7 @@ class TestWebviz(unittest.TestCase):
             }
         )
         pkg_patch.stop()
-    
+
     def test_get_page_should_return_web_index(self):
         '''
             Should return web.index if given filename

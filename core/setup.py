@@ -8,7 +8,8 @@ setup(
     package_data={
         'webviz': [
             'templates/*',
-            'minimal_theme/templates/*'
+            'minimal_theme/templates/*',
+            'resources/css/*'
         ]},
     test_suite="setup.discover_test_suite",
     install_requires=[

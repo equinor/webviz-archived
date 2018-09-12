@@ -34,9 +34,10 @@ export default class FlowMap extends Map2D {
 
     _setLayer(i) {
         const cells = []
+        const self = this
         this.layers[i].forEach(cell => {
             cells.push(new Cell(
-                cell.points,
+                cell.points.map(([x, y]) => [x - self.xMin, self.yMax - y]),
                 cell.i,
                 cell.j,
                 cell['FLOWI-'],

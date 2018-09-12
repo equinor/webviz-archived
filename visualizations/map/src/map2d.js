@@ -61,14 +61,12 @@ export default class Map2D extends Component {
             if (yRange > xRange) {
                 this.kInit *= yRange / xRange
             }
-            this.scaleToRealCoord = xRange
             this.origMeter2Px = this.width / xRange / this.kInit
         } else {
             this.kInit = this.height / yRange
             if (xRange > yRange) {
                 this.kInit *= xRange / yRange
             }
-            this.scaleToRealCoord = yRange
             this.origMeter2Px = this.height / yRange / this.kInit
         }
 
@@ -163,6 +161,8 @@ export default class Map2D extends Component {
             values: this.values,
             valMax: this.valMax,
             valMin: this.valMin,
+            xMin: this.xMin,
+            yMax: this.yMax,
             colorScale: this.colorScale,
         })
 
@@ -186,13 +186,13 @@ export default class Map2D extends Component {
     }
 
     _calculateXCoord(x) {
-        return parseFloat(((this.scaleToRealCoord * x + this.xMin))
-            .toPrecision(4))
+        return parseFloat((x + this.xMin)
+            .toFixed(2))
     }
 
     _calculateYCoord(y) {
-        return parseFloat(((this.yMax - this.scaleToRealCoord * y))
-            .toPrecision(4))
+        return parseFloat((y - this.yMax)
+            .toFixed(2))
     }
 
     initZoom() {

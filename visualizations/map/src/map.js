@@ -13,6 +13,8 @@ export default class Map extends Component {
         this.values = config.values
         this.valMin = config.valMin
         this.valMax = config.valMax
+        this.xMin = config.xMin
+        this.yMax = config.yMax
         this.colorScale = config.colorScale
         this.mapTransform = {
             x: 0,
@@ -66,7 +68,7 @@ export default class Map extends Component {
         this.map.enter()
             .append('polygon')
             .merge(this.map)
-            .attr('points', (d) => d.map(x => x.join(',')).join(' '))
+            .attr('points', (d) => d.map(([x, y]) => [x - self.xMin, self.yMax - y].join(',')).join(' '))
             .attr('fill', (d, i) => self.color(i))
             .on('mousemove', function onmousemove(d, i) {
                 self.emit('mousemove', {

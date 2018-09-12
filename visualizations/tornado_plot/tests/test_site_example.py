@@ -47,6 +47,11 @@ class TestSiteExample(unittest.TestCase):
         plots = self.selects('div.plot-container')
         self.assertEqual(len(plots), 1)
 
+    def test_label_inside_container(self):
+        label = self.driver.find_element_by_class_name('ytick')
+        container = self.driver.find_element_by_class_name('main-svg')
+        self.assertTrue(container.location['x'] <= label.location['x'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -24,12 +24,14 @@ from ._webviz import Webviz, SubMenu, Page
 from ._page_element import PageElement
 from ._json_page_element import JSONPageElement
 from ._html import Html
+from ._markdown import Markdown
 
 __all__ = [
     'Webviz',
     'Html',
     'Page',
     'SubMenu',
+    'Markdown',
     'PageElement',
     'Theme',
     'JSONPageElement'

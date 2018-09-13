@@ -15,6 +15,7 @@ class TornadoPlot(FilteredPlotly):
             layout={
                 'barmode': 'relative',
                 'showlegend': False,
+                'yaxis': {'automargin': True}
                 },
             config={},
             **kwargs)

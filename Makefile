@@ -8,6 +8,7 @@ projects = \
 	visualizations/tornado_plot\
 	visualizations/fan_chart\
 	visualizations/scatter_plot_matrix\
+	visualizations/map\
 
 
 build:

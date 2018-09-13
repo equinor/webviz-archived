@@ -32,6 +32,10 @@ Packages can be installed in-place which speeds up your feedback loop:
 
     make dev-install
 
+Or you can pass in whatever argument you would like by using this format
+
+    make install ARGS=argument
+
 ## Documentation
 
 Documentation can be built using
@@ -44,11 +48,15 @@ which creates documentation in `docs/_build`.
 
 To run an example written using the python API, run, for instance:
 
-    python core/exampes/minimal_example.py
+    python core/examples/minimal_example.py
 
 To run an example written using markdown, run, for instance:
 
-    python -m webviz core/examples/site_example/
+    python -m webviz core/examples/tutorial/
+
+_Note: Running the webviz module from a directory where there exists a
+`webviz/__init__.py` causes a fail in Python 2.7! For example when running it
+from the `core/` directory._
 
 ## History
 

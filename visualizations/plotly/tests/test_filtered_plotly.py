@@ -1,14 +1,14 @@
 import unittest
 import pandas as pd
-import numpy as np
+import warnings
 from pandas.compat import StringIO
+from six import itervalues
 
 from webviz_plotly import FilteredPlotly
 
 
 class MockElement(FilteredPlotly):
     def process_data(self, frame):
-        self.frame = frame
         return [
             {
                 'name': column,
@@ -55,17 +55,27 @@ index,data1,data2
             'filtered_plotly.js'
             in file for file in filtered.get_js_dep()))
 
-    def testDateIndex(self):
-        dates = [
-            pd.Timestamp('2012-05-01'),
-            pd.Timestamp('2012-05-02'),
-            pd.Timestamp('2012-05-03')
-        ]
-        ts = pd.DataFrame({'column': np.random.randn(3)}, index=dates)
-        filtered = MockElement(ts)
-        self.assertEqual(filtered.frame.index.dtype, 'object')
-        for i, (index, row) in enumerate(filtered.frame.iterrows()):
-            self.assertEqual(dates[i].strftime('%Y-%m-%d'), index)
+    def testNonStringLabels(self):
+        filtered = MockElement(self.data, dropdown_columns=['data2'])
+        filters = filtered['dropdown_filters']
+        self.assertTrue(all(all(isinstance(label, str)
+                        for label in labels)
+                        for labels in itervalues(filters)))
+
+    def testSendDataToCloudRemoved(self):
+        filtered = MockElement(self.data)
+
+        self.assertTrue('modeBarButtonsToRemove' in filtered['config'])
+        self.assertTrue('sendDataToCloud' in
+                        filtered['config']['modeBarButtonsToRemove'])
+
+    def testModeBarButtonsRemovalWarning(self):
+        with warnings.catch_warnings(record=True) as w:
+            MockElement(self.data, config={'modeBarButtonsToRemove': []})
+
+            self.assertTrue(len(w) == len(FilteredPlotly.DISALLOWED_BUTTONS))
+            for i, button in enumerate(FilteredPlotly.DISALLOWED_BUTTONS):
+                self.assertTrue(button in str(w[i].message))
 
 
 if __name__ == '__main__':

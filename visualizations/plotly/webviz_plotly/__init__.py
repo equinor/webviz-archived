@@ -3,6 +3,8 @@ from os import path
 from webviz import JSONPageElement
 from abc import ABCMeta, abstractmethod
 import pandas as pd
+from six import iteritems
+import warnings
 
 env = jinja2.Environment(
     loader=jinja2.PackageLoader('webviz_plotly', 'templates'),
@@ -16,9 +18,32 @@ class Plotly(JSONPageElement):
     """
     Plotly page element. Arguments are the same as ``plotly.plot()`` from
     `plotly.js`. See https://plot.ly/javascript/ for usage.
+
+    .. note::
+
+       :class:`Plotly` will not allow the modebarbuttons in
+       :const:`DISALLOWED_BUTTONS`, as these are not useful for
+       the visualizations implemented in webviz.
+
     """
+
+    DISALLOWED_BUTTONS = ['sendDataToCloud', 'resetScale2d']
+
     def __init__(self, data, layout={}, config={}):
         super(Plotly, self).__init__()
+
+        if 'displaylogo' not in config:
+            config['displaylogo'] = False
+
+        if 'modeBarButtonsToRemove' not in config:
+            config['modeBarButtonsToRemove'] = Plotly.DISALLOWED_BUTTONS
+        else:
+            for button in Plotly.DISALLOWED_BUTTONS:
+                if button not in config['modeBarButtonsToRemove']:
+                    config['modeBarButtonsToRemove'].append(button)
+                    warnings.warn('Including {} required.'.format(button),
+                                  Warning)
+
         self['data'] = data
         self['config'] = config
         self['layout'] = layout
@@ -77,11 +102,6 @@ class FilteredPlotly(Plotly):
             **kwargs):
         if isinstance(data, pd.DataFrame):
             self.data = data.copy()
-            index = self.data.index
-            if isinstance(index, pd.core.indexes.datetimes.DatetimeIndex):
-                string_index = index.to_series().map(
-                    lambda x: x.strftime('%Y-%m-%d'))
-                self.data.set_index(string_index, inplace=True)
         else:
             self.data = pd.read_csv(data)
             if 'index' in self.data.columns:
@@ -124,7 +144,7 @@ class FilteredPlotly(Plotly):
             *args,
             **kwargs)
 
-        self['check_box_filters'] = check_box_columns[:]
+        self['check_box_filters'] = [str(label) for label in check_box_columns]
         if check_box:
             self.labels['name'] = []
             self['check_box_filters'].append('name')
@@ -133,6 +153,8 @@ class FilteredPlotly(Plotly):
                     self.labels['name'].append(point['name'])
                 point['labels']['name'] = point['name']
 
+        self.labels = {key: [str(label) for label in keylabels]
+                       for key, keylabels in iteritems(self.labels)}
         self['labels'] = self.labels
         self['slider_filters'] = {key: self.labels[key] for
                                   key in slider_columns[:]}

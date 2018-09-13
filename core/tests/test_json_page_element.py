@@ -7,6 +7,7 @@ import json
 from os import path
 from jinja2 import Template
 from six import iteritems
+import datetime
 
 from webviz import JSONPageElement, Webviz, Page
 from webviz._json_page_element import dump_json
@@ -61,6 +62,30 @@ class TestPage(unittest.TestCase):
         roundtrip = json.loads(dump_json(data))
         for key, value in iteritems(data):
             self.assertEqual(data[key], roundtrip[key])
+
+    def test_dump_json_should_allow_numpy_int64(self):
+        self.assertEqual(dump_json(numpy.int64(1)), '1')
+        self.assertEqual(dump_json({'num': numpy.int64(1)}), '{"num":1}')
+
+    def test_dump_json_should_allow_datetime_datetime(self):
+        self.assertEqual(dump_json(
+            datetime.datetime(2018, 10, 20)),
+            '"2018-10-20 00:00:00"'
+        )
+        self.assertEqual(dump_json(
+            {'datetime': datetime.datetime(2018, 10, 20)}),
+            '{"datetime":"2018-10-20 00:00:00"}'
+        )
+
+    def test_dump_json_should_allow_datetime_date(self):
+        self.assertEqual(dump_json(
+            datetime.date(2018, 10, 20)),
+            '"2018-10-20"'
+        )
+        self.assertEqual(dump_json(
+            {'date': datetime.date(2018, 10, 20)}),
+            '{"date":"2018-10-20"}'
+        )
 
     def test_multiple_dumps(self):
         content1 = JSONContent()

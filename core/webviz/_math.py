@@ -21,15 +21,7 @@ class MathJaxPattern(PageElement, markdown.inlinepatterns.Pattern):
             }
         )
 
-        # self._rendered = markdown.markdown(
-        #     self._md,
-        #     extensions=['mdx_math'],
-        #     extension_configs={
-        #         'mdx-math': {'enable_dollar_delimiter': True}
-        #     }
-        # )
-
-        self._rendered = (
+        config = (
             """
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js"></script>
             <script type="text/x-mathjax-config">
@@ -41,6 +33,16 @@ class MathJaxPattern(PageElement, markdown.inlinepatterns.Pattern):
                 });
             </script>"""
         )
+
+        self._rendered = markdown.markdown(
+            config,
+            extensions=['mdx_math'],
+            extension_configs={
+                'mdx-math': {'enable_dollar_delimiter': True}
+            }
+        )
+
+        self._rendered += extension.convert(self._md)
 
         self._rendered += extension.convert(r'$${a}_{b}$$ $${c}_{d}$$')
 
@@ -59,7 +61,9 @@ class MathJaxPattern(PageElement, markdown.inlinepatterns.Pattern):
             'mathjax',
             'MathJax.js'
         ))
+        print('@@@@GETETR: ', deps)
         return deps
 
     def add_js_dep(self, js):
+        print('@@@@JS: ', js)
         self._js_deps.append(js)

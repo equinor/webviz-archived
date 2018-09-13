@@ -1,4 +1,0 @@
-\[
- e^{i \varphi} =
- \cos \varphi + i \sin \varphi
-\]

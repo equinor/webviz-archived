@@ -14,11 +14,13 @@ def get_page_elements():
 
 
 def get_html(env, full_file_name, element):
-    markdown_template = env.get_template(full_file_name)
-    template = element.get_template()
-    untemplated_markdown = markdown_template.render(
-        page_element=lambda name, *args, **kwargs: template.render(
-            element=element))
+    untemplated_markdown = ''
+    if element is not None:
+        markdown_template = env.get_template(full_file_name)
+        template = element.get_template()
+        untemplated_markdown = markdown_template.render(
+            page_element=lambda name, *args, **kwargs: template.render(
+                element=element))
     html = Html(markdown.markdown(
         untemplated_markdown,
         extensions=[
@@ -87,15 +89,13 @@ def get_template_arguments(template_node, root, top_directory):
             except AttributeError:
                 pass
     except IndexError:
-        pass
+        return None
 
 
-def get_element(page_elements, template_node, root, top_directory):
-    name, args, kwargs = get_template_arguments(
-        template_node=template_node,
-        root=root,
-        top_directory=top_directory
-    )
+def get_element(page_elements, template_arguments):
+    if template_arguments is None:
+        return None
+    name, args, kwargs = template_arguments
     return page_elements[name](*args, **kwargs)
 
 

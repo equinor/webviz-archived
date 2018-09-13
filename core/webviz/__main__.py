@@ -88,11 +88,14 @@ def main():
                 )
                 template_node = get_template_node(
                     env=env, full_file_name=full_file_name)
-                element = get_element(
-                    page_elements=page_elements,
+                template_arguments = get_template_arguments(
                     template_node=template_node,
                     root=root,
                     top_directory=top_directory
+                )
+                element = get_element(
+                    page_elements=page_elements,
+                    template_arguments=template_arguments
                 )
                 html = get_html(
                     env=env,

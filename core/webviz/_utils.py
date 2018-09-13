@@ -65,20 +65,29 @@ def get_template_node(env, full_file_name):
 
 
 def get_template_arguments(template_node, root, top_directory):
-    name = template_node.body[0].nodes[0].args[0].value
-    args = tuple(map(lambda arg: get_relative_path(
-        original_path=arg.value,
-        root=root,
-        top_directory=top_directory
-    ), template_node.body[0].nodes[0].args[1:]))
-    kwargs = {}
-    for kwarg in template_node.body[0].nodes[0].kwargs:
-        try:
-            items = kwarg.value.items
-            kwargs[kwarg.key] = list(map(lambda k: k.value, items))
-        except AttributeError:
-            kwargs[kwarg.key] = kwarg.value.value
-    return (name, args, kwargs)
+    try:
+        body = template_node.body[0]
+        for node in body.nodes:
+            try:
+                arguments = node.args
+                name = arguments[0].value
+                args = tuple(map(lambda arg: get_relative_path(
+                    original_path=arg.value,
+                    root=root,
+                    top_directory=top_directory
+                ), node.args[1:]))
+                kwargs = {}
+                for kwarg in node.kwargs:
+                    try:
+                        items = kwarg.value.items
+                        kwargs[kwarg.key] = list(map(lambda k: k.value, items))
+                    except AttributeError:
+                        kwargs[kwarg.key] = kwarg.value.value
+                return (name, args, kwargs)
+            except AttributeError:
+                pass
+    except IndexError:
+        pass
 
 
 def get_element(page_elements, template_node, root, top_directory):

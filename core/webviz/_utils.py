@@ -33,13 +33,13 @@ def get_html(env, full_file_name, element):
             html.add_js_dep(js)
         for css in element.get_css_dep():
             html.add_css_dep(css)
-            html.add_css_dep(
-                os.path.join(
-                    os.path.dirname(__file__),
-                    'resources',
-                    'css',
-                    'codehilite.css')
-            )
+    html.add_css_dep(
+        os.path.join(
+            os.path.dirname(__file__),
+            'resources',
+            'css',
+            'codehilite.css')
+    )
     return html
 
 

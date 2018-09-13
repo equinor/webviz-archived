@@ -1,0 +1,13 @@
+<div id="{{element.containerId}}" style='width: 100%; height: 800px; position: relative'>
+    <canvas id='{{element.containerId}}canvas' style='pointer-events: none; position: absolute; z-index: 1'>
+    </canvas>
+</div>
+<script>
+initMap(
+    '#{{element.containerId}}',
+    '#{{element.containerId}}canvas',
+    {{element.get_json_dump('layers')}},
+    {{element.get_json_dump('layerNames')}},
+    {{element.has_flow_layer | tojson }}
+)
+</script>

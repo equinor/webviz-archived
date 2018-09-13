@@ -1,4 +1,4 @@
-from webviz import Webviz, Page, SubMenu, Markdown
+from webviz import Webviz, Page, SubMenu, Markdown, MathJaxPattern, Html
 
 web = Webviz('Main title', theme='minimal')
 
@@ -28,7 +28,12 @@ some_content = ("""
 
 """)
 
+math_formula = '(E=mc^2)，$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$'
+cdn = '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js"></script>'
+
 ex3.add_content(Markdown(some_content))
+ex3.add_content(MathJaxPattern(math_formula))
+
 
 submenu1 = SubMenu('Menu 1')
 submenu2 = SubMenu('Menu 2')

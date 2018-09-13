@@ -25,6 +25,7 @@ from ._page_element import PageElement
 from ._json_page_element import JSONPageElement
 from ._html import Html
 from ._markdown import Markdown
+from ._math import MathJaxPattern
 
 __all__ = [
     'Webviz',
@@ -32,6 +33,7 @@ __all__ = [
     'Page',
     'SubMenu',
     'Markdown',
+    'MathJaxPattern',
     'PageElement',
     'Theme',
     'JSONPageElement'

@@ -17,7 +17,8 @@ setup(
         'six',
         'argparse',
         'pyyaml',
-        'future'],
+        'future',
+        'python-markdown-math'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'mock', 'pycodestyle'],
     entry_points={

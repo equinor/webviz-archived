@@ -21,11 +21,11 @@ class TestBannerExample(unittest.TestCase):
         image = '{0}/test_image.svg'.format(exampledir)
         os.system('python {0} {1}'.format(script, image))
 
-        chromeOptions = Options()
-        chromeOptions.add_argument("--headless")
-        chromeOptions.add_argument("--no-sandbox")
-        chromeOptions.add_argument("--disable-gpu")
-        cls.driver = webdriver.Chrome(chrome_options=chromeOptions)
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-gpu")
+        cls.driver = webdriver.Chrome(options=options)
 
     @classmethod
     def tearDownClass(cls):

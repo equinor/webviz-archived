@@ -8,6 +8,7 @@ from webviz._utils import (
     get_relative_path,
     get_page,
     get_template_arguments,
+    get_element,
     dir_contains_md_file
 )
 
@@ -105,7 +106,11 @@ class TestWebviz(unittest.TestCase):
             'sub_dir/index.html'
         )
 
-    def test_get_template_arguments(self):
+    def test_get_template_arguments_should_return_arguments(self):
+        '''
+            get_template_arguments should return arguments if given
+            template_node containing it
+        '''
         template_node = nodes.Template([
             nodes.Output(
                [nodes.Call(
@@ -145,6 +150,65 @@ class TestWebviz(unittest.TestCase):
                 {'flag': True, 'list': ['item_1', 'item_2']}
             )
         )
+
+    def test_get_template_arguments_should_return_none(self):
+        '''
+            get_template_arguments should return None if
+            template_node's body is empty
+        '''
+        self.assertIsNone(
+            get_template_arguments(
+                template_node=nodes.Template([]),
+                root='.',
+                top_directory='.'
+            )
+        )
+
+    def test_get_element_should_return_element(self):
+        '''
+            get_element should return element if template_arguments
+            match page_elements
+        '''
+        element_mock_1 = Mock(return_value='element_1')
+        element_mock_2 = Mock(return_value='element_2')
+        page_elements = {
+            'el_1': element_mock_1,
+            'el_2': element_mock_2
+        }
+        name = 'el_1'
+        args = ('argument_1', 'argument_2')
+        kwargs = {
+            'key_1': 'value_1',
+            'key_2': 'value_2'
+        }
+        template_arguments = (name, args, kwargs)
+        element = get_element(
+            page_elements=page_elements,
+            template_arguments=template_arguments
+        )
+        self.assertEqual(element, 'element_1')
+        element_mock_1.assert_called_once_with(*args, **kwargs)
+        element_mock_2.assert_not_called()
+
+    def test_get_element_should_return_none(self):
+        '''
+            get_element should return None if given template_arguments
+            are None
+        '''
+        element_mock_1 = Mock(return_value='element_1')
+        element_mock_2 = Mock(return_value='element_2')
+        page_elements = {
+            'el_1': element_mock_1,
+            'el_2': element_mock_2
+        }
+        self.assertIsNone(
+            get_element(
+                page_elements=page_elements,
+                template_arguments=None
+            )
+        )
+        element_mock_1.assert_not_called()
+        element_mock_2.assert_not_called()
 
     def test_dir_contains_md_file_returns_true(self):
         '''

@@ -23,7 +23,7 @@ export default class SVGTransform {
         const transformations = transformString.match(this.TRANSFORM_REGEX)
 
         transformations.forEach(transform => {
-            const methodAndValues = transformations[transform].match(/[\w.-]+/g)
+            const methodAndValues = transform.match(/[\w.-]+/g)
             const method = methodAndValues.shift()
 
             transformObj[method] = methodAndValues

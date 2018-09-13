@@ -15,7 +15,7 @@ env = jinja2.Environment(
 
 
 class Map(JSONPageElement):
-    def __init__(self, cells, layer_names = []):
+    def __init__(self, cells, layer_names=[]):
         super(Map, self).__init__()
 
         if isinstance(cells, pd.DataFrame):
@@ -23,7 +23,6 @@ class Map(JSONPageElement):
         else:
             self.cells = pd.read_csv(cells)
             self.cells.set_index(['i', 'j', 'k'], inplace=True)
-
 
         self['layerNames'] = layer_names
         self['layers'] = self.make_layers(self.cells)
@@ -36,11 +35,13 @@ class Map(JSONPageElement):
             if i not in layers[k]:
                 layers[k][i] = {}
             if j not in layers[k][i]:
-                layers[k][i][j] = {'i':i, 'j':j, 'k':k}
+                layers[k][i][j] = {'i': i, 'j': j, 'k': k}
 
             layers[k][i][j]['points'] = []
             for n in range(4):
-                layers[k][i][j]['points'].append([row['x{}'.format(n)],row['y{}'.format(n)]])
+                layers[k][i][j]['points'].append(
+                    [row['x{}'.format(n)],
+                     row['y{}'.format(n)]])
             self.has_flow_layer = 'FLOWI+' in row
             if self.has_flow_layer:
                 layers[k][i][j]['FLOWI+'] = row['FLOWI+']
@@ -50,7 +51,6 @@ class Map(JSONPageElement):
         self.set_negative_flow(layers)
         return [[cell for row in itervalues(layer) for cell in itervalues(row)]
                 for layer in itervalues(layers)]
-
 
     @staticmethod
     def set_negative_flow(layers):
@@ -65,7 +65,6 @@ class Map(JSONPageElement):
                         cell['FLOWJ-'] = layers[k][i][j-1]['FLOWJ+']
                     else:
                         cell['FLOWJ-'] = 0
-
 
     def get_template(self):
         """

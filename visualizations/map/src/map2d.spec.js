@@ -34,8 +34,7 @@ describe('Map2d', () => {
                 minVal: 0,
                 maxVal: 0,
             },
-            coords: [[0, 0]],
-            values: [[0]],
+            layers: [[{ points: [[]], value: 0 }]],
         })
         return map
     }

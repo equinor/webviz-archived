@@ -14,7 +14,8 @@ class TestMinimalExample(unittest.TestCase):
         cls.tempdir = tempfile.mkdtemp()
         os.chdir(cls.tempdir)
 
-        os.system('python {}/../examples/minimal_example.py'.format(thisdir))
+        command = 'python {}/../examples/minimal_example.py'.format(thisdir)
+        cls.ret = os.system(command)
 
         chromeOptions = Options()
         chromeOptions.add_argument("--headless")
@@ -30,6 +31,9 @@ class TestMinimalExample(unittest.TestCase):
     def setUp(self):
         address = 'file://{}/webviz_example/index.html'.format(self.tempdir)
         self.driver.get(address)
+
+    def test_return_value(self):
+        self.assertEqual(self.ret, 0)
 
     def test_six_menu_items(self):
         menu_items = self.driver.find_elements_by_xpath('//ul//li')

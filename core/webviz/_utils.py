@@ -15,8 +15,10 @@ def get_page_elements():
 
 def get_html(env, full_file_name, element):
     untemplated_markdown = ''
-    if element is not None:
-        markdown_template = env.get_template(full_file_name)
+    markdown_template = env.get_template(full_file_name)
+    if element is None:
+        untemplated_markdown = markdown_template.render()
+    else:
         template = element.get_template()
         untemplated_markdown = markdown_template.render(
             page_element=lambda name, *args, **kwargs: template.render(

@@ -29,7 +29,7 @@ class Plotly(JSONPageElement):
 
     DISALLOWED_BUTTONS = ['sendDataToCloud', 'resetScale2d']
 
-    def __init__(self, data, layout={}, config={}):
+    def __init__(self, data, layout={}, config={}, xaxis=None, yaxis=None):
         super(Plotly, self).__init__()
 
         if 'displaylogo' not in config:
@@ -43,6 +43,15 @@ class Plotly(JSONPageElement):
                     config['modeBarButtonsToRemove'].append(button)
                     warnings.warn('Including {} required.'.format(button),
                                   Warning)
+
+        titlefont = dict(
+            family='Courier New, monospace',
+            size=18,
+            color='#7f7f7f'
+        )
+
+        layout['xaxis'] = dict(title=xaxis, titlefont=titlefont)
+        layout['yaxis'] = dict(title=yaxis, titlefont=titlefont)
 
         self['data'] = data
         self['config'] = config

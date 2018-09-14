@@ -17,6 +17,8 @@ class LineChart(FilteredPlotly):
             config={},
             **kwargs)
 
+        print('Init line')
+
     def process_data(self, data):
         x = data.index.tolist()
 

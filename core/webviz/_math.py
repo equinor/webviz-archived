@@ -23,7 +23,6 @@ class MathJaxPattern(PageElement, markdown.inlinepatterns.Pattern):
 
         config = (
             """
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js"></script>
             <script type="text/x-mathjax-config">
                 MathJax.Hub.Register.StartupHook("End Jax",function () {
                     var BROWSER = MathJax.Hub.Browser;
@@ -31,22 +30,26 @@ class MathJaxPattern(PageElement, markdown.inlinepatterns.Pattern):
                     if (BROWSER.isMSIE && BROWSER.hasMathPlayer) jax = "NativeMML";
                     return MathJax.Hub.setRenderer(jax);
                 });
-            </script>"""
+            </script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js"></script>
+            """
         )
 
-        self._rendered = markdown.markdown(
-            config,
-            extensions=['mdx_math'],
-            extension_configs={
-                'mdx-math': {'enable_dollar_delimiter': True}
-            }
-        )
+        # self._rendered = markdown.markdown(
+        #     config,
+        #     extensions=['mdx_math'],
+        #     extension_configs={
+        #         'mdx-math': {'enable_dollar_delimiter': True}
+        #     }
+        # )
 
-        self._rendered += extension.convert(self._md)
+        # self._rendered = extension.convert(config)
+
+        self._rendered = extension.convert(self._md)
 
         self._rendered += extension.convert(r'$${a}_{b}$$ $${c}_{d}$$')
 
-        print(self._rendered)
+        print('Redered result: ', self._rendered)
 
     def get_template(self):
         return jinja2.Template(self._rendered)

@@ -83,20 +83,22 @@ class TestWebviz(unittest.TestCase):
     def test_get_full_path(self):
         self.assertEqual(
             get_full_path('user/dir/dir', './file.md'),
-            'user/dir/dir/./file.md'
+            'user/dir/dir/file.md'
         )
 
         self.assertEqual(
             get_full_path('user/dir/dir', '../file.md'),
-            'user/dir/dir/../file.md'
+            'user/dir/file.md'
         )
 
         self.assertEqual(
             get_full_path('user/dir/dir', './sub_dir/file.md'),
-            'user/dir/dir/./sub_dir/file.md'
+            'user/dir/dir/sub_dir/file.md'
         )
 
     def test_get_relative_path(self):
+        cwd_patch = patch('os.getcwd', return_value='user')
+        cwd_patch.start()
         self.assertEqual(
             get_relative_path(
                 original_path='./index.html',
@@ -105,6 +107,7 @@ class TestWebviz(unittest.TestCase):
             ),
             'sub_dir/index.html'
         )
+        cwd_patch.stop()
 
     def test_get_template_arguments_should_return_arguments(self):
         '''
@@ -137,12 +140,13 @@ class TestWebviz(unittest.TestCase):
                )]
             )
         ])
-
+        cwd_patch = patch('os.getcwd', return_value='root')
+        cwd_patch.start()
         self.assertEqual(
             get_template_arguments(
                 template_node=template_node,
-                root='.',
-                top_directory='.'
+                root='root',
+                top_directory='root'
             ),
             (
                 'ChartType',
@@ -150,6 +154,7 @@ class TestWebviz(unittest.TestCase):
                 {'flag': True, 'list': ['item_1', 'item_2']}
             )
         )
+        cwd_patch.stop()
 
     def test_get_template_arguments_should_return_none(self):
         '''

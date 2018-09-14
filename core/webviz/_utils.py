@@ -53,7 +53,8 @@ def get_page(filename, name, web):
 
 
 def get_full_path(root, original_path):
-    return os.path.join(root, original_path)
+    full_path = os.path.join(root, original_path)
+    return os.path.normpath(full_path)
 
 
 def get_relative_path(original_path, root, top_directory):

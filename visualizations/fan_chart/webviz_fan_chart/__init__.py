@@ -2,6 +2,7 @@ from webviz_plotly import FilteredPlotly
 import pandas as pd
 import matplotlib.cm as cm
 import math
+from past.builtins import basestring
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -154,7 +155,7 @@ class FanChart(FilteredPlotly):
         that will determine the size of the marker (in height)
     """
     def __init__(self, data, observations=None, *args, **kwargs):
-        if isinstance(observations, str):
+        if isinstance(observations, basestring):
             self.observations = pd.read_csv(observations)
         else:
             self.observations = observations

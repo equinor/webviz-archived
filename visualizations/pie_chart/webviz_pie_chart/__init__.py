@@ -1,6 +1,7 @@
 from webviz_plotly import Plotly
 import pandas as pd
 import math
+from past.builtins import basestring
 
 
 class PieChart(Plotly):
@@ -14,7 +15,7 @@ class PieChart(Plotly):
     """
     def __init__(self, data, num_per_row=4):
         frame = data
-        if isinstance(data, str):
+        if isinstance(data, basestring):
             frame = pd.read_csv(data)
         frame = frame.copy()
 

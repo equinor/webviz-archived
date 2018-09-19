@@ -4,6 +4,7 @@ import re
 import shutil
 from uuid import uuid4
 from six import itervalues
+from past.builtins import basestring
 
 
 class WebvizWriter(object):
@@ -164,7 +165,7 @@ class WebvizWriter(object):
             if not os.path.exists(dest):
                 os.makedirs(dest)
 
-            if isinstance(src_file, str):
+            if isinstance(src_file, basestring):
                 target_name = path.basename(src_file)
                 shutil.copy(src_file, dest)
             else:

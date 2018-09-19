@@ -2,6 +2,7 @@ from webviz_plotly import Plotly
 import pandas as pd
 import matplotlib.cm as cm
 import numbers
+from past.builtins import basestring
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -105,7 +106,7 @@ class ScatterPlotMatrix(Plotly):
         `name` is used to distinguish points.
     """
     def __init__(self, data):
-        if isinstance(data, str):
+        if isinstance(data, basestring):
             self.data = validate_data_format(pd.read_csv(data))
         else:
             self.data = data

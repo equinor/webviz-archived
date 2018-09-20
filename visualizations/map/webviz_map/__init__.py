@@ -15,7 +15,7 @@ env = jinja2.Environment(
 
 
 class Map(JSONPageElement):
-    def __init__(self, cells, layer_names=[]):
+    def __init__(self, cells, layer_names=None):
         super(Map, self).__init__()
 
         if isinstance(cells, pd.DataFrame):
@@ -24,8 +24,18 @@ class Map(JSONPageElement):
             self.cells = pd.read_csv(cells)
             self.cells.set_index(['i', 'j', 'k'], inplace=True)
 
-        self['layerNames'] = layer_names
+        if layer_names:
+            self['layerNames'] = layer_names
+        else:
+            self['layerNames'] = []
+
         self['layers'] = self.make_layers(self.cells)
+
+        self.add_js_file(path.join(
+            path.dirname(__file__),
+            'resources',
+            'js',
+            'map.js'))
 
     def make_layers(self, cells):
         layers = {}
@@ -71,14 +81,3 @@ class Map(JSONPageElement):
         Overrides :meth:`webviz.PageElement.get_template`.
         """
         return env.get_template('map.html')
-
-    def get_js_dep(self):
-        """Extends :meth:`webviz.PageElement.get_js_dep`."""
-        deps = super(Map, self).get_js_dep()
-        map_js = path.join(
-            path.dirname(__file__),
-            'resources',
-            'js',
-            'map.js')
-        deps.append(map_js)
-        return deps

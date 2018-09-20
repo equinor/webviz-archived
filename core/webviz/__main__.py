@@ -9,6 +9,7 @@ from yaml import load
 from six import itervalues
 
 from ._webviz import Webviz, Page, SubMenu
+from ._header_element import HeaderElement
 from ._html import Html
 
 
@@ -107,18 +108,13 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
                 page = Page(name)
 
             html = Html(rendered)
-            for element in collected_elements:
-                for js in element.get_js_dep():
-                    html.add_js_dep(js)
-                for css in element.get_css_dep():
-                    html.add_css_dep(css)
-            html.add_css_dep(
-                path.join(
-                    path.dirname(__file__),
-                    'resources',
-                    'css',
-                    'codehilite.css')
-            )
+            html.header_elements = html.header_elements.union(
+                *(e.header_elements for e in collected_elements))
+            html.add_css_file(path.join(
+                path.dirname(__file__),
+                'resources',
+                'css',
+                'codehilite.css'))
 
             page.add_content(html)
             if filename != 'index.md':

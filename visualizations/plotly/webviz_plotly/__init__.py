@@ -49,6 +49,12 @@ class Plotly(JSONPageElement):
         self['config'] = config
         self['layout'] = layout
 
+        self.add_js_file(path.join(
+            path.dirname(__file__),
+            'resources',
+            'js',
+            'plotly.js'))
+
     def add_annotation(self, **kwargs):
         if 'annotations' not in self['layout']:
             self['layout']['annotations'] = []
@@ -60,17 +66,6 @@ class Plotly(JSONPageElement):
         Overrides :meth:`webviz.PageElement.get_template`.
         """
         return env.get_template('plotly.html')
-
-    def get_js_dep(self):
-        """Extends :meth:`webviz.PageElement.get_js_dep`."""
-        deps = super(Plotly, self).get_js_dep()
-        plotly_js = path.join(
-            path.dirname(__file__),
-            'resources',
-            'js',
-            'plotly.js')
-        deps.append(plotly_js)
-        return deps
 
 
 class FilteredPlotly(Plotly):
@@ -144,6 +139,11 @@ class FilteredPlotly(Plotly):
             filtered_data,
             *args,
             **kwargs)
+        self.add_js_file(path.join(
+            path.dirname(__file__),
+            'resources',
+            'js',
+            'filtered_plotly.js'))
 
         self['check_box_filters'] = [str(label) for label in check_box_columns]
         if check_box:
@@ -161,17 +161,6 @@ class FilteredPlotly(Plotly):
                                   key in slider_columns[:]}
         self['dropdown_filters'] = {key: self.labels[key] for
                                     key in dropdown_columns[:]}
-
-    def get_js_dep(self):
-        """Extends :py:meth:webviz.PageElement.get_js_dep"""
-        deps = super(FilteredPlotly, self).get_js_dep()
-        plotly_js = path.join(
-            path.dirname(__file__),
-            'resources',
-            'js',
-            'filtered_plotly.js')
-        deps.append(plotly_js)
-        return deps
 
     def get_template(self):
         """

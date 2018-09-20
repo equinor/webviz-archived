@@ -18,6 +18,7 @@ setup(
         'pygments',
         'six',
         'argparse',
+        'ordered-set',
         'pyyaml',
         'future'],
     setup_requires=['pytest-runner'],

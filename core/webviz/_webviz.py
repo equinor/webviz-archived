@@ -4,19 +4,11 @@ from builtins import str as text
 import jinja2
 import pkg_resources
 from six import iteritems
+from os import path
+from ordered_set import OrderedSet
+from ._header_element import HeaderElement
 from ._page_element import PageElement
 from ._webviz_writer import WebvizWriter
-
-
-def ordered_union(a, b):
-    """
-    Appends all elements of b, that are not in a, at the end of b.
-    """
-    result = a[:]
-    for elem in b:
-        if elem not in a:
-            result.append(elem)
-    return result
 
 
 def escape_all(html):
@@ -71,29 +63,15 @@ class Page(object):
         self.contents.append(content)
 
     @property
-    def css_dep(self):
+    def header_elements(self):
         """
         :returns: The set of `css` dependencies for all page elements
             in the page
         """
-        css_dep = set()
-        for content in self.contents:
-            css_dep = css_dep.union(set(content.get_css_dep()))
-        return css_dep
-
-    @property
-    def js_dep(self):
-        """
-        :returns: The list of `js` dependencies for all page elements
-            in the page.
-        """
-        js_dep = []
-        for content in self.contents:
-            content_deps = content.get_js_dep()
-            for js in content_deps:
-                if js not in js_dep:
-                    js_dep.append(js)
-        return js_dep
+        elements = OrderedSet()
+        elements = elements.union(
+            *(content.header_elements for content in self.contents))
+        return elements
 
 
 class SubMenu(object):
@@ -239,16 +217,35 @@ class Webviz(object):
         """
         template = self._env.get_template('main.html')
 
-        js_deps = set()
-        css_deps = set()
-        for page in self.pages:
-            js_deps = js_deps.union(page.js_dep)
-        js_deps = js_deps.union(self.index.js_dep)
-        js_deps = js_deps.union(self._theme.js_files)
-        for page in self.pages:
-            css_deps = css_deps.union(page.css_dep)
-        css_deps = css_deps.union(self.index.css_dep)
-        css_deps = css_deps.union(self._theme.css_files)
+        all_pages = self.pages + [self.index]
+        header_elements = OrderedSet()
+        header_elements = header_elements.union(
+            *[page.header_elements for page in all_pages])
+        theme_header_elements = OrderedSet()
+        for absolute_path in self._theme.js_files:
+            basename = path.basename(absolute_path)
+            location = path.join('resources', 'js', basename)
+            theme_header_elements.add(HeaderElement(
+                tag='script',
+                attributes={
+                    'src': path.join('{root_folder}', location)
+                    },
+                source_file=absolute_path,
+                target_file=location,
+                copy_file=True))
+        for absolute_path in self._theme.css_files:
+            basename = path.basename(absolute_path)
+            location = path.join('resources', 'css', basename)
+            theme_header_elements.add(HeaderElement(
+                tag='link',
+                attributes={
+                    'rel': 'stylesheet',
+                    'type': 'text/css',
+                    'href': path.join('{root_folder}', location)
+                    },
+                source_file=absolute_path,
+                target_file=location,
+                copy_file=True))
 
         with WebvizWriter(destination,
                           self.__dict__,
@@ -266,27 +263,15 @@ class Webviz(object):
                     self.banner_image,
                     subdir='img')
 
-            js_written = {js: writer.write_js_file(js) for js in js_deps}
-            css_written = {css: writer.write_css_file(css) for css in css_deps}
-            theme_js_written = [js_written[js] for js in self._theme.js_files]
-            theme_css_written = [css_written[css]
-                                 for css in self._theme.css_files]
-
+            for element in theme_header_elements:
+                writer.add_global_header_element(element)
             for location, resources in iteritems(self._theme.resources):
                 for resource in resources:
-                    writer.write_resource(resource, subdir=location)
-
-            all_pages = self.pages[:]
-            all_pages.append(self.index)
-            for page in all_pages:
-                page.js_files = ordered_union(
-                        [js_written[js] for js in page.js_dep],
-                        theme_js_written
-                )
-                page.css_files = ordered_union(
-                        [css_written[css] for css in page.css_dep],
-                        theme_css_written
-                )
+                    writer.write_resource(
+                        resource,
+                        subdir=location)
+            for element in header_elements:
+                writer.add_header_element(element)
             for page in self.pages:
                 writer.write_sub_page(page)
             writer.write_index_page(self.index)

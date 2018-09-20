@@ -50,12 +50,6 @@ class TestPage(unittest.TestCase):
         web.add(page)
         tempdir = tempfile.mkdtemp()
         web.write_html(tempdir, overwrite=True, display=False)
-        js_deps = self.json_content.get_js_dep()
-        path.isfile(path.join(
-            tempdir,
-            'resources',
-            'js',
-            js_deps[0].name))
 
     def test_dump_json(self):
         data = {'a': numpy.int64(3), 'b': numpy.float64(3)}
@@ -100,10 +94,13 @@ class TestPage(unittest.TestCase):
         page2 = Page('2')
         page2.add_content(content2)
 
-        jsdeps1 = [x.name for x in page1.js_dep]
-        jsdeps2 = [x.name for x in page2.js_dep]
+        content1.dump_all_jsons()
+        content2.dump_all_jsons()
 
-        self.assertEqual(len(set(jsdeps1 + jsdeps2)), 3)
+        e1 = page1.header_elements
+        e2 = page2.header_elements
+
+        self.assertEqual(len(e1.union(e2)), 3)
 
 
 if __name__ == '__main__':

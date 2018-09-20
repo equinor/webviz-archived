@@ -27,22 +27,7 @@ def is_dir(dirname):
         return dirname
 
 
-page_elements = {}
-for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
-    page_elements[entry_point.name] = entry_point.load()
-
-
-collected_elements = []
-
-
-def page_element(name, *args, **kwargs):
-    element = page_elements[name](*args, **kwargs)
-    collected_elements.append(element)
-    template = element.get_template()
-    return template.render(element=element)
-
-
-def read_config():
+def read_config(root_folder):
     configfile = path.join(root_folder, 'config.yaml')
     config = {
         'theme': 'default',
@@ -68,64 +53,78 @@ def init_parser():
     return parser
 
 
-root_folder = init_parser().parse_args().site_folder
+def main():
+    page_elements = {}
+    for entry_point in pkg_resources.iter_entry_points('webviz_page_elements'):
+        page_elements[entry_point.name] = entry_point.load()
 
-env = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(root_folder),
-)
+    collected_elements = []
+    root_folder = init_parser().parse_args().site_folder
 
-config = read_config()
+    def page_element(name, *args, **kwargs):
+        element = page_elements[name](*args, **kwargs)
+        collected_elements.append(element)
+        template = element.get_template()
+        return template.render(element=element)
 
-prevdir = os.getcwd()
-submenus = {}
-web = Webviz(config['title'], theme=config['theme'])
-web.add_page = web.add
-submenus[root_folder] = web
-os.chdir(root_folder)
-for root, dirs, files in os.walk(root_folder, topdown=True):
-    dirs[:] = [d for d in dirs if d != 'html_output']
-    for dirname in dirs:
-        submenus[path.join(root, dirname)] = SubMenu(dirname)
-    for filename in files:
-        name, ext = path.splitext(filename)
-        if ext == '.md':
-            templ = env.get_template(
-                path.relpath(path.join(root, filename), root_folder))
-            collected_elements = []
-            untemplated_markdown = templ.render(page_element=page_element)
-            rendered = markdown.markdown(
-                untemplated_markdown,
-                extensions=[
-                    'markdown.extensions.tables',
-                    'markdown.extensions.codehilite'
-                ]
-            )
-            page = None
-            if filename == 'index.md':
-                page = web.index
-            else:
-                page = Page(name)
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(root_folder),
+    )
 
-            html = Html(rendered)
-            for element in collected_elements:
-                for js in element.get_js_dep():
-                    html.add_js_dep(js)
-                for css in element.get_css_dep():
-                    html.add_css_dep(css)
-            html.add_css_dep(
-                path.join(
-                    path.dirname(__file__),
-                    'resources',
-                    'css',
-                    'codehilite.css')
-            )
+    config = read_config(root_folder)
+    submenus = {}
+    web = Webviz(config['title'], theme=config['theme'])
+    web.add_page = web.add
+    submenus[root_folder] = web
+    os.chdir(root_folder)
+    for root, dirs, files in os.walk(root_folder, topdown=True):
+        dirs[:] = [d for d in dirs if d != 'html_output']
+        for dirname in dirs:
+            submenus[path.join(root, dirname)] = SubMenu(dirname)
+        for filename in files:
+            name, ext = path.splitext(filename)
+            if ext == '.md':
+                templ = env.get_template(
+                    path.relpath(path.join(root, filename), root_folder))
+                collected_elements = []
+                untemplated_markdown = templ.render(page_element=page_element)
+                rendered = markdown.markdown(
+                    untemplated_markdown,
+                    extensions=[
+                        'markdown.extensions.tables',
+                        'markdown.extensions.codehilite'
+                    ]
+                )
+                page = None
+                if filename == 'index.md':
+                    page = web.index
+                else:
+                    page = Page(name)
 
-            page.add_content(html)
-            if filename != 'index.md':
-                submenus[root].add_page(page)
+                html = Html(rendered)
+                for element in collected_elements:
+                    for js in element.get_js_dep():
+                        html.add_js_dep(js)
+                    for css in element.get_css_dep():
+                        html.add_css_dep(css)
+                html.add_css_dep(
+                    path.join(
+                        path.dirname(__file__),
+                        'resources',
+                        'css',
+                        'codehilite.css')
+                )
 
-for submenu in itervalues(submenus):
-    if isinstance(submenu, SubMenu):
-        web.add(submenu)
+                page.add_content(html)
+                if filename != 'index.md':
+                    submenus[root].add_page(page)
 
-web.write_html(path.join(root_folder, 'html_output'), overwrite=True)
+    for submenu in itervalues(submenus):
+        if isinstance(submenu, SubMenu):
+            web.add(submenu)
+
+    web.write_html(path.join(root_folder, 'html_output'), overwrite=True)
+
+
+if __name__ == '__main__':
+    main()

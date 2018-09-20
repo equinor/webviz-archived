@@ -51,11 +51,13 @@ class TestSiteExample(unittest.TestCase):
         sub_pages = self.driver.find_elements_by_xpath('//ul//ul//li')
         self.assertEqual(len(sub_pages), 1)
 
-    def test_containts_html_element(self):
+    def test_containts_html_elements(self):
         link = self.driver.find_element_by_css_selector('li > a')
         link.click()
         menu = self.driver.find_element_by_id('htmlTitle')
+        paragraph = self.driver.find_element_by_id('htmlParagraph')
         self.assertIn(u'html element title', menu.get_attribute('innerHTML'))
+        self.assertIn(u'Lorem ipsum', paragraph.get_attribute('innerHTML'))
 
     def test_css_moved(self):
         self.assertTrue(path.isfile(path.join(

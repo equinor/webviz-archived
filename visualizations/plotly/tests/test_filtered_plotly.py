@@ -1,6 +1,7 @@
 import unittest
-import pandas as pd
 import warnings
+import os
+import pandas as pd
 from pandas.compat import StringIO
 from six import itervalues
 
@@ -51,9 +52,10 @@ index,data1,data2
 
     def testJsDep(self):
         filtered = MockElement(self.data, check_box_columns=['data2'])
-        self.assertTrue(any(
-            'filtered_plotly.js'
-            in file for file in filtered.get_js_dep()))
+        self.assertIn(
+            'filtered_plotly.js',
+            [os.path.basename(e.target_file)
+             for e in filtered.header_elements])
 
     def testNonStringLabels(self):
         filtered = MockElement(self.data, dropdown_columns=['data2'])

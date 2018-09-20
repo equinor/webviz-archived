@@ -7,10 +7,11 @@ import datetime
 from six import iteritems, itervalues
 
 from ._page_element import PageElement
+from ._header_element import HeaderElement
+from os import path
 from builtins import str as text
 
-_json_store_init = StringIO(u'var json_store={};')
-_json_store_init.name = 'json_store_init.js'
+_json_store_init = HeaderElement(tag='script', content=u'var json_store={};')
 
 
 def default(data):
@@ -69,7 +70,7 @@ class JSONPageElement(PageElement):
         self._json_dump = {}
         self._json_params = {}
         self._json_id = {}
-        self._streams = {}
+        self._json_header_elements = {}
 
     def __getitem__(self, key):
         return self._json_params[key]
@@ -117,16 +118,21 @@ class JSONPageElement(PageElement):
         for key in self._json_params:
             if not self.is_dumped(key):
                 self.dump_json_key(key)
-        return self._json_dump
 
-    def get_js_dep(self):
-        """ Overrides :py:meth:`webviz.PageElement.get_js_dep`."""
-        self.dump_all_jsons()
         for key, json_dump in iteritems(self._json_dump):
-            if key not in self._streams:
-                jio = StringIO(text(json_dump))
-                jio.name = 'json_dump_' + str(uuid4()) + '.js'
-                self._streams[key] = jio
+            if key not in self._json_header_elements:
+                filename = 'json_dump_' + str(uuid4()) + '.js'
+                destination = path.join('resources', 'js', filename)
+                dump = len(json_dump) > 100
+                element = HeaderElement(
+                    tag='script',
+                    attributes={
+                        'src': path.join('{root_folder}', destination)
+                    } if dump else {},
+                    content=json_dump,
+                    target_file=destination,
+                    dump_content=dump)
+                self._json_header_elements[key] = element
         result = [_json_store_init]
-        result.extend(list(itervalues(self._streams)))
-        return result
+        result.extend(list(itervalues(self._json_header_elements)))
+        self.header_elements = self.header_elements.union(result)

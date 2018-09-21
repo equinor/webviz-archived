@@ -15,7 +15,8 @@ class TornadoPlot(FilteredPlotly):
             layout={
                 'barmode': 'relative',
                 'showlegend': False,
-                'yaxis': {'automargin': True}
+                'yaxis': {'automargin': True,
+                          'autorange': 'reversed'}
                 },
             config={},
             **kwargs)
@@ -36,6 +37,7 @@ class TornadoPlot(FilteredPlotly):
                 }
             }
         }
+
         high_bars = {
             'type': 'bar',
             'name': 'high',
@@ -55,6 +57,7 @@ class TornadoPlot(FilteredPlotly):
         for index, row in data.iterrows():
             high_bars['y'].append(index)
             low_bars['y'].append(index)
+
             if row['high'] > 0:
                 base = max(0, row['low'])
                 high_bars['x'].append(row['high'] - base)
@@ -70,5 +73,10 @@ class TornadoPlot(FilteredPlotly):
             else:
                 low_bars['x'].append(0)
                 low_bars['base'].append(row['low'])
+
+        if 'leftlabel' in data:
+            low_bars['text'] = data['leftlabel'].fillna('').tolist()
+        if 'rightlabel' in data:
+            high_bars['text'] = data['rightlabel'].fillna('').tolist()
 
         return [low_bars, high_bars]

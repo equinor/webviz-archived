@@ -7,8 +7,9 @@ about: Create a report to help us improve
 <!--
   Thanks for opening an issue! A few things to keep in mind:
   
+  - Before submitting a new issue, please search for a similar issue among existing and closed issues.
   - The issue tracker is only for bugs and feature requests.
-  - Before reporting a bug, please make sure you have the latest version of Webviz and try to do a clean install of the project.
+  - Before reporting a bug, please make sure you have the latest version of Webviz and try to recreate the issue after a clean install of the project.
   -->
 Operating system: 
 

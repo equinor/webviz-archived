@@ -17,7 +17,7 @@ When creating a new issue, please use this format when explaining your problem:
 Fork the project [on Github](https://github.com/Statoil/webviz) and clone your fork locally
 ```sh
 $ git clone git@github.com:username/webviz.git
-$ cd electron
+$ cd webviz
 $ git remote add upstream https://github.com/Statoil/webviz.git
 $ git fetch upstream
 ```
@@ -45,17 +45,17 @@ test rate, this has to be argued for, and the reviewer will have to decide if it
 to lower the treshold. 
 
 ### Step 5: Commit
-Add the changed files to a commit. _Note: package.lock files should not be included, as they
+Add the changed files to a commit. _Note: package-lock.json files should not be included, as they
 are updated in a dedicated pull request._
 
 ```sh
 $ git add my/changed/files
 $ git commit -m "Describing message about what you have done"
 ```
-Please be specific when writing the pull request message. You can also tagg your message
+Please be specific when writing the pull request message. You can also tag your message
 with the issue you are solving by putting the issue number in a hashtag at the end
 of the commit message. _Note: this __has__ to be at the end of the message, as everything 
-else after the hashag gets escaped_
+else after the hashtag gets escaped_
 
 ### Step 6: Ready pull request
 ##### Rebase

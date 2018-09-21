@@ -37,7 +37,6 @@ class TornadoPlot(FilteredPlotly):
                 }
             }
         }
-
         high_bars = {
             'type': 'bar',
             'name': 'high',
@@ -57,7 +56,6 @@ class TornadoPlot(FilteredPlotly):
         for index, row in data.iterrows():
             high_bars['y'].append(index)
             low_bars['y'].append(index)
-
             if row['high'] > 0:
                 base = max(0, row['low'])
                 high_bars['x'].append(row['high'] - base)

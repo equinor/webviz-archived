@@ -36,4 +36,4 @@ plot.add_annotation(
         text='label')
 page.add_content(plot)
 web.add(page)
-web.write_html("./webviz_example", overwrite=True, display=True)
+web.write_html("./webviz_example", overwrite=True, display=False)

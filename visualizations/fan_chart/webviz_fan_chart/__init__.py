@@ -267,9 +267,9 @@ class FanChart(FilteredPlotly):
                 if row['name'] in uniquelines:
                     lines.append(
                         make_marker(
-                            row,
-                            i,
-                            format_color(colors[row['name']], 1)
+                            obs=row,
+                            index=i,
+                            color=format_color(colors[row['name']], 1)
                         )
                     )
         return lines

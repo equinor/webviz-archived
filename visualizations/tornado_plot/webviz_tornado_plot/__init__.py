@@ -9,13 +9,14 @@ class TornadoPlot(FilteredPlotly):
         'low' and 'high' describing.
     :param high_text: Optional text for
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, xaxis=None, yaxis=None, **kwargs):
         super(TornadoPlot, self).__init__(
             *args,
             layout={
                 'barmode': 'relative',
                 'showlegend': False,
-                'yaxis': {'automargin': True}
+                'xaxis': {'title': xaxis},
+                'yaxis': {'automargin': True, 'title': yaxis}
                 },
             config={},
             **kwargs)

@@ -182,6 +182,8 @@ class FanChart(FilteredPlotly):
         Expects `index` parameter to be used as 'x' value, a `name` parameter
         to correspond with a name in the data dataframe, a `value` and `value`
         that will determine the size of the marker (in height)
+    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
+        label for the given axis. Defaults to `None`.
     """
     def __init__(self, data, observations=None, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None

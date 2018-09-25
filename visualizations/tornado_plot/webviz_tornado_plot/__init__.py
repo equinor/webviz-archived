@@ -7,7 +7,9 @@ class TornadoPlot(FilteredPlotly):
     :param data: Either a file path to a `csv` file or a
         :class:`pandas.DataFrame`. There are two columns:
         'low' and 'high' describing.
-    :param high_text: Optional text for
+    :param high_text: Optional text
+    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
+        label for the given axis. Defaults to `None`.
     """
     def __init__(self, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None

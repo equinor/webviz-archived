@@ -13,6 +13,8 @@ class BarChart(FilteredPlotly):
         ``'overlay'``. Defines how multiple bars per index-value are combined.
         See `plotly.js layout-barmode <https://plot.ly/javascript/reference/
         #layout-barmode>`_.
+    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
+        label for the given axis. Defaults to `None`.
     """
     def __init__(self, data, barmode='group', *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None

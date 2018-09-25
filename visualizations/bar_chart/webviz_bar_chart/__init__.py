@@ -14,7 +14,13 @@ class BarChart(FilteredPlotly):
         See `plotly.js layout-barmode <https://plot.ly/javascript/reference/
         #layout-barmode>`_.
     """
-    def __init__(self, data, barmode='group', xaxis=None, yaxis=None, *args,  **kwargs):
+    def __init__(self,
+                 data,
+                 barmode='group',
+                 xaxis=None,
+                 yaxis=None,
+                 *args,
+                 **kwargs):
         super(BarChart, self).__init__(
                 data,
                 *args,

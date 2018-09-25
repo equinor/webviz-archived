@@ -6,16 +6,26 @@ web = Webviz('Tornado Plot Example')
 
 page = Page('Tornado Plot')
 
-high = [0.8, 1, 0.3, 0.4]
-
-low = [0.5, -0.7, -.5, -0.1]
-
 index = ['A', 'B', 'C', 'D']
 
-bars = pd.DataFrame(
-    {'low': low, 'high': high},
-    index=index
-)
+low = [0.5, -0.7, -.5, -0.1]
+high = [0.8, 1, 0.3, 0.4]
+
+leftlabel = ['Left label A',
+             'Left label B',
+             None,
+             'Left label D']
+
+rightlabel = ['Right label A',
+              None,
+              'Right label C',
+              'Right label D']
+
+bars = pd.DataFrame({'low': low,
+                     'high': high,
+                     'leftlabel': leftlabel,
+                     'rightlabel': rightlabel},
+                    index=index)
 
 plot = TornadoPlot(bars)
 plot.add_annotation(

@@ -184,6 +184,9 @@ class FanChart(FilteredPlotly):
         that will determine the size of the marker (in height)
     """
     def __init__(self, data, observations=None, *args, **kwargs):
+        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
+        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+
         if observations is not None:
             if isinstance(observations, pd.DataFrame):
                 self.observations = process_dataframe_format(observations)
@@ -197,6 +200,10 @@ class FanChart(FilteredPlotly):
         super(FanChart, self).__init__(
             data,
             *args,
+            layout={
+                'xaxis': {'title': xaxis},
+                'yaxis': {'title': yaxis}
+            },
             **kwargs)
 
     def process_data(self, data):

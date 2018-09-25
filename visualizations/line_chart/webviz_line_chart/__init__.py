@@ -10,7 +10,9 @@ class LineChart(FilteredPlotly):
         values. Similarly for the `csv` file, where a special column named
         ``index`` will be used for the horizontal values.
     """
-    def __init__(self, *args, xaxis=None, yaxis=None, **kwargs):
+    def __init__(self, *args, **kwargs):
+        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
+        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         super(LineChart, self).__init__(
             *args,
             layout={

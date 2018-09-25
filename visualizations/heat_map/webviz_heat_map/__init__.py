@@ -9,7 +9,10 @@ class HeatMap(FilteredPlotly):
         line in the chart. Similarly for the `csv` file, but a special column
         ``index`` will be used as the horizontal value.
     """
-    def __init__(self, *args, xaxis=None, yaxis=None, **kwargs):
+    def __init__(self, *args, **kwargs):
+        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
+        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+
         super(HeatMap, self).__init__(
             *args,
             layout={

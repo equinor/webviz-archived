@@ -9,7 +9,9 @@ class TornadoPlot(FilteredPlotly):
         'low' and 'high' describing.
     :param high_text: Optional text for
     """
-    def __init__(self, *args, xaxis=None, yaxis=None, **kwargs):
+    def __init__(self, *args, **kwargs):
+        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
+        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         super(TornadoPlot, self).__init__(
             *args,
             layout={

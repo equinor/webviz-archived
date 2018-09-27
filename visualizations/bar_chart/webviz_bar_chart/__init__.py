@@ -33,7 +33,7 @@ class BarChart(FilteredPlotly):
                 config={},
                 **kwargs)
 
-    def process_data(self):
+    def process_data(self, frame):
         x = self.data.index.tolist()
 
         return [{

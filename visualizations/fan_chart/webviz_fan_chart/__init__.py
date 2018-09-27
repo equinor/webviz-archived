@@ -182,8 +182,10 @@ class FanChart(FilteredPlotly):
         Expects `index` parameter to be used as 'x' value, a `name` parameter
         to correspond with a name in the data dataframe, a `value` and `value`
         that will determine the size of the marker (in height)
-    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
-        label for the given axis. Defaults to `None`.
+    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
+    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
+    :param logx: boolean value to toggle x-axis logarithmic scale
+    :param logy: boolean value to toggle y-axis logarithmic scale
     """
     def __init__(self, data, observations=None, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None

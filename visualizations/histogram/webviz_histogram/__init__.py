@@ -21,6 +21,8 @@ class Histogram(FilteredPlotly):
         javascript/reference/#histogram-histnorm>`_.
     :param nbinsx: Maximum number of desired bins. Default value ``0`` will
         generate optimal number of bins.
+    :param logx: boolean value to toggle x-axis logarithmic scale
+    :param logy: boolean value to toggle y-axis logarithmic scale
     """
     def __init__(self,
                  data,

@@ -9,11 +9,19 @@ class ScatterPlot(FilteredPlotly):
         set of points in the chart. The dataframe index is used for the
         horizontal values. Similarly for the `csv` file, where a special column
         named ``index`` will be used for the horizontal values.
+    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
+        label for the given axis. Defaults to `None`.
     """
     def __init__(self, *args, **kwargs):
+        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
+        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+
         super(ScatterPlot, self).__init__(
             *args,
-            layout={},
+            layout={
+                'xaxis': {'title': xaxis},
+                'yaxis': {'title': yaxis}
+            },
             config={},
             **kwargs)
 

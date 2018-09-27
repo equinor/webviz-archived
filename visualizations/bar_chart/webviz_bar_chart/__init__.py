@@ -19,18 +19,19 @@ class BarChart(FilteredPlotly):
     def __init__(self, data, barmode='group', *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        logy = kwargs.pop('logy') if 'logy' in kwargs else False
         super(BarChart, self).__init__(
                 data,
                 *args,
                 layout={
                     'barmode': barmode,
                     'xaxis': {'title': xaxis},
-                    'yaxis': {'title': yaxis}
+                    'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
                 },
                 config={},
                 **kwargs)
 
-    def process_data(self, frame):
+    def process_data(self):
         x = self.data.index.tolist()
 
         return [{

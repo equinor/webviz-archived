@@ -34,6 +34,9 @@ class Histogram(FilteredPlotly):
         self.ylabel = ylabel
         self.histnorm = histnorm
         self.nbinsx = nbinsx
+        logx = kwargs.pop('logx') if 'logx' in kwargs else False
+        logy = kwargs.pop('logy') if 'logy' in kwargs else False
+
         super(Histogram, self).__init__(
             data,
             *args,
@@ -41,8 +44,8 @@ class Histogram(FilteredPlotly):
                 'bargap': 0.05,
                 'bargroupgap': 0.05,
                 'barmode': barmode,
-                'xaxis': {'title': xlabel},
-                'yaxis': {'title': ylabel}},
+                'xaxis': {'title': xlabel, 'type': 'log' if logx else '-'},
+                'yaxis': {'title': ylabel, 'type': 'log' if logy else '-'}},
             config={},
             **kwargs)
 

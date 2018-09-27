@@ -15,12 +15,15 @@ class LineChart(FilteredPlotly):
     def __init__(self, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        logx = kwargs.pop('logx') if 'logx' in kwargs else False
+        logy = kwargs.pop('logy') if 'logy' in kwargs else False
+
         super(LineChart, self).__init__(
             *args,
             layout={
                 'showlegend': True,
-                'xaxis': {'title': xaxis},
-                'yaxis': {'title': yaxis}
+                'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
+                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
             },
             config={},
             **kwargs)

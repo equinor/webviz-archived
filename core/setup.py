@@ -15,6 +15,7 @@ setup(
     install_requires=[
         'jinja2',
         'markdown',
+        'pygments',
         'six',
         'argparse',
         'pyyaml',

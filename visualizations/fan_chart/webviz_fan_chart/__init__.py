@@ -65,9 +65,12 @@ def init_confidence_band(y, mean, x, line, color):
     }
 
 
-def make_observation(obs):
+def make_observation(obs, index):
     """
-    :param obs: DataFrame with columns 'value', 'error', 'index' and 'name'
+    :param
+        obs: DataFrame with columns 'value', 'error' and 'name'
+        index: value for x-axis
+
     :returns: a line representing the error of the given observation.
     """
     return {
@@ -76,8 +79,8 @@ def make_observation(obs):
             obs['value'] - obs['error']
         ],
         'x': [
-            obs['index'],
-            obs['index']
+           index,
+           index
         ],
         'showlegend': False,
         'legendgroup': obs['name'],
@@ -94,7 +97,7 @@ def make_observation(obs):
     }
 
 
-def make_marker(obs, color):
+def make_marker(obs, index, color):
     """
     :param
         obs: Observation point containing 'value', 'index' and 'name'
@@ -107,7 +110,7 @@ def make_marker(obs, color):
             obs['value']
         ],
         'x': [
-            obs['index']
+            index
         ],
         'showlegend': False,
         'legendgroup': obs['name'],
@@ -127,14 +130,41 @@ def make_marker(obs, color):
     }
 
 
+def index_observations(obs):
+    obs.set_index(
+        obs['index'],
+        drop=True,
+        inplace=True
+    )
+    return obs
+
+
 def validate_observation_data(obs):
-    if obs is not None and len(obs.index) > 0:
-        if {'index', 'name', 'value', 'error'} != set(obs.columns):
-            raise ValueError('Observation data is not expected format')
+    if obs is not None and not obs.empty:
+        if any(col not in obs.columns for col in ['error', 'name', 'value']):
+            raise ValueError('Observation data is not expected format: \n'
+                             'Reveived columns: ', obs.columns)
         else:
             return True
     else:
         return False
+
+
+def process_csv_format(obs):
+    if 'index' in obs:
+        return index_observations(obs)
+    else:
+        raise ValueError('Observations from CSV should have an index column')
+
+
+def process_dataframe_format(obs):
+    if validate_observation_data(obs):
+        observations = obs.copy()
+        if 'index' in observations.columns:
+            index_observations(observations)
+        return observations
+    else:
+        return None
 
 
 class FanChart(FilteredPlotly):
@@ -152,16 +182,30 @@ class FanChart(FilteredPlotly):
         Expects `index` parameter to be used as 'x' value, a `name` parameter
         to correspond with a name in the data dataframe, a `value` and `value`
         that will determine the size of the marker (in height)
+    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
+        label for the given axis. Defaults to `None`.
     """
     def __init__(self, data, observations=None, *args, **kwargs):
-        if isinstance(observations, str):
-            self.observations = pd.read_csv(observations)
+        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
+        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+
+        if observations is not None:
+            if isinstance(observations, pd.DataFrame):
+                self.observations = process_dataframe_format(observations)
+            else:
+                self.observations = pd.read_csv(observations)
+                validate_observation_data(pd.DataFrame(self.observations))
+                self.observations = process_csv_format(self.observations)
         else:
-            self.observations = observations
+            self.observations = None
 
         super(FanChart, self).__init__(
             data,
             *args,
+            layout={
+                'xaxis': {'title': xaxis},
+                'yaxis': {'title': yaxis}
+            },
             **kwargs)
 
     def process_data(self, data):
@@ -226,14 +270,15 @@ class FanChart(FilteredPlotly):
                 else:
                     raise ValueError('An unknown column was passed: ', column)
 
-        if validate_observation_data(self.observations):
+        if self.observations is not None:
             for i, row in self.observations.iterrows():
-                lines.append(make_observation(row))
+                lines.append(make_observation(row, i))
                 if row['name'] in uniquelines:
                     lines.append(
                         make_marker(
-                            row,
-                            format_color(colors[row['name']], 1)
+                            obs=row,
+                            index=i,
+                            color=format_color(colors[row['name']], 1)
                         )
                     )
         return lines

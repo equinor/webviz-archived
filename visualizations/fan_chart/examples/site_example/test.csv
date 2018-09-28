@@ -73,3 +73,14 @@ index,name,mean,p10,p90,max,min,category
 2012-01-08,line-x, 14, 15, 13, 16, 11,B
 2012-01-09,line-x, 20, 22, 20, 22, 19,B
 2012-01-10,line-x, 24, 25, 21, 27, 20,B
+
+2012-01-01,reference,19
+2012-01-02,reference,18
+2012-01-03,reference,18
+2012-01-04,reference,17
+2012-01-05,reference,36
+2012-01-06,reference,4
+2012-01-07,reference,8
+2012-01-08,reference,14
+2012-01-09,reference,20
+2012-01-10,reference,24

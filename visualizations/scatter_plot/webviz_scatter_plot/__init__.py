@@ -12,9 +12,9 @@ class ScatterPlot(FilteredPlotly):
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
     :param logx: boolean value to toggle x-axis logarithmic scale.
-        Defaults to False
+        Defaults to `False`
     :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to False
+        Defaults to `False`
     """
     def __init__(self, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None

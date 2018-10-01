@@ -22,9 +22,9 @@ class Histogram(FilteredPlotly):
     :param nbinsx: Maximum number of desired bins. Default value ``0`` will
         generate optimal number of bins.
     :param logx: boolean value to toggle x-axis logarithmic scale.
-        Defaults to False
+        Defaults to `False`
     :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to False
+        Defaults to `False`
     """
     def __init__(self,
                  data,

@@ -16,7 +16,7 @@ class BarChart(FilteredPlotly):
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
     :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to False
+        Defaults to `False`
     """
     def __init__(self, data, barmode='group', *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None

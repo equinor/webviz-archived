@@ -15,11 +15,12 @@ class HeatMap(FilteredPlotly):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, logx=False, logy=False, *args, **kwargs):
+    def __init__(self, data, logx=False, logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
 
         super(HeatMap, self).__init__(
+            data,
             *args,
             layout={
                 'showlegend': True,

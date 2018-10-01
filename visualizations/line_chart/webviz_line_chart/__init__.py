@@ -16,11 +16,12 @@ class LineChart(FilteredPlotly):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, logx=False, logy=False, *args, **kwargs):
+    def __init__(self, data, logx=False, logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
 
         super(LineChart, self).__init__(
+            data,
             *args,
             layout={
                 'showlegend': True,
@@ -38,7 +39,6 @@ class LineChart(FilteredPlotly):
             'x': x,
             'type': 'scatter',
             'name': column
-            }
-            for column in data.columns]
+        } for column in data.columns]
 
         return lines

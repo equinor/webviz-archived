@@ -65,10 +65,6 @@ def init_confidence_band(y, mean, x, name, color):
     }
 
 
-def init_reference_line(y, mean,):
-    print(y, mean)
-
-
 def make_observation(obs, index):
     """
     :param
@@ -246,8 +242,26 @@ class FanChart(FilteredPlotly):
     def process_data(self, data):
         uniquelines = set(self.data['name']) \
             if 'name' in self.data else {'line'}
-        lines = []
+        unique_references = set(self.references['name']) \
+            if 'name' in self.references else {'line'}
         colors = color_spread(uniquelines)
+        lines = []
+
+        for index, line in enumerate(unique_references):
+            ref_data = self.references[self.references['name'] == line] \
+                if 'name' in self.references else self.references
+            lines.append({
+                'y': ref_data['value'].tolist(),
+                'x': ref_data.index.tolist(),
+                'type': 'scatter',
+                'legendgroup': line,
+                'showlegend': False,
+                'name': line,
+                'mode': 'lines',
+                'line': {
+                    'color': 'rgba(0, 0, 0, 0.7)'
+                }
+            })
 
         for index, line in enumerate(uniquelines):
             line_data = data[data['name'] == line] \

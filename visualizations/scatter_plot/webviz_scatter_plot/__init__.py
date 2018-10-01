@@ -16,11 +16,9 @@ class ScatterPlot(FilteredPlotly):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, logx=False, logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
-        logx = kwargs.pop('logx') if 'logx' in kwargs else False
-        logy = kwargs.pop('logy') if 'logy' in kwargs else False
 
         super(ScatterPlot, self).__init__(
             *args,

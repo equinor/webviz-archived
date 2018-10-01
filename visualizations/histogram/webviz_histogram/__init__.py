@@ -33,13 +33,13 @@ class Histogram(FilteredPlotly):
                  barmode='overlay',
                  histnorm='percent',
                  nbinsx=0,
+                 logx=False,
+                 logy=False,
                  *args,
                  **kwargs):
         self.ylabel = ylabel
         self.histnorm = histnorm
         self.nbinsx = nbinsx
-        logx = kwargs.pop('logx') if 'logx' in kwargs else False
-        logy = kwargs.pop('logy') if 'logy' in kwargs else False
 
         super(Histogram, self).__init__(
             data,

@@ -16,18 +16,16 @@ class PageElement:
 
     def __init__(self):
         self.containerId = 'element' + str(uuid4())
-        self._header_elements = OrderedSet()
+        self.header_elements = OrderedSet()
+        self.resources = {'js': [], 'css': []}
 
-    @property
-    def header_elements(self):
-        return self._header_elements
+    def add_resource(self, absolute_path, subdir='.'):
+        if subdir not in self.resources:
+            self.resources[subdir] = []
+        self.resources[subdir].append(absolute_path)
 
-    @header_elements.setter
-    def header_elements(self, val):
-        self._header_elements = val
-
-    def add_css_file(self, absolute_path):
-        basename = path.basename(absolute_path)
+    def add_css_file(self, filename):
+        basename = path.basename(filename)
         location = path.join('resources', 'css', basename)
         self.header_elements.add(HeaderElement(
             tag='link',
@@ -35,21 +33,17 @@ class PageElement:
                 'rel': 'stylesheet',
                 'type': 'text/css',
                 'href': path.join('{root_folder}', location)
-                },
-            source_file=absolute_path,
-            target_file=location,
-            copy_file=True))
+                }))
+        self.add_resource(filename, subdir='css')
 
-    def add_js_file(self, absolute_path):
-        basename = path.basename(absolute_path)
+    def add_js_file(self, filename):
+        basename = path.basename(filename)
         self.header_elements.add(HeaderElement(
             tag='script',
             attributes={
                 'src': path.join('{root_folder}', 'resources', 'js', basename)
-                },
-            source_file=absolute_path,
-            target_file=path.join('resources', 'js', basename),
-            copy_file=True))
+                }))
+        self.add_resource(filename, subdir='js')
 
     @abstractmethod
     def get_template(self):

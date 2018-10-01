@@ -3,7 +3,7 @@
 
     {% for element in header_elements %}
     <{{element.tag}}
-    {% for key, value in element.attributes.items() %}
+    {% for key, value in element.attributes %}
       {% if value %}
         {{key}}='{{value.format(root_folder=root_folder)}}'
       {% else %}

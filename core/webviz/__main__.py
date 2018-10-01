@@ -110,6 +110,13 @@ for root, dirs, files in os.walk(root_folder, topdown=True):
             html = Html(rendered)
             html.header_elements = html.header_elements.union(
                 *(e.header_elements for e in collected_elements))
+
+            for element in collected_elements:
+                for subdir, resource in element.resources.items():
+                    if subdir not in html.resources:
+                        html.resources[subdir] = []
+                    html.resources[subdir].extend(resource)
+
             html.add_css_file(path.join(
                 path.dirname(__file__),
                 'resources',

@@ -11,7 +11,7 @@ install: build
 	pip install $(ARGS) .
 
 test:
-	py.test --cov=webviz --cov-fail-under=93 tests/
+	py.test --cov=webviz --cov-fail-under=90 tests/
 
 lint:
 	pycodestyle webviz examples tests

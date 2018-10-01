@@ -2,11 +2,12 @@ import unittest
 from webviz import HeaderElement
 
 
-class TestPage(unittest.TestCase):
+class TestHeaderElement(unittest.TestCase):
     def test_stringify(self):
         elmnt = HeaderElement(
             'script',
-            {'src': 'test.js', 'async': None})
+            {'src': 'test.js'}
+            )
         printed = str(elmnt)
         self.assertIn('</script>', printed)
         self.assertIn('test.js', printed)
@@ -14,18 +15,10 @@ class TestPage(unittest.TestCase):
     def test_equality_target_file(self):
         elmnt1 = HeaderElement(
             'script',
-            {'src': 'test.js'},
-            source_file='./test1.js',
-            target_file='resources/js/test.js',
-            copy_file=True
-            )
+            {'src': 'test.js'})
         elmnt2 = HeaderElement(
             'script',
-            {'src': 'test.js'},
-            source_file='./test2.js',
-            target_file='resources/js/test.js',
-            copy_file=True
-            )
+            {'src': 'test.js'})
         self.assertEqual(elmnt1, elmnt2)
 
     def test_equality_content(self):
@@ -41,17 +34,6 @@ class TestPage(unittest.TestCase):
             )
         self.assertEqual(elmnt1, elmnt2)
 
-    def test_not_equal_content_src_file(self):
-        elmnt1 = HeaderElement(
-            'script',
-            {'src': 'test.js'},
-            source_file='./test2.js',
-            target_file='resources/js/test.js',
-            copy_file=True
-            )
-        elmnt2 = HeaderElement(
-            'script',
-            {},
-            content='console.log(\'stuff\')',
-            )
-        self.assertNotEqual(elmnt1, elmnt2)
+
+if __name__ == '__main__':
+    unittest.main()

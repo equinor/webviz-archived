@@ -75,9 +75,9 @@ index,data1,data2
         with warnings.catch_warnings(record=True) as w:
             MockElement(self.data, config={'modeBarButtonsToRemove': []})
 
-            self.assertTrue(len(w) == len(FilteredPlotly.DISALLOWED_BUTTONS))
+            self.assertEqual(len(w), len(FilteredPlotly.DISALLOWED_BUTTONS))
             for i, button in enumerate(FilteredPlotly.DISALLOWED_BUTTONS):
-                self.assertTrue(button in str(w[i].message))
+                self.assertIn(button, str(w[i].message))
 
 
 if __name__ == '__main__':

@@ -46,26 +46,6 @@ class TestWebvizWriter(unittest.TestCase):
                 writer.clean_up()
                 self.assertTrue(writer.is_clean())
 
-    def test_write_js_file(self):
-        (_, test_file) = tempfile.mkstemp(suffix='.js')
-        name = os.path.basename(test_file)
-        target_rel_loc = os.path.join('resources', 'js', name)
-        test_header = HeaderElement(
-            tag='script',
-            attributes={
-                'src': os.path.join('{root_dir}', target_rel_loc)
-                },
-            source_file=test_file,
-            target_file=target_rel_loc,
-            copy_file=True)
-        with WebvizWriter(self.tempdir,
-                          {},
-                          self.template) as writer:
-            writer.set_up()
-            writer.add_header_element(test_header)
-        target_loc = os.path.join(self.tempdir, target_rel_loc)
-        self.assertTrue(os.path.isfile(target_loc))
-
     def test_resource_file(self):
         (_, test_file) = tempfile.mkstemp(suffix='.ico')
         with WebvizWriter(self.tempdir,

@@ -73,6 +73,20 @@ class Page(object):
             *(content.header_elements for content in self.contents))
         return elements
 
+    @property
+    def resources(self):
+        """
+        :returns: The set of `css` dependencies for all page elements
+            in the page
+        """
+        resources = {}
+        for content in self.contents:
+            for subfolder, resource in iteritems(content.resources):
+                if subfolder not in resources:
+                    resources[subfolder] = []
+                resources[subfolder].extend(resource)
+        return resources
+
 
 class SubMenu(object):
     """
@@ -218,34 +232,33 @@ class Webviz(object):
         template = self._env.get_template('main.html')
 
         all_pages = self.pages + [self.index]
-        header_elements = OrderedSet()
-        header_elements = header_elements.union(
-            *[page.header_elements for page in all_pages])
         theme_header_elements = OrderedSet()
-        for absolute_path in self._theme.js_files:
-            basename = path.basename(absolute_path)
+        resources = {'js': set(), 'css': set()}
+        for page in all_pages:
+            for subdir, resource in iteritems(page.resources):
+                if subdir not in resources:
+                    resources[subdir] = set()
+                resources[subdir] = resources[subdir].union(set(resource))
+        for filename in self._theme.js_files:
+            basename = path.basename(filename)
             location = path.join('resources', 'js', basename)
+            resources['js'].add(filename)
             theme_header_elements.add(HeaderElement(
                 tag='script',
                 attributes={
                     'src': path.join('{root_folder}', location)
-                    },
-                source_file=absolute_path,
-                target_file=location,
-                copy_file=True))
-        for absolute_path in self._theme.css_files:
-            basename = path.basename(absolute_path)
+                    }))
+        for filename in self._theme.css_files:
+            basename = path.basename(filename)
             location = path.join('resources', 'css', basename)
+            resources['css'].add(filename)
             theme_header_elements.add(HeaderElement(
                 tag='link',
                 attributes={
                     'rel': 'stylesheet',
                     'type': 'text/css',
                     'href': path.join('{root_folder}', location)
-                    },
-                source_file=absolute_path,
-                target_file=location,
-                copy_file=True))
+                    }))
 
         with WebvizWriter(destination,
                           self.__dict__,
@@ -262,6 +275,11 @@ class Webviz(object):
                 self.banner_filename = writer.write_resource(
                     self.banner_image,
                     subdir='img')
+            for subdir, resource_list in iteritems(resources):
+                for resource in resource_list:
+                    writer.write_resource(
+                        resource,
+                        subdir=subdir)
 
             for element in theme_header_elements:
                 writer.add_global_header_element(element)
@@ -270,8 +288,6 @@ class Webviz(object):
                     writer.write_resource(
                         resource,
                         subdir=location)
-            for element in header_elements:
-                writer.add_header_element(element)
             for page in self.pages:
                 writer.write_sub_page(page)
             writer.write_index_page(self.index)

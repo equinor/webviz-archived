@@ -52,10 +52,10 @@ index,data1,data2
 
     def testJsDep(self):
         filtered = MockElement(self.data, check_box_columns=['data2'])
-        self.assertIn(
-            'filtered_plotly.js',
-            [os.path.basename(e.target_file)
-             for e in filtered.header_elements])
+        self.assertTrue(any(
+            (('src', '{root_folder}/resources/js/filtered_plotly.js')
+                in e.attributes)
+            for e in filtered.header_elements))
 
     def testNonStringLabels(self):
         filtered = MockElement(self.data, dropdown_columns=['data2'])

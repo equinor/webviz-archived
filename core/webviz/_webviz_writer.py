@@ -133,28 +133,56 @@ class WebvizWriter(object):
 
         def add_global_header_element(self, element):
             self._global_header_elements.add(element)
-            self.add_header_element(element)
 
-        def add_header_element(self, element):
-            if element.copy_file or element.dump_content:
-                target = os.path.join(self._destination, element.target_file)
-                dest = os.path.dirname(target)
-                if not os.path.exists(dest):
-                    os.makedirs(dest)
-                if element.copy_file:
-                    shutil.copy(element.source_file, target)
-                else:
-                    with open(target, 'w') as outfile:
-                        outfile.write(element.content)
-                    element.content = ''
+        def write_resource(self,
+                           src_file,
+                           target_name=None,
+                           target_postfix='',
+                           subdir=None):
+            """
+            Write a file to the 'resources' subfolder.
+            :param src_file: Either location of file,
+                or a file object of the resource to copy into
+                to site.
+            :param target_name: Resulting name of the file, defaults
+                to the name of the file. If the file has no name, a
+                name is randomly generated.
+            :param target_postfix: If a filename is generated, the
+                postfix of that file name.
+            :param subdir: Optional subdir of the resource in the
+                resources folder.
+            :returns: the resulting path to file, relative to
+                the project root.
+            """
+            dest = None
+            if subdir:
+                dest = path.join(self._abs_folders['resources'], subdir)
+            else:
+                dest = self._abs_folders['resources']
 
-        def write_resource(self, absolute_path, subdir='.'):
-            target = os.path.join(self._destination, 'resources', subdir)
-            name = os.path.basename(absolute_path)
-            if not os.path.exists(target):
-                os.makedirs(target)
-            shutil.copy(absolute_path, target)
-            return os.path.join('resources', subdir, name)
+            if not os.path.exists(dest):
+                os.makedirs(dest)
+
+            if isinstance(src_file, str):
+                target_name = path.basename(src_file)
+                shutil.copy(src_file, dest)
+            else:
+                try:
+                    target_name = path.basename(src_file.name)
+                except AttributeError:
+                    target_name = str(uuid4()) + target_postfix
+                with open(path.join(dest, target_name), 'w') as f:
+                    try:
+                        for line in src_file:
+                            f.write(line)
+                    finally:
+                        src_file.close()
+            relative = None
+            if subdir:
+                relative = path.join('resources', subdir)
+            else:
+                relative = 'resources'
+            return path.join(relative, target_name)
 
         def set_up(self):
             """

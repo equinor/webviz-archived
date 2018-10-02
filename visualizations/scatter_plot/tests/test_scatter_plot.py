@@ -14,8 +14,12 @@ test_data = {
 
 class TestHistogram(unittest.TestCase):
     def test_negative_data(self):
-        text_trap = io.StringIO()
-        sys.stdout = text_trap
+        if sys.version_info[0] < 3:
+            text_trap = io.BytesIO()
+            sys.stdout = text_trap
+        else:
+            text_trap = io.StringIO()
+            sys.stdout = text_trap
 
         ScatterPlot(pd.DataFrame({
             'index': ['2012-01-01', '2012-01-02', '2012-01-03'],

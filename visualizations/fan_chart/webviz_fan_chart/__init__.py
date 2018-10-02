@@ -169,7 +169,7 @@ def process_dataframe_format(obs):
 
 def validate_value(data):
     if any(x < 0 for x in data):
-        print('Negative values are not supported in a logrithmic scale.')
+        print('Negative values are not supported in a logarithmic scale.')
 
 
 class FanChart(FilteredPlotly):

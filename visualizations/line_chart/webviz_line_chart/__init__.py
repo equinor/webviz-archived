@@ -38,7 +38,7 @@ class LineChart(FilteredPlotly):
         for column in data.columns:
             if self.logy and any(x < 0 for x in data[column].tolist()):
                 print('Negative values are not supported in a' +
-                      ' logrithmic scale.')
+                      ' logarithmic scale.')
 
             lines.append({
                 'y': data[column].tolist(),

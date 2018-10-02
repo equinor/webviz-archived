@@ -20,14 +20,16 @@ class HeatMap(FilteredPlotly):
             layout={
                 'showlegend': True,
                 'xaxis': {'title': xaxis},
-                'yaxis': {'title': yaxis}
+                'yaxis': {'title': yaxis,
+                          'autorange': 'reversed',
+                          'automargin': True}
             },
             config={},
             **kwargs)
 
     def process_data(self, data):
         return [{
-            'z': data.values.transpose().tolist(),
-            'x': list(self.data.index),
-            'y': list(self.data.columns),
+            'z': data.values.tolist(),
+            'x': list(self.data.columns),
+            'y': list(self.data.index),
             'type': 'heatmap'}]

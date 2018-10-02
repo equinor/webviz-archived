@@ -19,6 +19,7 @@ class ScatterPlot(FilteredPlotly):
     def __init__(self, data, logx=False, logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        self.logy = logy
 
         super(ScatterPlot, self).__init__(
             data,
@@ -31,11 +32,18 @@ class ScatterPlot(FilteredPlotly):
             **kwargs)
 
     def process_data(self, data):
-        return [{
-            'y': data[column].tolist(),
-            'x': data.index.tolist(),
-            'mode': 'markers',
-            'type': 'scatter',
-            'name': column
-            }
-            for column in self.data.columns]
+        lines = []
+
+        for column in data.columns:
+            if self.logy and any(x < 0 for x in data[column].tolist()):
+                print('Negative values are not supported in a' +
+                      ' logrithmic scale.')
+
+            lines.append({
+                'y': data[column].tolist(),
+                'x': data.index.tolist(),
+                'type': 'scatter',
+                'name': column
+            })
+
+        return lines

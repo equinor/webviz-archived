@@ -1,7 +1,7 @@
 {{ page_element(
     'LineChart',
     './test.csv',
-    logx=True,
+    logy=True,
     check_box=true,
     xaxis='Time',
     yaxis='Value',

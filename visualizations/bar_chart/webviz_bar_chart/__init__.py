@@ -21,6 +21,7 @@ class BarChart(FilteredPlotly):
     def __init__(self, data, barmode='group', logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        self.logy = logy
         super(BarChart, self).__init__(
                 data,
                 *args,
@@ -32,13 +33,21 @@ class BarChart(FilteredPlotly):
                 config={},
                 **kwargs)
 
-    def process_data(self, frame):
-        x = self.data.index.tolist()
+    def process_data(self, data):
+        x = data.index.tolist()
 
-        return [{
-            'y': self.data[column].tolist(),
-            'x': x,
-            'type': 'bar',
-            'name': column
-            }
-            for column in self.data.columns]
+        lines = []
+
+        for column in data.columns:
+            if self.logy and any(x < 0 for x in data[column].tolist()):
+                print('Negative values are not supported in a' +
+                      ' logrithmic scale.')
+
+            lines.append({
+                'y': data[column].tolist(),
+                'x': x,
+                'type': 'scatter',
+                'name': column
+            })
+
+        return lines

@@ -167,6 +167,11 @@ def process_dataframe_format(obs):
         return None
 
 
+def validate_value(data):
+    if any(x < 0 for x in data):
+        print('Negative values are not supported in a logrithmic scale.')
+
+
 class FanChart(FilteredPlotly):
     """Fan chart page element.
 
@@ -199,6 +204,7 @@ class FanChart(FilteredPlotly):
             **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        self.logy = logy
 
         if observations is not None:
             if isinstance(observations, pd.DataFrame):
@@ -233,6 +239,9 @@ class FanChart(FilteredPlotly):
 
             for column in line_data.columns:
                 if column == 'mean':
+                    if self.logy:
+                        validate_value(line_data[column].tolist())
+
                     lines.append({
                         'y': line_data[column].tolist(),
                         'x': x,
@@ -245,6 +254,9 @@ class FanChart(FilteredPlotly):
                         }
                     })
                 elif column == 'p90':
+                    if self.logy:
+                        validate_value(line_data[column].tolist())
+
                     lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
@@ -253,6 +265,9 @@ class FanChart(FilteredPlotly):
                         format_color(colors[line], '0.5'),
                     ))
                 elif column == 'p10':
+                    if self.logy:
+                        validate_value(line_data[column].tolist())
+
                     lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
@@ -261,6 +276,9 @@ class FanChart(FilteredPlotly):
                         format_color(colors[line], '0.5'),
                     ))
                 elif column == 'min':
+                    if self.logy:
+                        validate_value(line_data[column].tolist())
+
                     lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),
@@ -269,6 +287,9 @@ class FanChart(FilteredPlotly):
                         format_color(colors[line], '0.3'),
                     ))
                 elif column == 'max':
+                    if self.logy:
+                        validate_value(line_data[column].tolist())
+
                     lines.append(init_confidence_band(
                         line_data[column].tolist(),
                         line_data['mean'].tolist(),

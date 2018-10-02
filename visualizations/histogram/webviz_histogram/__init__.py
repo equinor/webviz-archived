@@ -40,6 +40,8 @@ class Histogram(FilteredPlotly):
         self.ylabel = ylabel
         self.histnorm = histnorm
         self.nbinsx = nbinsx
+        self.logx = logx
+        self.logy = logy
 
         super(Histogram, self).__init__(
             data,
@@ -54,12 +56,21 @@ class Histogram(FilteredPlotly):
             **kwargs)
 
     def process_data(self, data):
-        return [{
-            'x': data[column].tolist(),
-            'type': 'histogram',
-            'opacity': 0.7,
-            'histnorm': self.histnorm,
-            'nbinsx': self.nbinsx,
-            'name': column
-            }
-            for column in self.data.columns]
+        lines = []
+
+        for column in self.data.columns:
+            if (self.logy or self.logx) and any(x < 0 for x
+                                                in data[column].tolist()):
+                print('Negative values are not supported in a' +
+                      ' logrithmic scale.')
+
+            lines.append({
+                'x': data[column].tolist(),
+                'type': 'histogram',
+                'opacity': 0.7,
+                'histnorm': self.histnorm,
+                'nbinsx': self.nbinsx,
+                'name': column
+                })
+
+        return lines

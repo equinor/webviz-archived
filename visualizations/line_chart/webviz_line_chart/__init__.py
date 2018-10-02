@@ -19,6 +19,7 @@ class LineChart(FilteredPlotly):
     def __init__(self, data, logx=False, logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        self.logy = logy
 
         super(LineChart, self).__init__(
             data,
@@ -32,13 +33,18 @@ class LineChart(FilteredPlotly):
             **kwargs)
 
     def process_data(self, data):
-        x = data.index.tolist()
+        lines = []
 
-        lines = [{
-            'y': data[column].tolist(),
-            'x': x,
-            'type': 'scatter',
-            'name': column
-        } for column in data.columns]
+        for column in data.columns:
+            if self.logy and any(x < 0 for x in data[column].tolist()):
+                print('Negative values are not supported in a' +
+                      ' logrithmic scale.')
+
+            lines.append({
+                'y': data[column].tolist(),
+                'x': data.index.tolist(),
+                'type': 'scatter',
+                'name': column
+            })
 
         return lines

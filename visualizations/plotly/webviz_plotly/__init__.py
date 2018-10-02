@@ -32,6 +32,7 @@ class Plotly(JSONPageElement):
     def __init__(self, data, layout={}, config={}):
         super(Plotly, self).__init__()
 
+        config['responsive'] = True
         if 'displaylogo' not in config:
             config['displaylogo'] = False
 

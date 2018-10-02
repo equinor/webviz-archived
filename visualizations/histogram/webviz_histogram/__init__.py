@@ -60,7 +60,8 @@ class Histogram(FilteredPlotly):
 
         for column in self.data.columns:
             if (self.logy or self.logx) and any(x < 0 for x
-                                                in data[column].tolist()):
+                                                in data[column].tolist() if
+                                                isinstance(x, int or float)):
                 print('Negative values are not supported in a' +
                       ' logrithmic scale.')
 

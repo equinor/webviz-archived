@@ -2,6 +2,7 @@ from webviz_plotly import FilteredPlotly
 import pandas as pd
 import matplotlib.cm as cm
 import math
+import warnings
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -169,7 +170,8 @@ def process_dataframe_format(obs):
 
 def validate_value(data):
     if any(x < 0 for x in data):
-        print('Negative values are not supported in a logarithmic scale.')
+        warnings.warn('Negative values are not supported in a'
+                      ' logarithmic scale.')
 
 
 class FanChart(FilteredPlotly):

@@ -1,4 +1,5 @@
 from webviz_plotly import FilteredPlotly
+import warnings
 
 
 class LineChart(FilteredPlotly):
@@ -37,8 +38,8 @@ class LineChart(FilteredPlotly):
 
         for column in data.columns:
             if self.logy and any(x < 0 for x in data[column].tolist()):
-                print('Negative values are not supported in a' +
-                      ' logarithmic scale.')
+                warnings.warn('Negative values are not supported in a'
+                              ' logarithmic scale.')
 
             lines.append({
                 'y': data[column].tolist(),

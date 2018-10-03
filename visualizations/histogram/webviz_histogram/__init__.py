@@ -1,4 +1,5 @@
 from webviz_plotly import FilteredPlotly
+import warnings
 
 
 class Histogram(FilteredPlotly):
@@ -62,8 +63,8 @@ class Histogram(FilteredPlotly):
             if (self.logy or self.logx) and any(x < 0 for x
                                                 in data[column].tolist() if
                                                 isinstance(x, int or float)):
-                print('Negative values are not supported in a' +
-                      ' logarithmic scale.')
+                warnings.warn('Negative values are not supported in a'
+                              ' logarithmic scale.')
 
             lines.append({
                 'x': data[column].tolist(),

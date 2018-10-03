@@ -1,4 +1,5 @@
 from webviz_plotly import FilteredPlotly
+import warnings
 
 
 class BarChart(FilteredPlotly):
@@ -13,30 +14,42 @@ class BarChart(FilteredPlotly):
         ``'overlay'``. Defines how multiple bars per index-value are combined.
         See `plotly.js layout-barmode <https://plot.ly/javascript/reference/
         #layout-barmode>`_.
-    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
-        label for the given axis. Defaults to `None`.
+    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
+    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
+    :param logy: boolean value to toggle y-axis logarithmic scale.
+        Defaults to `False`
     """
-    def __init__(self, data, barmode='group', *args, **kwargs):
+    def __init__(self, data, barmode='group', logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        self.logy = logy
         super(BarChart, self).__init__(
                 data,
                 *args,
                 layout={
                     'barmode': barmode,
                     'xaxis': {'title': xaxis},
-                    'yaxis': {'title': yaxis}
+                    'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
                 },
                 config={},
                 **kwargs)
 
-    def process_data(self, frame):
-        x = self.data.index.tolist()
+    def process_data(self, data):
+        x = data.index.tolist()
 
-        return [{
-            'y': self.data[column].tolist(),
-            'x': x,
-            'type': 'bar',
-            'name': column
-            }
-            for column in self.data.columns]
+        lines = []
+
+        for column in data.columns:
+            if self.logy and any(x < 0 for x in data[column].tolist()
+                                 if not isinstance(x, str)):
+                warnings.warn('Negative values are not supported in a'
+                              ' logarithmic scale.')
+
+            lines.append({
+                'y': data[column].tolist(),
+                'x': x,
+                'type': 'scatter',
+                'name': column
+            })
+
+        return lines

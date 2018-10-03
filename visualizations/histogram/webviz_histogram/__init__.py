@@ -1,4 +1,5 @@
 from webviz_plotly import FilteredPlotly
+import warnings
 
 
 class Histogram(FilteredPlotly):
@@ -21,6 +22,10 @@ class Histogram(FilteredPlotly):
         javascript/reference/#histogram-histnorm>`_.
     :param nbinsx: Maximum number of desired bins. Default value ``0`` will
         generate optimal number of bins.
+    :param logx: boolean value to toggle x-axis logarithmic scale.
+        Defaults to `False`
+    :param logy: boolean value to toggle y-axis logarithmic scale.
+        Defaults to `False`
     """
     def __init__(self,
                  data,
@@ -29,11 +34,16 @@ class Histogram(FilteredPlotly):
                  barmode='overlay',
                  histnorm='percent',
                  nbinsx=0,
+                 logx=False,
+                 logy=False,
                  *args,
                  **kwargs):
         self.ylabel = ylabel
         self.histnorm = histnorm
         self.nbinsx = nbinsx
+        self.logx = logx
+        self.logy = logy
+
         super(Histogram, self).__init__(
             data,
             *args,
@@ -41,18 +51,28 @@ class Histogram(FilteredPlotly):
                 'bargap': 0.05,
                 'bargroupgap': 0.05,
                 'barmode': barmode,
-                'xaxis': {'title': xlabel},
-                'yaxis': {'title': ylabel}},
+                'xaxis': {'title': xlabel, 'type': 'log' if logx else '-'},
+                'yaxis': {'title': ylabel, 'type': 'log' if logy else '-'}},
             config={},
             **kwargs)
 
     def process_data(self, data):
-        return [{
-            'x': data[column].tolist(),
-            'type': 'histogram',
-            'opacity': 0.7,
-            'histnorm': self.histnorm,
-            'nbinsx': self.nbinsx,
-            'name': column
-            }
-            for column in self.data.columns]
+        lines = []
+
+        for column in self.data.columns:
+            if (self.logy or self.logx) and any(x < 0 for x
+                                                in data[column].tolist() if
+                                                isinstance(x, int or float)):
+                warnings.warn('Negative values are not supported in a'
+                              ' logarithmic scale.')
+
+            lines.append({
+                'x': data[column].tolist(),
+                'type': 'histogram',
+                'opacity': 0.7,
+                'histnorm': self.histnorm,
+                'nbinsx': self.nbinsx,
+                'name': column
+                })
+
+        return lines

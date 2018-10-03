@@ -8,8 +8,8 @@ class TornadoPlot(FilteredPlotly):
         :class:`pandas.DataFrame`. There are two columns:
         'low' and 'high' describing.
     :param high_text: Optional text
-    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
-        label for the given axis. Defaults to `None`.
+    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
+    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
     """
     def __init__(self, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None

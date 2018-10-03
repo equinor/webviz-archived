@@ -5,6 +5,8 @@ import shutil
 from uuid import uuid4
 from six import itervalues
 
+from ordered_set import OrderedSet
+
 
 class WebvizWriter(object):
     """
@@ -81,6 +83,7 @@ class WebvizWriter(object):
             }
             self._index_path = path.join(self._destination,
                                          WebvizWriter.index_file)
+            self._global_header_elements = OrderedSet()
 
         def flush(self):
             for (page, root_path) in self._pages:
@@ -97,9 +100,12 @@ class WebvizWriter(object):
                 page that is being rendered.
             """
             page.current_page = True
-            html = self._template.render(dict(page=page,
-                                              root_folder=root_folder,
-                                              **self._parameters))
+            html = self._template.render(dict(
+                page=page,
+                root_folder=root_folder,
+                header_elements=page.header_elements.union(
+                    self._global_header_elements),
+                **self._parameters))
             page.current_page = False
             return html
 
@@ -125,15 +131,8 @@ class WebvizWriter(object):
             self._pages.append((page, '..'))
             return page.location
 
-        def write_js_file(self, js_file):
-            return self.write_resource(js_file,
-                                       target_postfix='.js',
-                                       subdir='js')
-
-        def write_css_file(self, css_file):
-            return self.write_resource(css_file,
-                                       target_postfix='.css',
-                                       subdir='css')
+        def add_global_header_element(self, element):
+            self._global_header_elements.add(element)
 
         def write_resource(self,
                            src_file,
@@ -195,8 +194,8 @@ class WebvizWriter(object):
                 os.mkdir(self._destination)
 
             for folder in itervalues(self._abs_folders):
-                    if not path.exists(folder):
-                        os.mkdir(folder)
+                if not path.exists(folder):
+                    os.mkdir(folder)
 
         def is_clean(self):
             """

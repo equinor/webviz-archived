@@ -240,12 +240,13 @@ class FanChart(FilteredPlotly):
             x = line_data.index.tolist()
 
             for column in line_data.columns:
+                data_list = line_data[column].tolist()
                 if column == 'mean':
                     if self.logy:
-                        validate_value(line_data[column].tolist())
+                        validate_value(data_list)
 
                     lines.append({
-                        'y': line_data[column].tolist(),
+                        'y': data_list,
                         'x': x,
                         'type': 'scatter',
                         'legendgroup': line,
@@ -257,10 +258,10 @@ class FanChart(FilteredPlotly):
                     })
                 elif column == 'p90':
                     if self.logy:
-                        validate_value(line_data[column].tolist())
+                        validate_value(data_list)
 
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,
@@ -268,10 +269,10 @@ class FanChart(FilteredPlotly):
                     ))
                 elif column == 'p10':
                     if self.logy:
-                        validate_value(line_data[column].tolist())
+                        validate_value(data_list)
 
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,
@@ -279,10 +280,10 @@ class FanChart(FilteredPlotly):
                     ))
                 elif column == 'min':
                     if self.logy:
-                        validate_value(line_data[column].tolist())
+                        validate_value(data_list)
 
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,
@@ -290,10 +291,10 @@ class FanChart(FilteredPlotly):
                     ))
                 elif column == 'max':
                     if self.logy:
-                        validate_value(line_data[column].tolist())
+                        validate_value(data_list)
 
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,

@@ -1,7 +1,6 @@
 import unittest
 import pandas as pd
-import sys
-import io
+import warnings
 from webviz_bar_chart import BarChart
 
 test_data = {
@@ -12,18 +11,15 @@ test_data = {
 
 
 class TestBarChart(unittest.TestCase):
-    def test_negative_data(self):
-        if sys.version_info[0] < 3:
-            text_trap = io.BytesIO()
-            sys.stdout = text_trap
-        else:
-            text_trap = io.StringIO()
-            sys.stdout = text_trap
+    def test_logarithmic_scale_with_negative_value(self):
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
 
-        BarChart(pd.DataFrame({
-            'index': ['2012-01-01', '2012-01-02', '2012-01-03'],
-            'bar 1': [1, 2, -3],
-            'bar 2': [5, 2, 1]
-        }), logy=True)
-        sys.stdout = sys.__stdout__
-        self.assertTrue(sys.stdout)
+            BarChart(pd.DataFrame({
+                'index': ['2012-01-01', '2012-01-02', '2012-01-03'],
+                'bar 1': [1, 2, -3],
+                'bar 2': [5, 2, 1]
+            }), logy=True)
+
+            assert len(w) == 1
+            assert "Negative values" in str(w[-1].message)

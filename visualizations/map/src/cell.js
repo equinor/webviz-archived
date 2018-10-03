@@ -58,6 +58,17 @@ export class Cell {
         return this._flux
     }
 
+    get maxNormalSpeed() {
+        const normalCornerSpeeds = []
+        const corners = new Array([0, 0], [0, 1], [1, 0], [1, 1])
+        corners.forEach(corner => {
+            const position = new Vector(corner[0], corner[1])
+            const speed = this.normalVelocity(position).magnitude
+            normalCornerSpeeds.push(speed)
+        })
+        return Math.max(...normalCornerSpeeds.map(x => x || 0))
+    }
+
     /**
      * @returns - the jacobian of the transformation to normalized coordinates at
      *  the given coordinate.
@@ -101,7 +112,7 @@ export class Cell {
     }
 
     /**
-     * @returns {Vector} position - Normal position.
+     * @param {Vector} position - Normal position.
      * @returns {Vector} - velocity of flux, in normal coordinates.
      */
     normalVelocity(position) {

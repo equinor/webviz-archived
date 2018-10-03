@@ -73,6 +73,13 @@ export class Vector {
         return this._length
     }
 
+    /**
+     * @type {float}
+     * Magnitude of the vector (L2 norm)
+     */
+    get magnitude() {
+        return Math.sqrt(this._data.map(x => x * 2).reduce((a, b) => a + b))
+    }
 
     /**
      * @param {number} i - Index of value to get.

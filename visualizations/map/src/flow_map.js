@@ -21,6 +21,8 @@ export default class FlowMap extends Map2D {
             this._canvasNode = this._canvas.node()
         }
 
+        this.maxNormalSpeedPerLayer = this._getMaxNormalSpeed()
+
         this._setLayer(0)
         this._flowAnimation = new FlowAnimation(
             this._canvasNode,
@@ -32,7 +34,20 @@ export default class FlowMap extends Map2D {
         )
     }
 
-    _setLayer(i) {
+    _getMaxNormalSpeed() {
+        const self = this
+        const maxNormalSpeedPerLayer = []
+        this.layers.forEach(function(_, i) {
+            const cells = self._createCells(i)
+            const maxNormalSpeeds = []
+            cells.forEach(cell => {maxNormalSpeeds.push(cell.maxNormalSpeed)})
+            maxNormalSpeedPerLayer.push(Math.max(...maxNormalSpeeds))
+        })
+
+        return maxNormalSpeedPerLayer
+    }
+
+    _createCells(i) {
         const cells = []
         const self = this
         this.layers[i].forEach(cell => {
@@ -46,7 +61,12 @@ export default class FlowMap extends Map2D {
                 cell['FLOWJ+'],
             ))
         })
-        const grid = new Grid(cells)
+
+        return cells
+    }
+    _setLayer(i) {
+        const self = this
+        const grid = new Grid(this._createCells(i))
         const field = new Field(grid)
         this._particleGenerator = new ParticleGenerator(field)
     }

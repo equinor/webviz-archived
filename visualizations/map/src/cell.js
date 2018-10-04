@@ -58,6 +58,9 @@ export class Cell {
         return this._flux
     }
 
+    /**
+     * @returns {float} - maximum speed (in normal coordinates) within the cell
+     */
     get maxNormalSpeed() {
         const normalCornerSpeeds = []
         const corners = [[0, 0], [0, 1], [1, 0], [1, 1]]

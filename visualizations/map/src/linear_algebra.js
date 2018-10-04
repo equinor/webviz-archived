@@ -78,7 +78,7 @@ export class Vector {
      * Magnitude of the vector (L2 norm)
      */
     get magnitude() {
-        return Math.sqrt(this._data.map(x => x * 2).reduce((a, b) => a + b))
+        return Math.sqrt(this._data.map(x => x ** 2).reduce((a, b) => a + b))
     }
 
     /**

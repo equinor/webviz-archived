@@ -25,6 +25,23 @@ describe('Vector', () => {
     )
 
     jsc.property(
+        'magnitude is calculated correctly',
+        jsc.number,
+        jsc.number,
+        (_x, _y) => {
+            const vector = new Vector(_x, _y)
+            console.log("Hei")
+            console.log(_x)
+            console.log(_y)
+            console.log(vector.value(0))
+            console.log(vector.value(1))
+            console.log(Math.sqrt(_x**2 + _y**2))
+            console.log(vector.magnitude)
+            return Math.sqrt(_x**2 + _y**2) === vector.magnitude
+        },
+    )
+
+    jsc.property(
         'multiply is mapping multiplication on values',
         jsc.array(jsc.nat),
         jsc.array(jsc.nat),

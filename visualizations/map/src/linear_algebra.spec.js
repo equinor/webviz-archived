@@ -30,7 +30,7 @@ describe('Vector', () => {
         jsc.number,
         (_x, _y) => {
             const vector = new Vector(_x, _y)
-            return Math.sqrt(_x**2 + _y**2) === vector.magnitude
+            return Math.sqrt(_x * _x + _y * _y) === vector.magnitude
         },
     )
 

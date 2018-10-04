@@ -25,9 +25,11 @@ from ._page_element import PageElement
 from ._json_page_element import JSONPageElement
 from ._html import Html
 from ._markdown import Markdown
+from ._header_element import HeaderElement
 from ._math import MathJaxPattern
 
 __all__ = [
+    'HeaderElement',
     'Webviz',
     'Html',
     'Page',

@@ -19,8 +19,7 @@ class TestPage(unittest.TestCase):
         self.content = Content()
 
     def test_default_deps(self):
-        self.assertTrue(len(self.content.get_css_dep()) == 0)
-        self.assertTrue(len(self.content.get_js_dep()) == 0)
+        self.assertTrue(len(self.content.header_elements) == 0)
 
     def test_render(self):
         rendered = str(self.content)

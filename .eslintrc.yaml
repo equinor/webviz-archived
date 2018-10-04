@@ -1,0 +1,51 @@
+---
+extends:
+    - "airbnb-base"
+env:
+    mocha: true
+    browser: true
+parser: "babel-eslint"
+plugins:
+    - "chai-expect"
+settings:
+    import/resolver:
+        node:
+            extensions:
+                - ".js"
+            moduleDirectory:
+                - "src"
+                - "node_modules"
+rules:
+    indent:
+        - "warn"
+        - 4
+        - SwitchCase: 1
+    max-len:
+        - "warn"
+        - "code": 120
+    no-underscore-dangle: "off"
+    semi:
+        - "warn"
+        - "never"
+    class-methods-use-this: 0
+    import/no-extraneous-dependencies:
+        - "warn":
+            packageDir: "./"
+    linebreak-style: 0
+    import/no-named-as-default: 0
+    arrow-parens: "off"
+    no-param-reassign: 0
+    no-plusplus: 1
+    no-unused-vars:
+        - "warn"
+        - "vars": "all"
+          "args": "after-used"
+          "ignoreRestSiblings": false
+
+overrides:
+    files: '*.spec.js'
+    rules:
+        no-unused-expressions: 'off'
+        chai-expect/missing-assertion: 2
+        chai-expect/terminating-properties: 1
+        chai-expect/no-inner-compare: 1

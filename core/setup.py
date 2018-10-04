@@ -2,20 +2,23 @@ from setuptools import setup, find_packages
 
 setup(
     name='webviz',
-    version='0.9.0a1',
+    version='0.10.0',
     packages=find_packages("."),
     package_dir={"": "."},
     package_data={
         'webviz': [
             'templates/*',
-            'minimal_theme/templates/*'
+            'minimal_theme/templates/*',
+            'resources/css/*'
         ]},
     test_suite="setup.discover_test_suite",
     install_requires=[
         'jinja2',
         'markdown',
+        'pygments',
         'six',
         'argparse',
+        'ordered-set',
         'pyyaml',
         'future',
         'python-markdown-math'],

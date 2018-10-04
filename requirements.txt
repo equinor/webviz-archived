@@ -5,4 +5,5 @@ six
 argparse
 pyyaml
 markdown
+pygments
 pandas

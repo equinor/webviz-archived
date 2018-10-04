@@ -6,6 +6,7 @@ import jinja2
 
 from webviz._webviz_writer import WebvizWriter
 from webviz.minimal_theme import minimal_theme
+from webviz._header_element import HeaderElement
 
 
 class TestWebvizWriter(unittest.TestCase):
@@ -44,26 +45,6 @@ class TestWebvizWriter(unittest.TestCase):
                 self.assertFalse(writer.is_clean())
                 writer.clean_up()
                 self.assertTrue(writer.is_clean())
-
-    def test_write_js_file(self):
-        (_, test_file) = tempfile.mkstemp(suffix='.js')
-        with WebvizWriter(self.tempdir,
-                          {},
-                          self.template) as writer:
-            writer.set_up()
-            result = writer.write_js_file(test_file)
-            absolute_result = os.path.join(self.tempdir, result)
-            self.assertTrue(os.path.isfile(absolute_result))
-
-    def test_write_css_file(self):
-        (_, test_file) = tempfile.mkstemp(suffix='.css')
-        with WebvizWriter(self.tempdir,
-                          {},
-                          self.template) as writer:
-            writer.set_up()
-            result = writer.write_css_file(test_file)
-            absolute_result = os.path.join(self.tempdir, result)
-            self.assertTrue(os.path.isfile(absolute_result))
 
     def test_resource_file(self):
         (_, test_file) = tempfile.mkstemp(suffix='.ico')

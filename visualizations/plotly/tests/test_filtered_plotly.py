@@ -1,6 +1,7 @@
 import unittest
-import pandas as pd
 import warnings
+import os
+import pandas as pd
 from pandas.compat import StringIO
 from six import itervalues
 
@@ -52,8 +53,9 @@ index,data1,data2
     def testJsDep(self):
         filtered = MockElement(self.data, check_box_columns=['data2'])
         self.assertTrue(any(
-            'filtered_plotly.js'
-            in file for file in filtered.get_js_dep()))
+            (('src', '{root_folder}/resources/js/filtered_plotly.js')
+                in e.attributes)
+            for e in filtered.header_elements))
 
     def testNonStringLabels(self):
         filtered = MockElement(self.data, dropdown_columns=['data2'])
@@ -73,9 +75,9 @@ index,data1,data2
         with warnings.catch_warnings(record=True) as w:
             MockElement(self.data, config={'modeBarButtonsToRemove': []})
 
-            self.assertTrue(len(w) == len(FilteredPlotly.DISALLOWED_BUTTONS))
+            self.assertEqual(len(w), len(FilteredPlotly.DISALLOWED_BUTTONS))
             for i, button in enumerate(FilteredPlotly.DISALLOWED_BUTTONS):
-                self.assertTrue(button in str(w[i].message))
+                self.assertIn(button, str(w[i].message))
 
 
 if __name__ == '__main__':

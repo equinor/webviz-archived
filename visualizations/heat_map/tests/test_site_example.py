@@ -18,11 +18,11 @@ class TestSiteExample(unittest.TestCase):
                         './site_example')
         cls.ret = os.system('python -m webviz site_example')
 
-        chromeOptions = Options()
-        chromeOptions.add_argument("--headless")
-        chromeOptions.add_argument("--no-sandbox")
-        chromeOptions.add_argument("--disable-gpu")
-        cls.driver = webdriver.Chrome(chrome_options=chromeOptions)
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-gpu")
+        cls.driver = webdriver.Chrome(options=options)
 
     @classmethod
     def tearDownClass(cls):
@@ -46,6 +46,11 @@ class TestSiteExample(unittest.TestCase):
     def test_plot_on_page(self):
         plots = self.selects('div.plot-container')
         self.assertEqual(len(plots), 1)
+
+    def test_label_inside_container(self):
+        label = self.driver.find_element_by_class_name('ytick')
+        container = self.driver.find_element_by_class_name('main-svg')
+        self.assertTrue(container.location['x'] <= label.location['x'])
 
 
 if __name__ == '__main__':

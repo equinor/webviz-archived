@@ -16,11 +16,11 @@ class TestSubMenuExample(unittest.TestCase):
 
         os.system('python {}/../examples/submenu_example.py'.format(thisdir))
 
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-gpu")
-        cls.driver = webdriver.Chrome(chrome_options=chrome_options)
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-gpu")
+        cls.driver = webdriver.Chrome(options=options)
 
     @classmethod
     def tearDownClass(cls):

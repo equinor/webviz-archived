@@ -60,7 +60,7 @@ export class Cell {
 
     get maxNormalSpeed() {
         const normalCornerSpeeds = []
-        const corners = new Array([0, 0], [0, 1], [1, 0], [1, 1])
+        const corners = [[0, 0], [0, 1], [1, 0], [1, 1]]
         corners.forEach(corner => {
             const position = new Vector(corner[0], corner[1])
             const speed = this.normalVelocity(position).magnitude

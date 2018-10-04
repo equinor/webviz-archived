@@ -21,7 +21,7 @@ export default class FlowMap extends Map2D {
             this._canvasNode = this._canvas.node()
         }
 
-        this.maxNormalSpeedPerLayer = this._getMaxNormalSpeed()
+        this._setNormalizedFlux()
 
         this._setLayer(0)
         this._flowAnimation = new FlowAnimation(
@@ -34,17 +34,25 @@ export default class FlowMap extends Map2D {
         )
     }
 
-    _getMaxNormalSpeed() {
+    _setNormalizedFlux() {
         const self = this
         const maxNormalSpeedPerLayer = []
-        this.layers.forEach(function(_, i) {
+        this.layers.forEach((_, i) => {
             const cells = self._createCells(i)
             const maxNormalSpeeds = []
-            cells.forEach(cell => {maxNormalSpeeds.push(cell.maxNormalSpeed)})
+            cells.forEach(cell => { maxNormalSpeeds.push(cell.maxNormalSpeed) })
             maxNormalSpeedPerLayer.push(Math.max(...maxNormalSpeeds))
         })
 
-        return maxNormalSpeedPerLayer
+        const scale = 1.0 / Math.max(...maxNormalSpeedPerLayer)
+        this.layers.forEach(cells => {
+            cells.forEach(cell => {
+                cell['NORMFLOWI-'] = scale * cell['FLOWI-']
+                cell['NORMFLOWJ-'] = scale * cell['FLOWJ-']
+                cell['NORMFLOWI+'] = scale * cell['FLOWI+']
+                cell['NORMFLOWJ+'] = scale * cell['FLOWJ+']
+            })
+        })
     }
 
     _createCells(i) {
@@ -55,17 +63,17 @@ export default class FlowMap extends Map2D {
                 cell.points.map(([x, y]) => [x - self.xMin, self.yMax - y]),
                 cell.i,
                 cell.j,
-                cell['FLOWI-'],
-                cell['FLOWJ-'],
-                cell['FLOWI+'],
-                cell['FLOWJ+'],
+                cell['NORMFLOWI-'] || cell['FLOWI-'],
+                cell['NORMFLOWJ-'] || cell['FLOWJ-'],
+                cell['NORMFLOWI+'] || cell['FLOWI+'],
+                cell['NORMFLOWJ+'] || cell['FLOWJ+'],
             ))
         })
 
         return cells
     }
+
     _setLayer(i) {
-        const self = this
         const grid = new Grid(this._createCells(i))
         const field = new Field(grid)
         this._particleGenerator = new ParticleGenerator(field)

@@ -32,7 +32,7 @@ install:
 script:
   - make build
   - make lint
-  - make dev-install
-  - make test
   - make doc
   - make install
+  - make test
+  - make dev-install

@@ -1,6 +1,7 @@
 projects = \
 	core/\
 	themes/default/\
+	page_elements/tour\
 	visualizations/plotly\
 	visualizations/line_chart\
 	visualizations/bar_chart\

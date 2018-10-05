@@ -1,6 +1,7 @@
 import unittest
 import shutil
 import os
+import subprocess
 import tempfile
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -12,10 +13,9 @@ class TestMarkdownExample(unittest.TestCase):
         thisdir = os.path.abspath(os.path.dirname(__file__))
 
         cls.tempdir = tempfile.mkdtemp()
-        os.chdir(cls.tempdir)
 
-        command = 'python {}/../examples/markdown_example.py'.format(thisdir)
-        cls.ret = os.system(command)
+        test_script =  os.path.join(thisdir, '../examples/markdown_example.py')
+        cls.ret = subprocess.call(['python', test_script], cwd=cls.tempdir)
 
         options = Options()
         options.add_argument("--headless")

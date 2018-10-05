@@ -1,0 +1,13 @@
+{
+  "name": "webviz-tour",
+  "version": "0.1.0",
+  "description": "Webviz page element for plotly visualizations.",
+  "scripts": {
+    "build": "node move_deps.js"
+  },
+  "author": "Equinor ASA",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "hopscotch": "^0.3.1"
+  }
+}

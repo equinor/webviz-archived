@@ -14,7 +14,7 @@ class TestMarkdownExample(unittest.TestCase):
 
         cls.tempdir = tempfile.mkdtemp()
 
-        test_script =  os.path.join(thisdir, '../examples/markdown_example.py')
+        test_script = os.path.join(thisdir, '../examples/markdown_example.py')
         cls.ret = subprocess.call(['python', test_script], cwd=cls.tempdir)
 
         options = Options()

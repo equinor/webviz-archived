@@ -19,21 +19,24 @@ some_content = ("""
 |Content Cell  | `Content Cell` | Content      |
 |Content Cell  | Content Cell   | Content      |
 
-esta no problem
-
 ---
 
     #!python
     def hello():
         print('Hello World')
-
+---
+If you want to use math formulaes, you can do this by escaping them with 
+double dollar signs.
 """)
 
-math_formula = '(E=mc^2)，$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$'
+# Config for single dollar
+math_formula = '$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$'
+# Should be supported by default
+math_formula2 = '$$e^x$$'
 
 ex3.add_content(Markdown(some_content))
 ex3.add_content(MathJaxPattern(math_formula))
-
+ex3.add_content(MathJaxPattern(math_formula2))
 
 submenu1 = SubMenu('Menu 1')
 submenu2 = SubMenu('Menu 2')

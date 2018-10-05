@@ -25,7 +25,7 @@ some_content = ("""
     def hello():
         print('Hello World')
 ---
-If you want to use math formulaes, you can do this by escaping them with 
+If you want to use math formulas, you can do this by escaping them with 
 double dollar signs.
 """)
 

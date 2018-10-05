@@ -33,7 +33,12 @@ class MathJaxPattern(PageElement):
                          "a11y/accessibility-menu.js"
                     ],
                     TeX: {
-                        extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+                        extensions: [
+                            "AMSmath.js",
+                            "AMSsymbols.js",
+                            "noErrors.js",
+                            "noUndefined.js"
+                        ]
                     }
                 });
             """
@@ -42,7 +47,8 @@ class MathJaxPattern(PageElement):
             tag='script',
             attributes={
                 'type': 'text/javascript',
-                'src': 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js'
+                'src': 'https://cdnjs.cloudflare.com/ajax/'
+                       'libs/mathjax/2.7.5/MathJax.js'
             }
         ))
 

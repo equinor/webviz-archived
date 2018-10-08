@@ -5,6 +5,11 @@ from ._page_element import PageElement
 from ._header_element import HeaderElement
 
 
+def contains_math(string):
+    if '$$' or r'\begin' or r'\end' in string:
+        return True
+
+
 class Markdown(PageElement):
     """
     A page element for adding `markdown`.
@@ -16,10 +21,6 @@ class Markdown(PageElement):
         """
         super(Markdown, self).__init__()
         self._md = md
-        math_detected = False
-
-        if '$$' or r'\begin' or r'\end' in self._md:
-            math_detected = True
 
         extension = markdown.Markdown(
             extensions=[
@@ -32,7 +33,7 @@ class Markdown(PageElement):
             }
         )
 
-        if math_detected:
+        if contains_math(self._md):
             self.header_elements.add(HeaderElement(
                 tag='script',
                 attributes={

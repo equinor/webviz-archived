@@ -42,9 +42,17 @@ Or you can wrap it between special commands like this:
 \end{equation}
 ```
 
+Result:
+\begin{equation}
+\cos (2\theta) = \cos^2 \theta - \sin^2 \theta \label{my_cos_equation}.
+\end{equation}
+
 All equations with labels can easily be referred to in the text as
-```\eqref{my_cos_equation}```. If you want an equation without numbering
-add "notag":
+```\eqref{my_cos_equation}```, resulting in something like
+\eqref{my_cos_equation}.
+
+
+If you want an equation without numbering add "notag":
 
 ```
 \begin{equation}

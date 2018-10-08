@@ -16,6 +16,10 @@ class Markdown(PageElement):
         """
         super(Markdown, self).__init__()
         self._md = md
+        math_detected = False
+
+        if '$$' or r'\begin' or r'\end' in self._md:
+            math_detected = True
 
         extension = markdown.Markdown(
             extensions=[
@@ -28,42 +32,43 @@ class Markdown(PageElement):
             }
         )
 
-        self.header_elements.add(HeaderElement(
-            tag='script',
-            attributes={
-                'type': 'text/x-mathjax-config'
-            },
-            content="""
-                MathJax.Hub.Config({
-                    jax: ["input/TeX","input/MathML","output/CommonHTML"],
-                    extensions: [
-                        "tex2jax.js",
-                        "mml2jax.js",
-                        "MathMenu.js",
-                        "MathZoom.js",
-                        "AssistiveMML.js",
-                         "a11y/accessibility-menu.js"
-                    ],
-                    TeX: {
-                        equationNumbers: {autoNumber: "all"},
+        if math_detected:
+            self.header_elements.add(HeaderElement(
+                tag='script',
+                attributes={
+                    'type': 'text/x-mathjax-config'
+                },
+                content="""
+                    MathJax.Hub.Config({
+                        jax: ["input/TeX","input/MathML","output/CommonHTML"],
                         extensions: [
-                            "AMSmath.js",
-                            "AMSsymbols.js",
-                            "noErrors.js",
-                            "noUndefined.js"
-                        ]
-                    }
-                });
-            """
-        ))
-        self.header_elements.add(HeaderElement(
-            tag='script',
-            attributes={
-                'type': 'text/javascript',
-                'src': 'https://cdnjs.cloudflare.com/ajax/'
-                       'libs/mathjax/2.7.5/MathJax.js'
-            }
-        ))
+                            "tex2jax.js",
+                            "mml2jax.js",
+                            "MathMenu.js",
+                            "MathZoom.js",
+                            "AssistiveMML.js",
+                             "a11y/accessibility-menu.js"
+                        ],
+                        TeX: {
+                            equationNumbers: {autoNumber: "all"},
+                            extensions: [
+                                "AMSmath.js",
+                                "AMSsymbols.js",
+                                "noErrors.js",
+                                "noUndefined.js"
+                            ]
+                        }
+                    });
+                """
+            ))
+            self.header_elements.add(HeaderElement(
+                tag='script',
+                attributes={
+                    'type': 'text/javascript',
+                    'src': 'https://cdnjs.cloudflare.com/ajax/'
+                           'libs/mathjax/2.7.5/MathJax.js'
+                }
+            ))
 
         self._rendered = extension.convert(self._md)
         self.add_css_file(path.join(

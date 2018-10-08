@@ -26,7 +26,6 @@ from ._json_page_element import JSONPageElement
 from ._html import Html
 from ._markdown import Markdown
 from ._header_element import HeaderElement
-from ._math import MathJaxPattern
 
 __all__ = [
     'HeaderElement',
@@ -35,7 +34,6 @@ __all__ = [
     'Page',
     'SubMenu',
     'Markdown',
-    'MathJaxPattern',
     'PageElement',
     'Theme',
     'JSONPageElement'

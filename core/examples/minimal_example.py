@@ -6,7 +6,7 @@ ex1 = Page('Example 1')
 ex2 = Page('Example 2')
 ex3 = Page('Markdown example')
 
-some_content = ("""
+some_content = (r"""
 
 # Markdown support
 ***
@@ -25,18 +25,24 @@ some_content = ("""
     def hello():
         print('Hello World')
 ---
-If you want to use math formulas, you can do this by escaping them with 
-double dollar signs.
+If you want to use math formulas, you can do this by escaping them with
+double dollar signs. To prevent build failing because of backslashes, use a
+rawstring format by adding `r` in front of the string.
+
+You can read more about the input format
+[here](http://docs.mathjax.org/en/latest/tex.html#).
+
+Example:
+
+`formula = r'$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$'`
+
+Renders out to this:
 """)
 
-# Config for single dollar
-math_formula = '$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$'
-# Should be supported by default
-math_formula2 = '$$e^x$$'
+math_formula = r'$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2b}.$$'
 
 ex3.add_content(Markdown(some_content))
 ex3.add_content(MathJaxPattern(math_formula))
-ex3.add_content(MathJaxPattern(math_formula2))
 
 submenu1 = SubMenu('Menu 1')
 submenu2 = SubMenu('Menu 2')

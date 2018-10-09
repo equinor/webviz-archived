@@ -1,4 +1,4 @@
-from webviz import Webviz, Page, SubMenu, Markdown, Html
+from webviz import Webviz, Page, SubMenu, Markdown
 
 web = Webviz('Main title', theme='minimal')
 

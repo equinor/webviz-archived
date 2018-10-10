@@ -34,7 +34,7 @@ Webviz can be executed using
 where ``site_folder`` is a folder containing `markdown files <https://en.wikipedia.org/wiki/Markdown>`_.
 See `the github repository <https://github.com/Statoil/webviz/tree/master/core/examples/site_example>`_
 for an example. In the ``site_folder``, there are two special files: ``index.md`` and
-``config.yaml``. ``index.md`` is the landing page for the site and ``config.yaml`` contains
+``config.yml``. ``index.md`` is the landing page for the site and ``config.yml`` contains
 configuration info, such as which theme to use.
 
 In markdown files, page elements (such as visualizations) can be added using:

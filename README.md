@@ -1,10 +1,10 @@
-# Webviz
+# Webviz [![Build Status](https://travis-ci.com/Statoil/webviz.svg?branch=master)](https://travis-ci.com/Statoil/webviz) [![Documentation Status](https://readthedocs.org/projects/webviz/badge/?version=latest)](https://webviz.readthedocs.io/en/latest/?badge=latest)
 
 Webviz is a static site generator that fascilitates producing visualizations
 using [d3](https://d3js.org) and [plotly](https://plot.ly). Sites can be generated
 both using markdown and the python interface. Visualizations and other page elements
 can be added as plugins. See `examples/` for example usage. Visualization plugins
-are found in the `visualization/` folder and each has their own set of example
+are found in the `visualization/` folder and each has their own set of examples
 showing usage.
 
 If you want to make a contribution to the project, please read the 
@@ -12,12 +12,12 @@ If you want to make a contribution to the project, please read the
 
 ## Installation
 
-python dependencies can be installed with
+Python dependencies can be installed with
 
     pip install -r requirements.txt
 
-In addition, building webviz requires [node.js](https://nodejs.org). Then
-installation can be done with
+In addition, building `webviz` requires [npm](https://www.npmjs.com/get-npm). When
+`npm` is available in your `PATH`, building and installation can be done with
 
     make build && make install
 
@@ -63,6 +63,6 @@ from the `core/` directory._
 
 ## History
 
-Webviz (Originally Webportal) was initially written and is maintained by
+Webviz (originally Webportal) was initially written and is maintained by
 [Equinor ASA](http://www.equinor.com/) as a free visualization suite that can be
 tailored to our needs, and as contribution to the free software community.

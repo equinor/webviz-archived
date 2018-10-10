@@ -1,0 +1,12 @@
+<div id="{{element.containerId}}" style="height: 600px">
+{% include element.inner.get_template() %}
+<button class='tourbutton'> Start a tour </button>
+<script>
+
+document.querySelector('#{{element.containerId}} > .tourbutton').addEventListener(
+    'click',
+    function () {
+        hopscotch.startTour({ id:'tour-{{element.containerId}}', steps: {{element.get_json_dump('tour_steps')}} });
+    })
+</script>
+</div>

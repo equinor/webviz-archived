@@ -109,3 +109,4 @@ jsconfig.json
 
 # Example build
 webviz_example/
+html_output/

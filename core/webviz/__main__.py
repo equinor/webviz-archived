@@ -44,7 +44,7 @@ def page_element(name, *args, **kwargs):
 
 
 def read_config():
-    configfile = path.join(root_folder, 'config.yaml')
+    configfile = path.join(root_folder, 'config.yml')
     config = {
         'theme': 'default',
         'title': path.basename(root_folder)

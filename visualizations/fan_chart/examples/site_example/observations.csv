@@ -1,3 +1,3 @@
-index,name,value,error
-2012-01-04,line-3,17,4
-2012-01-08,line-2,8,2
+index,value,error,category
+2012-01-04,17,4,A
+2012-01-08,8,2,B

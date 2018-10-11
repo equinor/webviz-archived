@@ -1,2 +1,3 @@
 **/html_output/
 node_modules/*
+examples/resources/js/mathjax*

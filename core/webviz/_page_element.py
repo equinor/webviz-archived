@@ -3,7 +3,6 @@ from uuid import uuid4
 from ._header_element import HeaderElement
 from os import path
 from re import sub
-from shutil import copytree
 from ordered_set import OrderedSet
 
 
@@ -60,18 +59,20 @@ class PageElement:
 
         """
 
-    def add_mathjax(self, dir, files):
-        subdir = sub(r'.*node_modules/', '', str(dir))
+    def add_mathjax(self, src, files):
+        subdir = sub(r'.*node_modules/', '', str(src))
         for file in files:
             self.add_resource(path.join(
-                dir,
+                src,
                 file
             ), subdir='js/' + str(subdir))
 
         self.header_elements.add(HeaderElement(
             tag='script',
             attributes={
-                'src': path.join('{root_folder}', 'resources', 'js', 'mathjax', 'MathJax.js')
+                'src': path.join(
+                    '{root_folder}', 'resources', 'js', 'mathjax', 'MathJax.js'
+                )
             }
         ))
 

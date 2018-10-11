@@ -26,7 +26,7 @@ class TestHeatMapExample(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         shutil.rmtree(cls.tempdir)
-        cls.driver.close()
+        cls.driver.quit()
 
     def setUp(self):
         address = 'file://{}/webviz_example/index.html'.format(self.tempdir)

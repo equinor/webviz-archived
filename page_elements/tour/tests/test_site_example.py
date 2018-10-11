@@ -27,7 +27,7 @@ class TestSiteExample(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         shutil.rmtree(cls.tempdir)
-        cls.driver.close()
+        cls.driver.quit()
 
     def setUp(self):
         address = '{}/site_example/html_output/index.html'.format(self.tempdir)

@@ -1,6 +1,7 @@
 import jinja2
 import markdown
-from os import path
+from os import path, listdir, walk
+from shutil import copytree
 from ._page_element import PageElement
 from ._header_element import HeaderElement
 
@@ -62,14 +63,20 @@ class Markdown(PageElement):
                     });
                 """
             ))
-            self.header_elements.add(HeaderElement(
-                tag='script',
-                attributes={
-                    'type': 'text/javascript',
-                    'src': 'https://cdnjs.cloudflare.com/ajax/'
-                           'libs/mathjax/2.7.5/MathJax.js'
-                }
+
+            install_location = path.abspath(path.join(
+                    path.dirname(__file__),
+                    '..',
+                    'node_modules',
+                    'mathjax'
             ))
+
+            if not path.exists(path.join('resources', 'js', 'mathjax')):
+                copytree(install_location, path.join('resources', 'js', 'mathjax'))
+
+            for root, subdirs, files in walk(install_location):
+                if len(files) > 0:
+                    self.add_mathjax(root, files)
 
         self._rendered = extension.convert(self._md)
         self.add_css_file(path.join(

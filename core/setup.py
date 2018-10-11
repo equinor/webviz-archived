@@ -9,7 +9,8 @@ setup(
         'webviz': [
             'templates/*',
             'minimal_theme/templates/*',
-            'resources/css/*'
+            'resources/css/*',
+            'resources/js/*'
         ]},
     test_suite="setup.discover_test_suite",
     install_requires=[

@@ -9,12 +9,15 @@ from webviz_plotly import FilteredPlotly
 
 
 class MockElement(FilteredPlotly):
-    def process_data(self, frame):
-        return [
-            {
-                'name': column,
-                'y': frame[column].tolist()
-            } for column in frame.columns]
+    def process_data(self, *frames):
+        result = []
+        for frame in frames:
+            result.extend([
+                {
+                    'name': column,
+                    'y': frame[column].tolist()
+                } for column in frame.columns])
+        return result
 
 
 class TestFilteredPlotly(unittest.TestCase):
@@ -29,20 +32,6 @@ class TestFilteredPlotly(unittest.TestCase):
 index,data1,data2
 0,1,3
 1,2,4""")
-
-    def testFilterName(self):
-        filtered = MockElement(self.data, check_box=True)
-        self.assertTrue(
-                all('name' in data['labels']
-                    for data in filtered['data']))
-
-    def testReadCSV(self):
-        filtered = MockElement(self.data, check_box=True)
-        filtered_csv = MockElement(self.test_csv, check_box=True)
-        self.assertEqual(
-                filtered['data'],
-                filtered_csv['data']
-        )
 
     def testFilterColumn(self):
         filtered = MockElement(self.data, check_box_columns=['data2'])
@@ -63,6 +52,27 @@ index,data1,data2
         self.assertTrue(all(all(isinstance(label, str)
                         for label in labels)
                         for labels in itervalues(filters)))
+
+    def testNonStringLabelsCsv(self):
+        filtered = MockElement(self.test_csv, dropdown_columns=['data2'])
+        filters = filtered['dropdown_filters']
+        self.assertTrue(all(all(isinstance(label, str)
+                        for label in labels)
+                        for labels in itervalues(filters)))
+
+    def testMultipleData(self):
+        data1 = pd.DataFrame(
+            {
+                'column1': [1, 2],
+            }
+        )
+        filtered = MockElement([self.data, data1], dropdown_columns=['data2'])
+        self.assertTrue(any(
+            trace['name'] is 'column1' and {'data2': 3} == trace['labels']
+            for trace in filtered['data']))
+        self.assertTrue(any(
+            trace['name'] is 'column1' and {'data2': 4} == trace['labels']
+            for trace in filtered['data']))
 
     def testSendDataToCloudRemoved(self):
         filtered = MockElement(self.data)

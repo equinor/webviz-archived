@@ -2,6 +2,7 @@ from webviz_plotly import FilteredPlotly
 import pandas as pd
 import matplotlib.cm as cm
 import math
+import warnings
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -167,6 +168,12 @@ def process_dataframe_format(obs):
         return None
 
 
+def validate_value(data):
+    if any(x < 0 for x in data):
+        warnings.warn('Negative values are not supported in a'
+                      ' logarithmic scale.')
+
+
 class FanChart(FilteredPlotly):
     """Fan chart page element.
 
@@ -182,12 +189,24 @@ class FanChart(FilteredPlotly):
         Expects `index` parameter to be used as 'x' value, a `name` parameter
         to correspond with a name in the data dataframe, a `value` and `value`
         that will determine the size of the marker (in height)
-    :param kwargs: optional `xaxis` and `yaxis` paramameter. Will create a
-        label for the given axis. Defaults to `None`.
+    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
+    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
+    :param logx: boolean value to toggle x-axis logarithmic scale.
+        Defaults to `False`
+    :param logy: boolean value to toggle y-axis logarithmic scale.
+        Defaults to `False`
     """
-    def __init__(self, data, observations=None, *args, **kwargs):
+    def __init__(
+            self,
+            data,
+            observations=None,
+            logx=False,
+            logy=False,
+            *args,
+            **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        self.logy = logy
 
         if observations is not None:
             if isinstance(observations, pd.DataFrame):
@@ -203,8 +222,8 @@ class FanChart(FilteredPlotly):
             data,
             *args,
             layout={
-                'xaxis': {'title': xaxis},
-                'yaxis': {'title': yaxis}
+                'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
+                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
             },
             **kwargs)
 
@@ -221,9 +240,13 @@ class FanChart(FilteredPlotly):
             x = line_data.index.tolist()
 
             for column in line_data.columns:
+                data_list = line_data[column].tolist()
                 if column == 'mean':
+                    if self.logy:
+                        validate_value(data_list)
+
                     lines.append({
-                        'y': line_data[column].tolist(),
+                        'y': data_list,
                         'x': x,
                         'type': 'scatter',
                         'legendgroup': line,
@@ -234,32 +257,44 @@ class FanChart(FilteredPlotly):
                         }
                     })
                 elif column == 'p90':
+                    if self.logy:
+                        validate_value(data_list)
+
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,
                         format_color(colors[line], '0.5'),
                     ))
                 elif column == 'p10':
+                    if self.logy:
+                        validate_value(data_list)
+
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,
                         format_color(colors[line], '0.5'),
                     ))
                 elif column == 'min':
+                    if self.logy:
+                        validate_value(data_list)
+
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,
                         format_color(colors[line], '0.3'),
                     ))
                 elif column == 'max':
+                    if self.logy:
+                        validate_value(data_list)
+
                     lines.append(init_confidence_band(
-                        line_data[column].tolist(),
+                        data_list,
                         line_data['mean'].tolist(),
                         x,
                         line,

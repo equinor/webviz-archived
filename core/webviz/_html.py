@@ -15,26 +15,10 @@ class Html(PageElement):
     def __init__(self, html, js_deps=[], css_deps=[]):
         super(Html, self).__init__()
         self._html = html
-        self._js_deps = js_deps[:]
-        self._css_deps = css_deps[:]
-
-    def get_js_dep(self):
-        """ Overrides :py:meth:`webviz.PageElement.get_js_dep`."""
-        deps = super(Html, self).get_js_dep()
-        deps.extend(self._js_deps)
-        return deps
-
-    def get_css_dep(self):
-        """ Overrides :py:meth:`webviz.PageElement.get_css_dep`."""
-        deps = super(Html, self).get_css_dep()
-        deps.extend(self._css_deps)
-        return deps
-
-    def add_js_dep(self, js):
-        self._js_deps.append(js)
-
-    def add_css_dep(self, css):
-        self._css_deps.append(css)
+        for js in js_deps:
+            self.add_js_file(js)
+        for css in css_deps:
+            self.add_css_file(css)
 
     def get_template(self):
         return jinja2.Template(self._html)

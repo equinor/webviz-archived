@@ -1,4 +1,5 @@
 import unittest
+import os
 import pandas as pd
 from pandas.compat import StringIO
 
@@ -24,8 +25,9 @@ i,j,k,x0,y0,x1,y1,x2,y2,x3,y3,value,FLOWI+,FLOWJ+
 
     def test_depends_on_map_js(self):
         map = Map(self.test_df)
-        self.assertTrue(any('resources/js/map.js' in path
-                            for path in map.get_js_dep()))
+        self.assertTrue(any(
+            (('src', '{root_folder}/resources/js/map.js') in e.attributes)
+            for e in map.header_elements))
 
 
 if __name__ == '__main__':

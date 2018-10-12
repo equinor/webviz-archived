@@ -23,17 +23,12 @@ class Markdown(PageElement):
                 'markdown.extensions.codehilite'
             ]
         )
-
-    def get_css_dep(self):
-        """ Overrides :py:meth:`webviz.PageElement.get_css_dep`."""
-        deps = super(Markdown, self).get_css_dep()
-        deps.append(path.join(
+        self.add_css_file(path.join(
             path.dirname(__file__),
             'resources',
             'css',
             'codehilite.css'
         ))
-        return deps
 
     def get_template(self):
         return jinja2.Template(self._rendered)

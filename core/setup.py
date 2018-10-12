@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='webviz',
     version='0.10.0',
-    packages=find_packages("."),
+    packages=find_packages(exclude=['tests']),
     package_dir={"": "."},
     package_data={
         'webviz': [
@@ -18,6 +18,7 @@ setup(
         'pygments',
         'six',
         'argparse',
+        'ordered-set',
         'pyyaml',
         'future'],
     setup_requires=['pytest-runner'],

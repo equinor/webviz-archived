@@ -35,7 +35,7 @@ def format_color(color, opacity):
     return "rgba({},{})".format(','.join(color), opacity)
 
 
-def init_confidence_band(y, mean, x, line, color):
+def init_confidence_band(y, mean, x, name, color):
     """
     Makes a confidence band between mean and the corresponding
     confidence values (i.e. max, min, p90, p10).
@@ -53,8 +53,8 @@ def init_confidence_band(y, mean, x, line, color):
         'y': y + mean[::-1],
         'x': x + x[::-1],
         'type': 'scatter',
-        'legendgroup': line,
-        'name': line,
+        'legendgroup': name,
+        'name': name,
         'fill': 'toself',
         'mode': 'lines',
         'hoverinfo': 'none',
@@ -131,13 +131,13 @@ def make_marker(obs, index, color):
     }
 
 
-def index_observations(obs):
-    obs.set_index(
-        obs['index'],
+def index_dataframe(data):
+    data.set_index(
+        data['index'],
         drop=True,
         inplace=True
     )
-    return obs
+    return data
 
 
 def validate_observation_data(obs):
@@ -151,19 +151,40 @@ def validate_observation_data(obs):
         return False
 
 
-def process_csv_format(obs):
-    if 'index' in obs:
-        return index_observations(obs)
+def validate_reference_data(ref):
+    if ref is not None and not ref.empty:
+        if any(col not in ref.columns for col in ['name', 'value']):
+            raise ValueError('Reference line is not expected format')
+
+        else:
+            return True
     else:
-        raise ValueError('Observations from CSV should have an index column')
+        return False
 
 
-def process_dataframe_format(obs):
+def process_csv_format(data):
+    if 'index' in data:
+        return index_dataframe(data)
+    else:
+        raise ValueError('Data from CSV should have an index column')
+
+
+def process_dataframe_observation(obs):
     if validate_observation_data(obs):
         observations = obs.copy()
         if 'index' in observations.columns:
-            index_observations(observations)
+            index_dataframe(observations)
         return observations
+    else:
+        return None
+
+
+def process_dataframe_reference(ref):
+    if validate_reference_data(ref):
+        references = ref.copy()
+        if 'index' in references.columns:
+            index_dataframe(references)
+        return references
     else:
         return None
 
@@ -200,6 +221,7 @@ class FanChart(FilteredPlotly):
             self,
             data,
             observations=None,
+            references=None,
             logx=False,
             logy=False,
             *args,
@@ -210,13 +232,23 @@ class FanChart(FilteredPlotly):
 
         if observations is not None:
             if isinstance(observations, pd.DataFrame):
-                self.observations = process_dataframe_format(observations)
+                self.observations = process_dataframe_observation(observations)
             else:
                 self.observations = pd.read_csv(observations)
                 validate_observation_data(pd.DataFrame(self.observations))
                 self.observations = process_csv_format(self.observations)
         else:
             self.observations = None
+
+        if references is not None:
+            if isinstance(references, pd.DataFrame):
+                self.references = process_dataframe_reference(references)
+            else:
+                self.references = pd.read_csv(references)
+                validate_reference_data(pd.DataFrame(self.references))
+                self.references = process_csv_format(self.references)
+        else:
+            self.references = None
 
         super(FanChart, self).__init__(
             data,
@@ -228,11 +260,28 @@ class FanChart(FilteredPlotly):
             **kwargs)
 
     def process_data(self, data):
-
-        uniquelines = set(data['name']) \
-            if 'name' in data else {'line'}
-        lines = []
+        uniquelines = set(self.data['name']) \
+            if 'name' in self.data else {'line'}
+        unique_references = set(self.references['name']) \
+            if 'name' in self.references else {'line'}
         colors = color_spread(uniquelines)
+        lines = []
+
+        for index, line in enumerate(unique_references):
+            ref_data = self.references[self.references['name'] == line] \
+                if 'name' in self.references else self.references
+            lines.append({
+                'y': ref_data['value'].tolist(),
+                'x': ref_data.index.tolist(),
+                'type': 'scatter',
+                'legendgroup': line,
+                'showlegend': False,
+                'name': line,
+                'mode': 'lines',
+                'line': {
+                    'color': 'rgba(0, 0, 0, 0.7)'
+                }
+            })
 
         for index, line in enumerate(uniquelines):
             line_data = data[data['name'] == line] \

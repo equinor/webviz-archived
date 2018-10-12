@@ -7,3 +7,9 @@ site_example
     js_deps=['./test.js'],
     css_deps=['./test.css'])
 }}
+{{ page_element(
+    'Html',
+    '<p id="htmlParagraph">Lorem ipsum</p>',
+    js_deps=['./test.js'],
+    css_deps=['./test.css'])
+}}

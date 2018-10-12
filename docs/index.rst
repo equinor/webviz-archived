@@ -41,9 +41,21 @@ In markdown files, page elements (such as visualizations) can be added using:
 
 .. code-block:: html
 
-   {{ page_element('name_of_page_element', arguments...) }}
+   {{ page_element(
+        name,
+        *args,
+        *kwargs
+    }}
 
+``name`` *string*: name of page element. Page elements are the following: :py:class:`Html`, :py:class:`FilteredPlotly`, :py:class:`Plotly`, :py:class:`LineChart`, :py:class:`BarChart`, :py:class:`PieChart`, :py:class:`TornadoPlot`, :py:class:`FanChart`, :py:class:`ScatterPlotMatrix`, :py:class:`Map`, :py:class:`Histogram`, :py:class:`ScatterPlot`, :py:class:`HeatMap`
 
+``*args`` *args*: args of page elements method
+
+``**kwargs`` *kwargs*: kwargs of page elements method
+
+.. warning:
+
+    Note: all paths in args and kwargs should be absolute or relative to the project root (the same directory index.md is declared in)
 
 API example
 ^^^^^^^^^^^

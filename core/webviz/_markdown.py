@@ -7,8 +7,6 @@ from ._header_element import HeaderElement
 
 
 def contains_math(string):
-    print(string)
-
     if any(x in string for x in ['$$', '\\begin', '\\end']):
         return True
 
@@ -37,7 +35,6 @@ class Markdown(PageElement):
         )
 
         if contains_math(self._md):
-            print('it contains math')
             self.header_elements.add(HeaderElement(
                 tag='script',
                 attributes={

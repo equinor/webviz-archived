@@ -1,4 +1,3 @@
-node_modules
 src/webviz_default_theme/resources/css/theme.css
 src/webviz_default_theme/resources/js/menu.js
 src/webviz_default_theme/resources/js/fontawesome.js

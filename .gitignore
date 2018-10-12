@@ -108,4 +108,11 @@ jsconfig.json
 *.DS_Store
 
 # Example build
-webviz_example/
+**/webviz_example/
+**/html_output/
+
+# NPM node_modules
+**/node_modules/
+
+# browserify tmp files
+*.tmp-browserify-*

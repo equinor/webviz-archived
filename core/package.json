@@ -1,0 +1,27 @@
+{
+  "name": "webviz-plotly",
+  "version": "0.1.0",
+  "description": "Webviz page element for plotly visualizations.",
+  "scripts": {
+    "build": "npm-run-all",
+    "browserify": "browserify src/filtered_plotly.js -o webviz_plotly/resources/js/filtered_plotly.js -t [ babelify --presets [ '@babel/preset-env' ] ]",
+    "test": "mocha src/*.spec.js --require @babel/register --require jsdom-global/register",
+    "lint": "eslint *.js"
+  },
+  "author": "Equinor ASA",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "mathjax": "^2.7.5",
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.2",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-chai-expect": "^1.1.1",
+    "eslint-plugin-import": "^2.14.0",
+    "jsdom": "^12.0.0",
+    "jsdom-global": "^3.0.2",
+    "npm-run-all": "^4.1.3"
+  }
+}

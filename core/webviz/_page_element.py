@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 from uuid import uuid4
 from ._header_element import HeaderElement
 from os import path
+from re import sub
 from ordered_set import OrderedSet
 
 
@@ -42,7 +43,8 @@ class PageElement:
             tag='script',
             attributes={
                 'src': path.join('{root_folder}', 'resources', 'js', basename)
-                }))
+            }
+        ))
         self.add_resource(filename, subdir='js')
 
     @abstractmethod
@@ -56,6 +58,23 @@ class PageElement:
             html = self.get_template().render(element=self)
 
         """
+
+    def add_mathjax(self, src, files):
+        subdir = sub(r'.*node_modules/', '', str(src))
+        for file in files:
+            self.add_resource(path.join(
+                src,
+                file
+            ), subdir='js/' + str(subdir))
+
+        self.header_elements.add(HeaderElement(
+            tag='script',
+            attributes={
+                'src': path.join(
+                    '{root_folder}', 'resources', 'js', 'mathjax', 'MathJax.js'
+                )
+            }
+        ))
 
     def __str__(self):
         html = ""

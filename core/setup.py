@@ -9,7 +9,8 @@ setup(
         'webviz': [
             'templates/*',
             'minimal_theme/templates/*',
-            'resources/css/*'
+            'resources/css/*',
+            'resources/js/*'
         ]},
     test_suite="setup.discover_test_suite",
     install_requires=[
@@ -20,7 +21,8 @@ setup(
         'argparse',
         'ordered-set',
         'pyyaml',
-        'future'],
+        'future',
+        'python-markdown-math'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'mock', 'pycodestyle'],
     entry_points={

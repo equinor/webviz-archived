@@ -1,1 +1,4 @@
-{{ page_element('TornadoPlot', './test.csv') }}
+{{ page_element(
+    'TornadoPlot',
+    './test.csv',
+) }}

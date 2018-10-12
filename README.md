@@ -7,6 +7,9 @@ can be added as plugins. See `examples/` for example usage. Visualization plugin
 are found in the `visualization/` folder and each has their own set of example
 showing usage.
 
+If you want to make a contribution to the project, please read the 
+[contribution guidelines](https://github.com/Statoil/webviz/blob/master/CONTRIBUTING.md).
+
 ## Installation
 
 python dependencies can be installed with

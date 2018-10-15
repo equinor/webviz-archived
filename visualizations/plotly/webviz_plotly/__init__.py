@@ -39,11 +39,16 @@ class Plotly(JSONPageElement):
         if 'modeBarButtonsToRemove' not in config:
             config['modeBarButtonsToRemove'] = Plotly.DISALLOWED_BUTTONS
         else:
-            for button in Plotly.DISALLOWED_BUTTONS:
-                if button not in config['modeBarButtonsToRemove']:
-                    config['modeBarButtonsToRemove'].append(button)
-                    warnings.warn('Including {} required.'.format(button),
-                                  Warning)
+            need_to_add_buttons = (
+                button for button in Plotly.DISALLOWED_BUTTONS
+                if button not in config['modeBarButtonsToRemove']
+            )
+            for button in need_to_add_buttons:
+                config['modeBarButtonsToRemove'].append(button)
+                warnings.warn(
+                    '{} is required in modeBarButtonsToRemove.'.format(button),
+                    Warning
+                )
 
         self['data'] = data
         self['config'] = config
@@ -71,21 +76,71 @@ class Plotly(JSONPageElement):
 class FilteredPlotly(Plotly):
     """
     Page Element for adding filtering controls to Plotly
-    plots that take a dataframe.
+    plots that take a dataframe. Values are grouped by labels,
+    for instance:
 
-    :param data: A dataframe that can be processed by
-       `process_data`.
-    :param check_box_columns: Columns in the dataframe
+    ::
+
+        index,value,labels
+        01-01-2020,3,A
+        02-01-2020,4,B
+
+    If 'labels' is chosen as a dropdown_column, then
+    the value 4 will be chosen if the dropdown menu is
+    set to the label B, and the value 3 will be chosen if the
+    dropdown is set to A.
+
+    The :py:meth:`FilteredPlotly.process_data` handles the generation of the
+    plot data. For the example above, it is given the following dataframes:
+
+    ::
+
+        index,value
+        01-01-2020,3
+
+    and
+
+    ::
+
+        index,value,
+        02-01-2020,4
+
+
+    Layout and config is then generated that insert the required controls.
+
+    :param data: A dataframe, or list of dataframes,
+        that can be processed by `process_data`. Each
+        dataframe will be grouped based on check_box_columns
+        and given as a parameter list to process data. A special
+        label, FilteredPlotly.wildcard ('*' by default), signifies
+        that the data should be present in all groups. If a dataframe
+        does not contain a column it is treated as if all rows have
+        the wildcard label.
+    :param check_box_columns: Columns in the dataframes
         that contain labels to be filtered
         on by check boxes.
     :param slider_columns: Columns in the dataframe
         that  contain labels to be filtered
         on by a slider.
-    :param check_box: True if all traces should
-        have a corresponding check box, including or
-        excluding that trace.
+    :param dropdown_columns: Columns in the dataframe
+        that  contain labels to be filtered
+        on by a dropdown menu.
     """
     __metaclass__ = ABCMeta
+
+    wildcard = '*'
+
+    def names_match(self, filters, names1, names2):
+        if len(filters) == 1:
+            return (names1 == self.wildcard or
+                    names2 == self.wildcard or
+                    names1 == names2)
+        else:
+            return all(
+                    name1 == self.wildcard or
+                    name2 == self.wildcard or
+                    name1 == name2
+                    for name1, name2 in zip(names1, names2))
 
     def __init__(
             self,
@@ -93,44 +148,73 @@ class FilteredPlotly(Plotly):
             check_box_columns=[],
             slider_columns=[],
             dropdown_columns=[],
-            check_box=False,
             *args,
             **kwargs):
-        if isinstance(data, pd.DataFrame):
-            self.data = data.copy()
+        self.data = []
+        _data = []
+        if isinstance(data, list):
+            _data = data
         else:
-            self.data = pd.read_csv(data)
-            if 'index' in self.data.columns:
-                self.data.set_index(
-                        self.data['index'],
-                        inplace=True)
-                del self.data['index']
+            _data = [data]
+        for frame in _data:
+            if isinstance(frame, pd.DataFrame):
+                self.data.append(frame.copy())
+            else:
+                _frame = pd.read_csv(frame)
+                if 'index' in _frame.columns:
+                    _frame.set_index(
+                            _frame['index'],
+                            inplace=True)
+                    del _frame['index']
+                self.data.append(_frame)
 
         filtered_data = []
         self.labels = {}
         filters = (check_box_columns +
                    slider_columns +
                    dropdown_columns)
+        for frame in self.data:
+            for filt in filters:
+                if filt not in frame.columns:
+                    frame[filt] = self.wildcard
         if filters:
-            grouped = self.data.groupby(filters)
+            ordered = {}
+            for frame in self.data:
+                for names, group in frame.groupby(filters):
+                    if names not in ordered:
+                        ordered[names] = []
+                    ordered[names].append(group.drop(filters, axis=1))
+
+            filled = {}
+            for names, group in iteritems(ordered):
+                if ((len(filters) == 1 and self.wildcard != names) or
+                   (len(filters) != 1 and self.wildcard not in names)):
+                    if names not in filled:
+                        filled[names] = []
+                    filled[names].extend(group)
+            for names, group in iteritems(ordered):
+                if ((len(filters) == 1 and self.wildcard == names) or
+                   (len(filters) != 1 and self.wildcard in names)):
+                    for filled_names, filled_group in iteritems(filled):
+                        if self.names_match(filters, filled_names, names):
+                            filled_group.extend(group)
             self.labels = {}
-            for names, group in grouped:
-                if len(filters) == 1:
-                    names = [names]
+            for names, group in iteritems(filled):
                 processed = self.process_data(
-                    group.drop(filters, axis=1)
+                    *group
                 )
                 for point in processed:
                     point['labels'] = {}
-                    for key, label in zip(filters, names):
-                        point['labels'][key] = label
+                    iter_names = names if len(filters) > 1 else [names]
+                    for key, label in zip(filters, iter_names):
                         if key not in self.labels:
                             self.labels[key] = []
+                        point['labels'][key] = label
                         if label not in self.labels[key]:
                             self.labels[key].append(label)
                 filtered_data.extend(processed)
         else:
-            processed = self.process_data(self.data)
+            processed = self.process_data(*self.data)
             for data in processed:
                 data['labels'] = {}
             filtered_data.extend(processed)
@@ -146,13 +230,6 @@ class FilteredPlotly(Plotly):
             'filtered_plotly.js'))
 
         self['check_box_filters'] = [str(label) for label in check_box_columns]
-        if check_box:
-            self.labels['name'] = []
-            self['check_box_filters'].append('name')
-            for point in filtered_data:
-                if point['name'] not in self.labels['name']:
-                    self.labels['name'].append(point['name'])
-                point['labels']['name'] = point['name']
 
         self.labels = {key: [str(label) for label in keylabels]
                        for key, keylabels in iteritems(self.labels)}
@@ -169,10 +246,8 @@ class FilteredPlotly(Plotly):
         return env.get_template('filtered_plotly.html')
 
     @abstractmethod
-    def process_data(self, frame):
+    def process_data(self, *datas):
         """
-        :param frame: A dataframe.
-        :returns: List of traces to be used as
-            data for the Plotly Page Element.
+        :returns: List of traces to be used a data for the Plotly Page Element.
         """
         pass

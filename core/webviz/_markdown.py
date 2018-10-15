@@ -1,6 +1,7 @@
 import jinja2
 import markdown
 from os import path, walk
+from re import sub
 from shutil import copytree
 from ._page_element import PageElement
 from ._header_element import HeaderElement
@@ -64,20 +65,14 @@ class Markdown(PageElement):
                 """
             ))
 
-            install_location = path.abspath(path.join(
+            mathjax_location = path.abspath(path.join(
                     path.dirname(__file__),
-                    '..',
-                    'node_modules',
+                    'resources',
+                    'js',
                     'mathjax'
             ))
 
-            if not path.exists(path.join('resources', 'js', 'mathjax')):
-                copytree(
-                    install_location,
-                    path.join('resources', 'js', 'mathjax')
-                )
-
-            for root, subdirs, files in walk(install_location):
+            for root, subdirs, files in walk(mathjax_location):
                 if len(files) > 0:
                     self.add_mathjax(root, files)
 
@@ -87,6 +82,23 @@ class Markdown(PageElement):
             'resources',
             'css',
             'codehilite.css'
+        ))
+
+    def add_mathjax(self, src, files):
+        subdir = sub(r'.*resources/js/', '', str(src))
+        for file in files:
+            self.add_resource(path.join(
+                src,
+                file
+            ), subdir='js/' + str(subdir))
+
+        self.header_elements.add(HeaderElement(
+            tag='script',
+            attributes={
+                'src': path.join(
+                    '{root_folder}', 'resources', 'js', 'mathjax', 'MathJax.js'
+                )
+            }
         ))
 
     def get_template(self):

@@ -8,7 +8,9 @@ setup(
     package_data={
         'webviz_tour': [
             'templates/*',
-            'resources/js/*'
+            'resources/js/*',
+            'resources/css/*',
+            'resources/img/*'
         ]},
     test_suite="setup.discover_test_suite",
     install_requires=['jinja2', 'webviz'],

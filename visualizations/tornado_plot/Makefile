@@ -11,7 +11,7 @@ install: build
 	pip install $(ARGS) .
 
 test:
-	py.test --cov=webviz_tornado_plot --cov-fail-under=100 tests/
+	cd tests && py.test --cov=webviz_tornado_plot --cov-fail-under=100 . && cd ..
 
 lint:
 	pycodestyle webviz_tornado_plot examples

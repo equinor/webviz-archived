@@ -12,7 +12,7 @@ install: build
 	python setup.py install
 
 test:
-	py.test --cov=webviz_map --cov-fail-under=96 tests/
+	cd tests && py.test --cov=webviz_map --cov-fail-under=96 . && cd ..
 	npm run test
 
 lint:

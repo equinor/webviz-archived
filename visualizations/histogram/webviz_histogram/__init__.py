@@ -59,7 +59,7 @@ class Histogram(FilteredPlotly):
     def process_data(self, data):
         lines = []
 
-        for column in self.data.columns:
+        for column in data.columns:
             if (self.logy or self.logx) and any(x < 0 for x
                                                 in data[column].tolist() if
                                                 isinstance(x, int or float)):

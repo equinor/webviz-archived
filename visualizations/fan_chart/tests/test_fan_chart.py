@@ -1,10 +1,10 @@
 import unittest
 import pandas as pd
 from pandas.compat import StringIO
+import warnings
 from webviz_fan_chart import FanChart, color_spread, format_color, \
     init_confidence_band, make_observation, validate_observation_data, \
-    make_marker, index_observations, process_csv_format, \
-    process_dataframe_format
+    make_marker
 
 line_mock_data = {
     'index': ['02-03-2006'],
@@ -37,17 +37,6 @@ line-2,8,2
 
 
 class TestFanChart(unittest.TestCase):
-    def test_using_csv(self):
-        self.assertTrue(validate_observation_data(obs_csv))
-        try:
-            process_csv_format(obs_csv)
-        except ValueError:
-            self.fail('Processing a CSV did not work')
-
-    def test_using_csv_without_index(self):
-        with self.assertRaises(ValueError):
-            process_csv_format(obs_without_index)
-
     def test_parse_columns(self):
         with self.assertRaises(ValueError):
             FanChart(
@@ -61,6 +50,9 @@ class TestFanChart(unittest.TestCase):
     def test_parse_without_observations(self):
         self.assertTrue(FanChart(pd.DataFrame(line_mock_data)))
 
+    def test_parse_logy(self):
+        self.assertTrue(FanChart(pd.DataFrame(line_mock_data), logy=True))
+
     def test_observation_without_value(self):
         with self.assertRaises(ValueError):
             validate_observation_data(pd.DataFrame({
@@ -68,6 +60,22 @@ class TestFanChart(unittest.TestCase):
                 'name': ['gkaskng'],
                 'error': [5]
             }))
+
+    def test_negative_logy_raises_warning(self):
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            FanChart(
+                pd.DataFrame({
+                    'name': ['name'],
+                    'mean': [-1],
+                    'min': [-1],
+                    'max': [-1],
+                    'p10': [-1],
+                    'p90': [-1]
+                }, index=['02-03-2006']),
+                logy=True
+            )
+            assert(issubclass(w[-1].category, UserWarning))
 
     def test_observation_without_index(self):
         trace = {
@@ -78,15 +86,6 @@ class TestFanChart(unittest.TestCase):
         self.assertTrue(validate_observation_data(
             pd.DataFrame(trace)
         ))
-
-    def test_observation_with_index(self):
-        trace = index_observations(pd.DataFrame(obs_mock_data))
-        processed_trace = process_dataframe_format(pd.DataFrame(obs_mock_data))
-        self.assertTrue(validate_observation_data(pd.DataFrame(obs_mock_data)))
-        self.assertEqual(
-            trace.index,
-            processed_trace.index
-        )
 
     def test_color_spread(self):
         trace = color_spread({'line-1', 'line-2', 'line-3'})
@@ -132,16 +131,10 @@ class TestFanChart(unittest.TestCase):
         trace = make_marker({
             'value': value,
             'error': error_value,
-            'name': 'name'
-        }, index, 'rgba(0,0,0,1)')
+        }, index)
         self.assertIn('x', trace)
         self.assertEqual(trace['x'], [index])
         self.assertEqual(trace['y'], [value])
-
-    def test_add_empty_observations(self):
-        self.assertIsNone(
-            process_dataframe_format(pd.DataFrame())
-        )
 
     def test_add_wrong_observations(self):
         with self.assertRaises(ValueError):

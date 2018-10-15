@@ -84,13 +84,11 @@ def make_observation(obs, index):
            index
         ],
         'showlegend': False,
-        'legendgroup': obs['name'],
         'type': 'scatter',
         'hoverinfo': 'none',
         'text': '',
         'hovermode': False,
         'mode': 'lines',
-        'name': obs['name'],
         'line': {
             'color': '#000',
             'width': 1
@@ -98,7 +96,7 @@ def make_observation(obs, index):
     }
 
 
-def make_marker(obs, index, color):
+def make_marker(obs, index):
     """
     :param
         obs: Observation point containing 'value', 'index' and 'name'
@@ -114,58 +112,30 @@ def make_marker(obs, index, color):
             index
         ],
         'showlegend': False,
-        'legendgroup': obs['name'],
-        'name': obs['name'],
         'type': 'scatter',
         'mode': 'markers',
-        'color': 'rgb(0, 0, 0)',
+        'color': '#000',
         'marker': {
             'color': '#000'
         },
         'colorbar': {
-            'bgcolor': color
+            'bgcolor': '#000'
         },
         'hoverlabel': {
-            'bgcolor': color
+            'bgcolor': '#000'
         }
     }
 
 
-def index_observations(obs):
-    obs.set_index(
-        obs['index'],
-        drop=True,
-        inplace=True
-    )
-    return obs
-
-
 def validate_observation_data(obs):
     if obs is not None and not obs.empty:
-        if any(col not in obs.columns for col in ['error', 'name', 'value']):
+        if any(col not in obs.columns for col in ['error', 'value']):
             raise ValueError('Observation data is not expected format: \n'
                              'Reveived columns: ', obs.columns)
         else:
             return True
     else:
         return False
-
-
-def process_csv_format(obs):
-    if 'index' in obs:
-        return index_observations(obs)
-    else:
-        raise ValueError('Observations from CSV should have an index column')
-
-
-def process_dataframe_format(obs):
-    if validate_observation_data(obs):
-        observations = obs.copy()
-        if 'index' in observations.columns:
-            index_observations(observations)
-        return observations
-    else:
-        return None
 
 
 def validate_value(data):
@@ -208,18 +178,9 @@ class FanChart(FilteredPlotly):
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
 
-        if observations is not None:
-            if isinstance(observations, pd.DataFrame):
-                self.observations = process_dataframe_format(observations)
-            else:
-                self.observations = pd.read_csv(observations)
-                validate_observation_data(pd.DataFrame(self.observations))
-                self.observations = process_csv_format(self.observations)
-        else:
-            self.observations = None
-
+        datas = [data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(
-            data,
+            datas,
             *args,
             layout={
                 'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
@@ -227,7 +188,8 @@ class FanChart(FilteredPlotly):
             },
             **kwargs)
 
-    def process_data(self, data):
+    def process_data(self, data, observations=None):
+        validate_observation_data(observations)
 
         uniquelines = set(data['name']) \
             if 'name' in data else {'line'}
@@ -305,15 +267,13 @@ class FanChart(FilteredPlotly):
                 else:
                     raise ValueError('An unknown column was passed: ', column)
 
-        if self.observations is not None:
-            for i, row in self.observations.iterrows():
+        if observations is not None:
+            for i, row in observations.iterrows():
                 lines.append(make_observation(row, i))
-                if row['name'] in uniquelines:
-                    lines.append(
-                        make_marker(
-                            obs=row,
-                            index=i,
-                            color=format_color(colors[row['name']], 1)
-                        )
+                lines.append(
+                    make_marker(
+                        obs=row,
+                        index=i,
                     )
+                )
         return lines

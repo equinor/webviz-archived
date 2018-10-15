@@ -19,6 +19,6 @@ lines = pd.DataFrame({
     'line 6': line2,
     })
 
-page.add_content(LineChart(lines, check_box=True))
+page.add_content(LineChart(lines))
 web.add(page)
 web.write_html("./webviz_example", overwrite=True, display=False)

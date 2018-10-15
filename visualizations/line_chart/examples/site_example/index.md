@@ -2,7 +2,6 @@
     'LineChart',
     './test.csv',
     logy=True,
-    check_box=true,
     xaxis='Time',
     yaxis='Value',
     slider_columns=['dateslider'],

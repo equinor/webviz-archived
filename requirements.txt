@@ -8,3 +8,4 @@ markdown
 pygments
 pandas
 ordered-set
+python-markdown-math

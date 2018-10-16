@@ -37,7 +37,7 @@ class BarChart(FilteredPlotly):
     def process_data(self, data):
         x = data.index.tolist()
 
-        lines = []
+        bars = []
 
         for column in data.columns:
             if self.logy and any(x < 0 for x in data[column].tolist()
@@ -45,11 +45,11 @@ class BarChart(FilteredPlotly):
                 warnings.warn('Negative values are not supported in a'
                               ' logarithmic scale.')
 
-            lines.append({
+            bars.append({
                 'y': data[column].tolist(),
                 'x': x,
-                'type': 'scatter',
+                'type': 'bar',
                 'name': column
             })
 
-        return lines
+        return bars

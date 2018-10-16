@@ -11,7 +11,7 @@ install: build
 	pip install $(ARGS) .
 
 test:
-	py.test --cov=webviz_plotly --cov-fail-under=97 tests/
+	cd tests && py.test --cov=webviz_plotly --cov-fail-under=97 . && cd ..
 	npm run test
 
 lint:

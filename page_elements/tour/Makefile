@@ -11,7 +11,7 @@ install: build
 	pip install $(ARGS) .
 
 test:
-	py.test --cov=webviz_tour --cov-fail-under=97 tests/
+	cd tests && py.test --cov=webviz_tour --cov-fail-under=97 . && cd ..
 
 lint:
 	pycodestyle webviz_tour examples tests

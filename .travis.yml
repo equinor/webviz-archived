@@ -1,7 +1,7 @@
 language : python
 cache: pip
 
-sudo: true
+sudo: required
 
 addons:
     chrome: stable
@@ -24,7 +24,7 @@ before_install:
 install:
   - pip install -r requirements.txt
   - pip install -r dev-requirements.txt
-  - wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
+  - wget https://chromedriver.storage.googleapis.com/2.42/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - export PATH=$PATH:$PWD
 

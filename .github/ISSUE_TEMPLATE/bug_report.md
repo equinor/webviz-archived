@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help us improve. Do not include confidential data!
 
 ---
 
@@ -11,6 +11,7 @@ about: Create a report to help us improve
   - The issue tracker is only for bugs and feature requests.
   - Before reporting a bug, please make sure you have the latest version of Webviz and try to recreate the issue after a clean install of the project.
   -->
+
 Operating system: 
 
 **Description**
@@ -29,7 +30,12 @@ Operating system:
 <!-- Step by step on how to reproduce the bug -->
 
 ### Screenshots
-<!-- If applicable, add screenshots to help explain your problem -->
+<!--
+  If applicable, add screenshots to help explain your problem.
+
+  NOTE: Please be advised that all issues created are publicly available.
+  Do not include screenshots containing confidential data.
+ -->
 
 ### Additional context
 <!-- Add any other context about the problem here -->

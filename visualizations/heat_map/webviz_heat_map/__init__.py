@@ -1,7 +1,7 @@
-from webviz_plotly import FilteredPlotly
+from webviz_plotly import FilteredGraph
 
 
-class HeatMap(FilteredPlotly):
+class HeatMap(FilteredGraph):
     """Line chart page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -15,13 +15,14 @@ class HeatMap(FilteredPlotly):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, data, *args, **kwargs):
+    def __init__(self, data, id="heat-map-graph", *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
 
         super(HeatMap, self).__init__(
-            data,
             *args,
+            id=id,
+            data=data,
             layout={
                 'showlegend': True,
                 'xaxis': {'title': xaxis},

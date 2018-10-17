@@ -1,8 +1,8 @@
-from webviz_plotly import FilteredPlotly
+from webviz_plotly import FilteredGraph
 import warnings
 
 
-class BarChart(FilteredPlotly):
+class BarChart(FilteredGraph):
     """Bar chart page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -19,25 +19,27 @@ class BarChart(FilteredPlotly):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, data, barmode='group', logy=False, *args, **kwargs):
+
+    def __init__(self, data, id='bar-chart-graph', barmode='group', logy=False, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
         super(BarChart, self).__init__(
-                data,
-                *args,
-                layout={
-                    'barmode': barmode,
-                    'xaxis': {'title': xaxis},
-                    'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
-                },
-                config={},
-                **kwargs)
+            id=id,
+            data=data,
+            layout={
+                'barmode': barmode,
+                'xaxis': {'title': xaxis},
+                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
+            },
+            config={},
+            **kwargs
+        )
 
     def process_data(self, data):
         x = data.index.tolist()
 
-        lines = []
+        bars = []
 
         for column in data.columns:
             if self.logy and any(x < 0 for x in data[column].tolist()
@@ -45,11 +47,11 @@ class BarChart(FilteredPlotly):
                 warnings.warn('Negative values are not supported in a'
                               ' logarithmic scale.')
 
-            lines.append({
+            bars.append({
                 'y': data[column].tolist(),
                 'x': x,
-                'type': 'scatter',
+                'type': 'bar',
                 'name': column
             })
 
-        return lines
+        return bars

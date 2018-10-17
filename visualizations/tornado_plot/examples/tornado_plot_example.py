@@ -1,10 +1,8 @@
-from webviz import Webviz, Page
-from webviz.page_elements import TornadoPlot
+import dash
+import dash_html_components as html
 import pandas as pd
-
-web = Webviz('Tornado Plot Example')
-
-page = Page('Tornado Plot')
+from webviz.page_elements import TornadoPlot
+import webviz_components as webviz
 
 high = [0.8, 1, 0.3, 0.4]
 
@@ -16,14 +14,39 @@ bars = pd.DataFrame(
     {'low': low, 'high': high},
     index=index
 )
+app = dash.Dash()
 
-plot = TornadoPlot(bars)
-plot.add_annotation(
-        x=low[1],
-        y=index[1],
-        ay=0,
-        ax=-20,
-        text='label')
-page.add_content(plot)
-web.add(page)
-web.write_html("./webviz_example", overwrite=True, display=False)
+app.css.config.serve_locally = True
+app.scripts.config.serve_locally = True
+
+app.layout = webviz.Layout(
+    children=[
+        webviz.Page(
+            id='frontpage',
+            title='Frontpage',
+            children=[
+                html.H1(children='TornadoPlot'),
+
+                html.Div(children='''
+                    This is an example of how to use TornadoPlot
+                '''),
+                TornadoPlot(id='tornado-plot-example', data=bars)
+            ]
+        ),
+        webviz.Page(
+            id='sub_page_1',
+            title='TornadoPlot subpage',
+            children=[
+                html.H1(children='TornadoPlot in subpage'),
+
+                html.Div(children='''
+                    This is another TornadoPlot example
+                '''),
+                TornadoPlot(id='tornado-plot-example-2', data=bars)
+            ]
+        )
+    ]
+)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)

@@ -1,8 +1,8 @@
-from webviz_plotly import FilteredPlotly
+from webviz_plotly import FilteredGraph
 import warnings
 
 
-class ScatterPlot(FilteredPlotly):
+class ScatterPlot(FilteredGraph):
     """Scatter plot page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -17,14 +17,15 @@ class ScatterPlot(FilteredPlotly):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, data, logx=False, logy=False, *args, **kwargs):
+    def __init__(self, data, id='scatter-plot-graph', logx=False, logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
 
         super(ScatterPlot, self).__init__(
-            data,
             *args,
+            id=id,
+            data=data,
             layout={
                 'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
                 'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}

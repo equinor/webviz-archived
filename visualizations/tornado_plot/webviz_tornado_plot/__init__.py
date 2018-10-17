@@ -1,7 +1,7 @@
-from webviz_plotly import FilteredPlotly
+from webviz_plotly import FilteredGraph
 
 
-class TornadoPlot(FilteredPlotly):
+class TornadoPlot(FilteredGraph):
     """Tornado plot page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -11,11 +11,13 @@ class TornadoPlot(FilteredPlotly):
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, data, id='tornado-plot-graph', *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         super(TornadoPlot, self).__init__(
             *args,
+            id=id,
+            data=data,
             layout={
                 'barmode': 'relative',
                 'showlegend': False,

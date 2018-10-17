@@ -1,7 +1,7 @@
-from webviz_plotly import Plotly
 import pandas as pd
 import matplotlib.cm as cm
 import numbers
+from dash_core_components import Graph
 
 color_scheme = cm.get_cmap('Set1')
 
@@ -97,14 +97,14 @@ def validate_data_format(data):
     return data
 
 
-class ScatterPlotMatrix(Plotly):
+class ScatterPlotMatrix(Graph):
     """Scatter plot matrix page element.
 
     :param data: Either a file path to a `csv` file or a
         :class:`pandas.DataFrame`. If a dataframe is given, a column called
         `name` is used to distinguish points.
     """
-    def __init__(self, data):
+    def __init__(self, data, id="scatter-plot-matrix-graph"):
         if isinstance(data, str):
             self.data = validate_data_format(pd.read_csv(data))
         else:
@@ -123,5 +123,8 @@ class ScatterPlotMatrix(Plotly):
         } for i in self.data.columns if i != 'name']
 
         super(ScatterPlotMatrix, self).__init__(
-            data=[create_trace(dimensions, text, color_vals)],
-            layout=create_layout(self.data.columns))
+            id=id,
+            figure={
+                'data': [create_trace(dimensions, text, color_vals)],
+                'layout': create_layout(self.data.columns)
+            })

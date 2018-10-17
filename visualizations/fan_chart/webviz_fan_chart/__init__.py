@@ -1,4 +1,4 @@
-from webviz_plotly import FilteredPlotly
+from webviz_plotly import FilteredGraph
 import pandas as pd
 import matplotlib.cm as cm
 import math
@@ -144,7 +144,7 @@ def validate_value(data):
                       ' logarithmic scale.')
 
 
-class FanChart(FilteredPlotly):
+class FanChart(FilteredGraph):
     """Fan chart page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -169,6 +169,7 @@ class FanChart(FilteredPlotly):
     def __init__(
             self,
             data,
+            id='fan-chart-graph',
             observations=None,
             logx=False,
             logy=False,
@@ -178,10 +179,12 @@ class FanChart(FilteredPlotly):
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
 
-        datas = [data, observations] if observations is not None else [data]
+        chart_data = [
+            data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(
-            datas,
             *args,
+            id=id,
+            data=chart_data,
             layout={
                 'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
                 'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}

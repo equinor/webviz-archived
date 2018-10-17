@@ -1,5 +1,8 @@
 Jinja2==2.10
 Sphinx==1.7.4
+dash==0.27.0  # The core dash backend
+dash-html-components==0.12.0  # HTML components
+dash-core-components==0.28.0  # Supercharged components
 future
 six
 argparse

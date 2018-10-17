@@ -1,8 +1,8 @@
-from webviz_plotly import FilteredPlotly
+from webviz_plotly import FilteredGraph
 import warnings
 
 
-class LineChart(FilteredPlotly):
+class LineChart(FilteredGraph):
     """Line chart page element.
 
     :param data: Either a file path to a `csv` file or a

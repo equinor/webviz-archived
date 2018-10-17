@@ -1,9 +1,10 @@
 from webviz_plotly import Plotly
 import pandas as pd
 import math
+from dash_core_components import Graph
 
 
-class PieChart(Plotly):
+class PieChart(Graph):
     """Pie chart page element.
 
     :param data: Value for each sector, or csv file (one column for each
@@ -12,7 +13,8 @@ class PieChart(Plotly):
                  it is used for the name of each pie chart.
     :param num_per_row: If more than one pie chart, number per row.
     """
-    def __init__(self, data, num_per_row=4):
+
+    def __init__(self, data, id='pie-chart-graph', num_per_row=4):
         frame = data
         if isinstance(data, str):
             frame = pd.read_csv(data)
@@ -32,7 +34,7 @@ class PieChart(Plotly):
         margin = 0.1
 
         if self.text:
-            super(PieChart, self).__init__([{
+            super(PieChart, self).__init__(id=id, figure={'data': [{
                 'values': [row[label] for label in self.labels],
                 'labels': self.labels,
                 'type': 'pie',
@@ -50,7 +52,7 @@ class PieChart(Plotly):
                           float(height) - margin/2]
                     }
                 } for ind, row in self.data.iterrows()],
-                layout={'annotations': [
+                'layout': {'annotations': [
                     {'font': {'size': 20},
                      'text': self.text[ind],
                      'showarrow': False,
@@ -60,10 +62,10 @@ class PieChart(Plotly):
                      'y': (math.floor(ind / width) + 0.5) /
                         float(height),
                      }
-                    for ind, _ in self.data.iterrows()]}
+                    for ind, _ in self.data.iterrows()]}}
                 )
         else:
-            super(PieChart, self).__init__([{
+            super(PieChart, self).__init__(id=id, figure={ 'data': [{
                 'values': [row[label] for label in self.labels],
                 'labels': self.labels,
                 'type': 'pie',
@@ -77,4 +79,4 @@ class PieChart(Plotly):
                           (math.floor(ind / width)+1) /
                           float(height) - margin/2]
                     }
-                } for ind, row in self.data.iterrows()])
+                } for ind, row in self.data.iterrows()]})

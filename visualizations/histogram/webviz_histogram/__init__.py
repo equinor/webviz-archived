@@ -1,8 +1,8 @@
-from webviz_plotly import FilteredPlotly
+from webviz_plotly import FilteredGraph
 import warnings
 
 
-class Histogram(FilteredPlotly):
+class Histogram(FilteredGraph):
     """Histogram page element.
 
     :param data: Either a file path to a `csv` file or a
@@ -31,6 +31,7 @@ class Histogram(FilteredPlotly):
                  data,
                  xlabel,
                  ylabel='[%]',
+                 id='histogram-graph',
                  barmode='overlay',
                  histnorm='percent',
                  nbinsx=0,
@@ -45,8 +46,9 @@ class Histogram(FilteredPlotly):
         self.logy = logy
 
         super(Histogram, self).__init__(
-            data,
             *args,
+            id=id,
+            data=data,
             layout={
                 'bargap': 0.05,
                 'bargroupgap': 0.05,

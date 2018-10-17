@@ -1,0 +1,4 @@
+include webviz_components/bundle.js
+include webviz_components/metadata.json
+include webviz_components/package.json
+include README.md

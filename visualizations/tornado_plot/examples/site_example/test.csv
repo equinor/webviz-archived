@@ -1,5 +1,5 @@
-index,low,high
-a really super long 1, 1, 3
-param 2, -20, 40
-param 3, 7, 14
-param 4, -6, -4
+index,low,high,low-text,high-text
+a really super long 1, 1, 3,,
+param 2, -20, 40,"Very very loooong message",
+param 3, 7, 14,both,message
+param 4, -6, -4,,other message

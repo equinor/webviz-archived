@@ -1,12 +1,14 @@
 from webviz_plotly import FilteredPlotly
+import math
 
 
 class TornadoPlot(FilteredPlotly):
     """Tornado plot page element.
 
     :param data: Either a file path to a `csv` file or a
-        :class:`pandas.DataFrame`. There are two columns:
-        'low' and 'high' describing.
+    :class:`pandas.DataFrame`. There are two columns, 'low' and 'high', for each
+    data entry. There are two optional columns, 'low-text' and 'high-text' for
+    annotations for each data entry.
     :param high_text: Optional text
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
@@ -32,6 +34,8 @@ class TornadoPlot(FilteredPlotly):
             'x': [],
             'y': [],
             'base': [],
+            'text': [],
+            'textposition': [],
             'orientation': 'h',
             'marker': {
                 'color': 'rgba(210, 15, 140, 0.7)',
@@ -48,6 +52,8 @@ class TornadoPlot(FilteredPlotly):
             'y': [],
             'base': [],
             'orientation': 'h',
+            'text': [],
+            'textposition': [],
             'marker': {
                 'color': 'rgba(64, 83, 125,0.5)',
                 'line': {
@@ -56,10 +62,16 @@ class TornadoPlot(FilteredPlotly):
                 }
             }
         }
-
         for index, row in data.iterrows():
             high_bars['y'].append(index)
             low_bars['y'].append(index)
+            high_text = ''
+            low_text = ''
+            if 'high-text' in row and isinstance(row['high-text'], str):
+                high_text  = row['high-text']
+            if 'low-text' in row and isinstance(row['low-text'], str):
+                low_text = row['low-text']
+
             if row['high'] > 0:
                 base = max(0, row['low'])
                 high_bars['x'].append(row['high'] - base)
@@ -75,5 +87,11 @@ class TornadoPlot(FilteredPlotly):
             else:
                 low_bars['x'].append(0)
                 low_bars['base'].append(row['low'])
+            low_bars['text'].append(low_text)
+            high_bars['text'].append(high_text)
+            low_bars['textposition'].append('outside')
+            high_bars['textposition'].append('outside')
+
+
 
         return [low_bars, high_bars]

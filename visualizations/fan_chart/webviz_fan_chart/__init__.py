@@ -1,5 +1,4 @@
 from webviz_plotly import FilteredPlotly
-import pandas as pd
 import matplotlib.cm as cm
 import math
 import warnings
@@ -15,7 +14,7 @@ def color_spread(lines):
     """
     colorlist = {}
     for i, name in enumerate(lines):
-        single_color = color_scheme(float(i) / len(lines))
+        single_color = color_scheme(i)
         formatted_color = []
         for y in single_color[:-1]:
             formatted_color.append(str(math.ceil(y*255)))
@@ -178,6 +177,9 @@ class FanChart(FilteredPlotly):
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
 
+        self.uniquelines = set(data['name']) \
+            if 'name' in data else {'line'}
+        self.colors = color_spread(self.uniquelines)
         datas = [data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(
             datas,
@@ -190,13 +192,9 @@ class FanChart(FilteredPlotly):
 
     def process_data(self, data, observations=None):
         validate_observation_data(observations)
-
-        uniquelines = set(data['name']) \
-            if 'name' in data else {'line'}
         lines = []
-        colors = color_spread(uniquelines)
 
-        for index, line in enumerate(uniquelines):
+        for index, line in enumerate(self.uniquelines):
             line_data = data[data['name'] == line] \
                 if 'name' in data else data
             x = line_data.index.tolist()
@@ -215,7 +213,7 @@ class FanChart(FilteredPlotly):
                         'name': line,
                         'mode': 'lines',
                         'line': {
-                            'color': format_color(colors[line], '1')
+                            'color': format_color(self.colors[line], '1')
                         }
                     })
                 elif column == 'p90':
@@ -227,7 +225,7 @@ class FanChart(FilteredPlotly):
                         line_data['mean'].tolist(),
                         x,
                         line,
-                        format_color(colors[line], '0.5'),
+                        format_color(self.colors[line], '0.5'),
                     ))
                 elif column == 'p10':
                     if self.logy:
@@ -238,7 +236,7 @@ class FanChart(FilteredPlotly):
                         line_data['mean'].tolist(),
                         x,
                         line,
-                        format_color(colors[line], '0.5'),
+                        format_color(self.colors[line], '0.5'),
                     ))
                 elif column == 'min':
                     if self.logy:
@@ -249,7 +247,7 @@ class FanChart(FilteredPlotly):
                         line_data['mean'].tolist(),
                         x,
                         line,
-                        format_color(colors[line], '0.3'),
+                        format_color(self.colors[line], '0.3'),
                     ))
                 elif column == 'max':
                     if self.logy:
@@ -260,7 +258,7 @@ class FanChart(FilteredPlotly):
                         line_data['mean'].tolist(),
                         x,
                         line,
-                        format_color(colors[line], '0.3'),
+                        format_color(self.colors[line], '0.3'),
                     ))
                 elif column == 'name' or column == 'index':
                     pass

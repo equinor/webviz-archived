@@ -14,7 +14,7 @@ def color_spread(lines):
     """
     colorlist = {}
     for i, name in enumerate(lines):
-        single_color = color_scheme(float(i) / len(lines))
+        single_color = color_scheme(i)
         formatted_color = []
         for y in single_color[:-1]:
             formatted_color.append(str(y))

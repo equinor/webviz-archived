@@ -2,5 +2,5 @@
     'FanChart',
     './test.csv',
     './observations.csv',
-    slider_columns=['category']
+    check_box_columns=['category']
     ) }}

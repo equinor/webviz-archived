@@ -1,4 +1,5 @@
 from webviz_plotly import FilteredPlotly
+import pandas as pd
 import matplotlib.cm as cm
 import math
 import warnings
@@ -177,8 +178,13 @@ class FanChart(FilteredPlotly):
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
 
-        self.uniquelines = set(data['name']) \
-            if 'name' in data else {'line'}
+        if not isinstance(data, pd.DataFrame):
+            self.data = pd.read_csv(data)
+            self.uniquelines = set(self.data['name']) \
+                if 'name' in pd.DataFrame(self.data) else {'line'}
+        else:
+            self.uniquelines = set(data['name']) \
+                if 'name' in data else {'line'}
 
         datas = [data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(

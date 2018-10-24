@@ -16,6 +16,7 @@ class HeatMap(FilteredPlotly):
         Defaults to `False`
     """
     def __init__(self, data, *args, **kwargs):
+        title = kwargs.pop('title') if 'title' in kwargs else None
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
 
@@ -23,6 +24,7 @@ class HeatMap(FilteredPlotly):
             data,
             *args,
             layout={
+                'title': title,
                 'showlegend': True,
                 'xaxis': {'title': xaxis},
                 'yaxis': {'title': yaxis,

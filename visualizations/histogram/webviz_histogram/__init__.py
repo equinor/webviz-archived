@@ -38,6 +38,7 @@ class Histogram(FilteredPlotly):
                  logy=False,
                  *args,
                  **kwargs):
+        title = kwargs.pop('title') if 'title' in kwargs else None
         self.ylabel = ylabel
         self.histnorm = histnorm
         self.nbinsx = nbinsx
@@ -51,6 +52,7 @@ class Histogram(FilteredPlotly):
                 'bargap': 0.05,
                 'bargroupgap': 0.05,
                 'barmode': barmode,
+                'title': title,
                 'xaxis': {'title': xlabel, 'type': 'log' if logx else '-'},
                 'yaxis': {'title': ylabel, 'type': 'log' if logy else '-'}},
             config={},

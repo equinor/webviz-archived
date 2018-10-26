@@ -13,8 +13,10 @@ def color_spread(lines):
     :return: dictionary with format {'name': ['r','g','b']}
     """
     colorlist = {}
+    count = 0
     for i, name in enumerate(lines):
         single_color = color_scheme(i)
+        count = 0 if count > 7 else count + 1
         formatted_color = []
         for y in single_color[:-1]:
             formatted_color.append(str(y))

@@ -1,9 +1,9 @@
 import os
 from setuptools import setup, find_packages
 
-def find_mathjax_files():
-    # When dropping Python 2 support, this function can be replaced with
-    # glob.iglob(..., recursive=True)
+def list_mathjax_files():
+    # When dropping Python 2 support, this function
+    # can be replaced with glob.iglob(..., recursive=True)
     files = []
     for root, _, filenames in os.walk('webviz/resources/js/mathjax'):
         dirname = root.replace('webviz/', '')  # relative to __init__.py
@@ -17,11 +17,10 @@ setup(
     packages=find_packages(exclude=['tests']),
     package_dir={"": "."},
     package_data={
-        'webviz': [
-            'templates/*',
-            'minimal_theme/templates/*',
-            'resources/css/*'] +
-                  find_mathjax_files()
+        'webviz': ['templates/*',
+                   'minimal_theme/templates/*',
+                   'resources/css/*']
+                  + list_mathjax_files()
         },
     test_suite="setup.discover_test_suite",
     install_requires=[

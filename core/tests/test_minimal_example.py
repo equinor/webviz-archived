@@ -1,6 +1,7 @@
 import unittest
 import shutil
 import os
+import time
 import tempfile
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -29,8 +30,10 @@ class TestMinimalExample(unittest.TestCase):
         cls.driver.quit()
 
     def setUp(self):
-        address = 'file://{}/webviz_example/index.html'.format(self.tempdir)
+        address = 'file://{}/webviz_example/sub_pages/markdown_example_2.html'\
+                  .format(self.tempdir)
         self.driver.get(address)
+        time.sleep(3) 
 
     def test_return_value(self):
         self.assertEqual(self.ret, 0)
@@ -48,6 +51,11 @@ class TestMinimalExample(unittest.TestCase):
     def test_sub_pages(self):
         sub_pages = self.driver.find_elements_by_xpath('//ul//ul//li')
         self.assertEqual(len(sub_pages), 3)
+
+    def test_math_rendered(self):
+        rendered_equations = self.driver\
+                             .find_elements_by_class_name('mjx-chtml')
+        self.assertTrue(len(rendered_equations) > 0)
 
 
 if __name__ == '__main__':

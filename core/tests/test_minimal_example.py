@@ -33,7 +33,7 @@ class TestMinimalExample(unittest.TestCase):
         address = 'file://{}/webviz_example/sub_pages/markdown_example_2.html'\
                   .format(self.tempdir)
         self.driver.get(address)
-        time.sleep(3) 
+        time.sleep(3)
 
     def test_return_value(self):
         self.assertEqual(self.ret, 0)

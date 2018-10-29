@@ -165,7 +165,6 @@ class FanChart(FilteredPlotly):
         Defaults to `False`
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
-    :param title: title of visualization.
     """
     def __init__(
             self,
@@ -173,7 +172,6 @@ class FanChart(FilteredPlotly):
             observations=None,
             logx=False,
             logy=False,
-            title=None,
             *args,
             **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
@@ -185,7 +183,6 @@ class FanChart(FilteredPlotly):
             datas,
             *args,
             layout={
-                'title': title,
                 'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
                 'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
             },

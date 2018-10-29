@@ -21,7 +21,6 @@ class ScatterPlot(FilteredPlotly):
             self,
             data,
             logx=False, logy=False,
-            title=None,
             *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
@@ -31,7 +30,6 @@ class ScatterPlot(FilteredPlotly):
             data,
             *args,
             layout={
-                'title': title,
                 'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
                 'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
             },

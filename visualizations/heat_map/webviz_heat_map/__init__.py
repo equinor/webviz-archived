@@ -10,9 +10,8 @@ class HeatMap(FilteredPlotly):
         ``index`` will be used as the horizontal value.
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
-    :param title: title of visualization.
     """
-    def __init__(self, data, title=None, *args, **kwargs):
+    def __init__(self, data, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
 
@@ -20,7 +19,6 @@ class HeatMap(FilteredPlotly):
             data,
             *args,
             layout={
-                'title': title,
                 'showlegend': True,
                 'xaxis': {'title': xaxis},
                 'yaxis': {'title': yaxis,

@@ -25,6 +25,10 @@ class TestWebvizPlotly(unittest.TestCase):
         filtered = Plotly(self.data)
         self.assertTrue(filtered['config']['responsive'])
 
+    def testSetAxisArgs(self):
+        plotly = Plotly([], title='title')
+        self.assertEqual(plotly['layout']['title'], 'title')
+
 
 if __name__ == '__main__':
     unittest.main()

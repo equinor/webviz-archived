@@ -19,6 +19,8 @@ class Plotly(JSONPageElement):
     Plotly page element. Arguments are the same as ``plotly.plot()`` from
     `plotly.js`. See https://plot.ly/javascript/ for usage.
 
+    :param title: title of visualization.
+
     .. note::
 
        :class:`Plotly` will not allow the modebarbuttons in
@@ -29,7 +31,7 @@ class Plotly(JSONPageElement):
 
     DISALLOWED_BUTTONS = ['sendDataToCloud', 'resetScale2d']
 
-    def __init__(self, data, layout={}, config={}):
+    def __init__(self, data, layout={}, config={}, **kwargs):
         super(Plotly, self).__init__()
 
         config['responsive'] = True
@@ -51,14 +53,22 @@ class Plotly(JSONPageElement):
                 )
 
         self['data'] = data
-        self['config'] = config
+        self['config'] = config.copy()
         self['layout'] = layout
+
+        self.handle_args(**kwargs)
 
         self.add_js_file(path.join(
             path.dirname(__file__),
             'resources',
             'js',
             'plotly.js'))
+
+    def handle_args(
+            self,
+            title=None):
+        if title:
+            self['layout']['title'] = title
 
     def add_annotation(self, **kwargs):
         if 'annotations' not in self['layout']:

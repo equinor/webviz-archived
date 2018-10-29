@@ -11,7 +11,7 @@ class TornadoPlot(FilteredPlotly):
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
     """
-    def __init__(self, data, title=None, *args, **kwargs):
+    def __init__(self, data, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         super(TornadoPlot, self).__init__(
@@ -19,7 +19,6 @@ class TornadoPlot(FilteredPlotly):
             *args,
             layout={
                 'barmode': 'relative',
-                'title': title,
                 'showlegend': False,
                 'xaxis': {'title': xaxis},
                 'yaxis': {'automargin': True, 'title': yaxis}

@@ -70,7 +70,8 @@ class Plotly(JSONPageElement):
             'js',
             'plotly.js'))
 
-    def handle_args(self,
+    def handle_args(
+            self,
             title=None,
             xrange=None,
             yrange=None,

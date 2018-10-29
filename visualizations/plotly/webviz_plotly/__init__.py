@@ -18,6 +18,14 @@ class Plotly(JSONPageElement):
     """
     Plotly page element. Arguments are the same as ``plotly.plot()`` from
     `plotly.js`. See https://plot.ly/javascript/ for usage.
+    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
+    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
+    :param logx: boolean value to toggle x-axis logarithmic scale.
+        Defaults to `False`
+    :param logy: boolean value to toggle y-axis logarithmic scale.
+        Defaults to `False`
+    :param xrange: list of minimum and maximum value. Ex: [3, 15].
+    :param yrange: list of minimum and maximum value. Ex: [3, 15].
 
     .. note::
 
@@ -29,7 +37,7 @@ class Plotly(JSONPageElement):
 
     DISALLOWED_BUTTONS = ['sendDataToCloud', 'resetScale2d']
 
-    def __init__(self, data, layout={}, config={}):
+    def __init__(self, data, layout={}, config={}, **kwargs):
         super(Plotly, self).__init__()
 
         config['responsive'] = True
@@ -51,14 +59,43 @@ class Plotly(JSONPageElement):
                 )
 
         self['data'] = data
-        self['config'] = config
-        self['layout'] = layout
+        self['config'] = config.copy()
+        self['layout'] = layout.copy()
+
+        self.handle_args(**kwargs)
 
         self.add_js_file(path.join(
             path.dirname(__file__),
             'resources',
             'js',
             'plotly.js'))
+
+    def handle_args(self,
+            title=None,
+            xrange=None,
+            yrange=None,
+            xaxis=None,
+            yaxis=None,
+            logx=False,
+            logy=False):
+        if title:
+            self['layout']['title'] = title
+        if (xrange or xaxis or logx) and ('xaxis' not in self['layout']):
+                self['layout']['xaxis'] = {}
+        if (yrange or yaxis or logy) and ('yaxis' not in self['layout']):
+                self['layout']['yaxis'] = {}
+        if xrange:
+            self['layout']['xaxis']['range'] = xrange
+        if yrange:
+            self['layout']['yaxis']['range'] = yrange
+        if xaxis:
+            self['layout']['xaxis']['title'] = xaxis
+        if yaxis:
+            self['layout']['yaxis']['title'] = yaxis
+        if logx:
+            self['layout']['xaxis']['type'] = 'log'
+        if logy:
+            self['layout']['yaxis']['type'] = 'log'
 
     def add_annotation(self, **kwargs):
         if 'annotations' not in self['layout']:

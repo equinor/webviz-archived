@@ -18,12 +18,11 @@ class Plotly(JSONPageElement):
     """
     Plotly page element. Arguments are the same as ``plotly.plot()`` from
     `plotly.js`. See https://plot.ly/javascript/ for usage.
-    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
-    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
+
+    :param xaxis: Will create a label for the x-axis.
+    :param yaxis: Will create a label for the y-axis.
     :param logx: boolean value to toggle x-axis logarithmic scale.
-        Defaults to `False`
     :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to `False`
     :param xrange: list of minimum and maximum value. Ex: [3, 15].
     :param yrange: list of minimum and maximum value. Ex: [3, 15].
 

@@ -63,6 +63,108 @@
       }
     }
   },
+  "src/lib/components/Map.js": {
+    "description": "",
+    "displayName": "Map",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": ""
+      },
+      "data": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "height": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "800",
+          "computed": false
+        }
+      },
+      "layerNames": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "string"
+          }
+        },
+        "required": false,
+        "description": ""
+      }
+    }
+  },
+  "src/lib/components/Markdown.js": {
+    "description": "A component that renders Markdown text as specified by the\nCommonMark spec.",
+    "displayName": "Markdown",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Class name of the container element"
+      },
+      "containerProps": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "An object containing custom element props to put on the container\nelement such as id or style"
+      },
+      "children": {
+        "type": {
+          "name": "union",
+          "value": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "arrayOf",
+              "value": {
+                "name": "string"
+              }
+            }
+          ]
+        },
+        "required": false,
+        "description": "A markdown string (or array of strings) that adhreres to the CommonMark spec"
+      },
+      "renderers": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "A object for execution instructions"
+      },
+      "components": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": ""
+      }
+    }
+  },
   "src/lib/components/Page.js": {
     "description": "",
     "displayName": "Page",

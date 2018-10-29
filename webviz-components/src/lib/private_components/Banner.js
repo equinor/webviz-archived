@@ -13,7 +13,10 @@ const backgroundColor = color => css`
 const Wrapper = styled.div`
     ${({url}) => url && backgroundImage(url)};
     ${({color}) => color && backgroundColor(color)};
-    height: 92px;
+    height: 534px;
+    @media (max-width: 1200px) {
+        height: 380px;
+    }
     width: 100%;
     display: flex;
     justify-content: center;

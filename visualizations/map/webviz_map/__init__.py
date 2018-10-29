@@ -57,8 +57,8 @@ class Map(JSONPageElement):
                 layers[k][i][j]['FLOWI+'] = row['FLOWI+']
                 layers[k][i][j]['FLOWJ+'] = row['FLOWJ+']
             layers[k][i][j]['value'] = row['value']
-
-        self.set_negative_flow(layers)
+        if self.has_flow_layer:
+            self.set_negative_flow(layers)
         return [[cell for row in itervalues(layer) for cell in itervalues(row)]
                 for layer in itervalues(layers)]
 

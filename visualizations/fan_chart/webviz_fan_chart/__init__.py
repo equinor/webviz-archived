@@ -164,6 +164,7 @@ class FanChart(FilteredPlotly):
             self,
             data,
             observations=None,
+            logy=False,
             *args,
             **kwargs):
         self.logy = logy
@@ -171,6 +172,7 @@ class FanChart(FilteredPlotly):
         datas = [data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(
             datas,
+            logy=logy,
             *args,
             **kwargs)
 

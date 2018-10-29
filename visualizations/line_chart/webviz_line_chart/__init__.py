@@ -11,14 +11,13 @@ class LineChart(FilteredPlotly):
         values. Similarly for the `csv` file, where a special column named
         ``index`` will be used for the horizontal values.
     """
-    def __init__(self, data, *args, **kwargs):
+    def __init__(self, data, logy=False, *args, **kwargs):
         self.logy = logy
 
         super(LineChart, self).__init__(
             data,
             *args,
-            layout={},
-            config={},
+            logy=logy,
             **kwargs)
 
     def process_data(self, data):

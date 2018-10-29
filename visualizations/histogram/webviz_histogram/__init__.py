@@ -28,6 +28,8 @@ class Histogram(FilteredPlotly):
                  barmode='overlay',
                  histnorm='percent',
                  nbinsx=0,
+                 logy=False,
+                 logx=False,
                  *args,
                  **kwargs):
         self.histnorm = histnorm
@@ -42,7 +44,8 @@ class Histogram(FilteredPlotly):
                 'bargap': 0.05,
                 'bargroupgap': 0.05,
                 'barmode': barmode},
-            config={},
+            logy=logy,
+            logx=logx,
             yaxis=ylabel,
             xaxis=xlabel,
             **kwargs)

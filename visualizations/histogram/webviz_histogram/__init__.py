@@ -26,6 +26,7 @@ class Histogram(FilteredPlotly):
         Defaults to `False`
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
+    :param title: title of visualization.
     """
     def __init__(self,
                  data,
@@ -36,9 +37,9 @@ class Histogram(FilteredPlotly):
                  nbinsx=0,
                  logx=False,
                  logy=False,
+                 title=None,
                  *args,
                  **kwargs):
-        title = kwargs.pop('title') if 'title' in kwargs else None
         self.ylabel = ylabel
         self.histnorm = histnorm
         self.nbinsx = nbinsx

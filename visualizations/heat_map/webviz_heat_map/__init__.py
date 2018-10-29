@@ -10,13 +10,9 @@ class HeatMap(FilteredPlotly):
         ``index`` will be used as the horizontal value.
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
-    :param logx: boolean value to toggle x-axis logarithmic scale.
-        Defaults to `False`
-    :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to `False`
+    :param title: title of visualization.
     """
-    def __init__(self, data, *args, **kwargs):
-        title = kwargs.pop('title') if 'title' in kwargs else None
+    def __init__(self, data, title=None, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
 

@@ -114,23 +114,26 @@ tornado_plot_data = pd.DataFrame(
     index=['A', 'B', 'C', 'D']
 )
 
-app = dash.Dash('')
-
-app.scripts.config.serve_locally = True
-app.css.config.serve_locally = True
-
 data = pd.DataFrame(
     [[19, 26, 55], [33, 14, 55]],
     columns=['sector 1', 'sector 2', 'sector 3'])
 
 # Map data
-map_data = pd.read_csv(StringIO("""
-i,j,k,x0,y0,x1,y1,x2,y2,x3,y3,value,FLOWI+,FLOWJ+
-0,0,0,0,0,1,0,1,1,0,1,1,0.005,0.0025
-1,0,0,1,0,2,0,2,1,1,1,0,0.002,0.0045
-0,1,0,0,1,1,1,1,2,0,2,4,0.001,0.0025
-1,1,0,1,1,2,1,2,2,1,2,2,0.004,0.0035
-""")).to_json()
+# map_data = pd.read_csv(StringIO("""
+# i,j,k,x0,y0,x1,y1,x2,y2,x3,y3,value,FLOWI+,FLOWJ+
+# 0,0,0,0,0,1,0,1,1,0,1,1,0.005,0.0025
+# 1,0,0,1,0,2,0,2,1,1,1,0,0.002,0.0045
+# 0,1,0,0,1,1,1,1,2,0,2,4,0.001,0.0025
+# 1,1,0,1,1,2,1,2,2,1,2,2,0.004,0.0035
+# """)).to_json()
+
+map_data = pd.read_csv('./reek.csv').to_json()
+
+app = dash.Dash('')
+
+app.scripts.config.serve_locally = True
+app.css.config.serve_locally = True
+
 
 boxStyle = {
     'height': '200px',
@@ -762,7 +765,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use Map
                 '''),
-                webviz.Map(id='map-example', data=map_data),
+                webviz.Map(id='flow-map-example', data=map_data),
                 dcc.Markdown(
                     '''
 ```
@@ -804,6 +807,18 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 ```
 ''')
+            ]
+        ),
+        webviz.Page(
+            id='markdown',
+            title='Map within Markdown',
+            children=[
+                webviz.Markdown(
+'''
+# Map within Markdown
+[[ Map id=map-within-markdown data='{map_data}' ]]
+'''.format(map_data=map_data)
+                )
             ]
         )
     ]

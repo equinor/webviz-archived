@@ -106,7 +106,7 @@
     }
   },
   "src/lib/components/Markdown.js": {
-    "description": "A component that renders Markdown text as specified by the\nCommonMark spec.",
+    "description": "",
     "displayName": "Markdown",
     "methods": [],
     "props": {

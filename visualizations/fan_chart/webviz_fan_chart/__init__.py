@@ -159,33 +159,21 @@ class FanChart(FilteredPlotly):
         Expects `index` parameter to be used as 'x' value, a `name` parameter
         to correspond with a name in the data dataframe, a `value` and `value`
         that will determine the size of the marker (in height)
-    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
-    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
-    :param logx: boolean value to toggle x-axis logarithmic scale.
-        Defaults to `False`
-    :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to `False`
     """
     def __init__(
             self,
             data,
             observations=None,
-            logx=False,
             logy=False,
             *args,
             **kwargs):
-        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
-        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
 
         datas = [data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(
             datas,
+            logy=logy,
             *args,
-            layout={
-                'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
-                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
-            },
             **kwargs)
 
     def process_data(self, data, observations=None):

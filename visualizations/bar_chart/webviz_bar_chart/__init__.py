@@ -14,25 +14,14 @@ class BarChart(FilteredPlotly):
         ``'overlay'``. Defines how multiple bars per index-value are combined.
         See `plotly.js layout-barmode <https://plot.ly/javascript/reference/
         #layout-barmode>`_.
-    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
-    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
-    :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to `False`
     """
-    def __init__(
-            self, data, barmode='group', logy=False, *args, **kwargs):
-        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
-        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+    def __init__(self, data, barmode='group', logy=False, *args, **kwargs):
         self.logy = logy
         super(BarChart, self).__init__(
                 data,
                 *args,
-                layout={
-                    'barmode': barmode,
-                    'xaxis': {'title': xaxis},
-                    'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
-                },
-                config={},
+                logy=logy,
+                layout={'barmode': barmode},
                 **kwargs)
 
     def process_data(self, data):

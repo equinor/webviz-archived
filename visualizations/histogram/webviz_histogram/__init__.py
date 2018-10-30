@@ -10,8 +10,6 @@ class Histogram(FilteredPlotly):
         set of bars in the chart. The dataframe index is used for the
         horizontal values. Similarly for the `csv` file, where a special
         column named ``index`` will be used for the horizontal values.
-    :param xlabel: x-label of the histogram.
-    :param ylabel: y-label of the histogram.
     :param barmode: Either ``'group'``, ``'stack'``, ``'relative'``
         or ``'overlay'``. Defines how multiple bars per index-value are
         combined. See `plotly.js layout-barmode <https://plot.ly/javascript/
@@ -22,23 +20,18 @@ class Histogram(FilteredPlotly):
         javascript/reference/#histogram-histnorm>`_.
     :param nbinsx: Maximum number of desired bins. Default value ``0`` will
         generate optimal number of bins.
-    :param logx: boolean value to toggle x-axis logarithmic scale.
-        Defaults to `False`
-    :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to `False`
     """
     def __init__(self,
                  data,
-                 xlabel,
+                 xlabel=None,
                  ylabel='[%]',
                  barmode='overlay',
                  histnorm='percent',
                  nbinsx=0,
-                 logx=False,
                  logy=False,
+                 logx=False,
                  *args,
                  **kwargs):
-        self.ylabel = ylabel
         self.histnorm = histnorm
         self.nbinsx = nbinsx
         self.logx = logx
@@ -50,10 +43,11 @@ class Histogram(FilteredPlotly):
             layout={
                 'bargap': 0.05,
                 'bargroupgap': 0.05,
-                'barmode': barmode,
-                'xaxis': {'title': xlabel, 'type': 'log' if logx else '-'},
-                'yaxis': {'title': ylabel, 'type': 'log' if logy else '-'}},
-            config={},
+                'barmode': barmode},
+            logy=logy,
+            logx=logx,
+            yaxis=ylabel,
+            xaxis=xlabel,
             **kwargs)
 
     def process_data(self, data):

@@ -1,4 +1,7 @@
 {{ page_element(
     'ScatterPlot',
-    './test.csv'
+    './test.csv',
+    logy=True,
+    xaxis='time',
+    yaxis='watts'
 ) }}

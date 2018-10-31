@@ -10,27 +10,14 @@ class LineChart(FilteredPlotly):
         line in the chart. The dataframe index is used for the horizontal
         values. Similarly for the `csv` file, where a special column named
         ``index`` will be used for the horizontal values.
-    :param xaxis: Will create a label for the x-axis. Defaults to `None`.
-    :param yaxis: Will create a label for the y-axis. Defaults to `None`.
-    :param logx: boolean value to toggle x-axis logarithmic scale.
-        Defaults to `False`
-    :param logy: boolean value to toggle y-axis logarithmic scale.
-        Defaults to `False`
     """
-    def __init__(self, data, logx=False, logy=False, *args, **kwargs):
-        xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
-        yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+    def __init__(self, data, logy=False, *args, **kwargs):
         self.logy = logy
 
         super(LineChart, self).__init__(
             data,
             *args,
-            layout={
-                'showlegend': True,
-                'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
-                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
-            },
-            config={},
+            logy=logy,
             **kwargs)
 
     def process_data(self, data):

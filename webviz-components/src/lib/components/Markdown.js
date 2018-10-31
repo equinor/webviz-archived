@@ -4,42 +4,32 @@ import ReactMarkdown from 'react-markdown';
 import shortcodes from 'remark-shortcodes';
 import Map from './Map';
 
-// eslint-disable-next-line valid-jsdoc
-/**
- * A component that renders Markdown text as specified by the
- * CommonMark spec.
- */
-// const Markdown = ({children, renderers, components, ...props}) => (
-//     <ReactMarkdown
-//         source={Array.isArray(children) ? children.join('\n') : children}
-//         escapeHtml={true}
-//         plugins={[shortcodes]}
-//         // renderers={{
-//         //     shortcodes: ({identifier, attributes}) => {
-//         //         console.log('identifier', identifier);
-//         //         console.log('attributes', attributes);
-//         //         console.log('components', components);
-//         //         return components[identifier](attributes);
-//         //     },
-//         // }}
-//         renderers={{}}
-//         {...props}
-//     />
-// );
-
 const components = {
     Map: Map,
 };
 
 const getComponent = identifier => components[identifier];
 
+const sanitizeAttribute = data => {
+    if (typeof data === 'string') {
+        const lastCharIndex = data.length - 1;
+        const firstChar = data[0];
+        const lastChar = data[lastCharIndex];
+        if (firstChar === "'" && lastChar === "'") {
+            return data.substring(1, lastCharIndex);
+        }
+        return data;
+    }
+};
+
 const ShortcodeRenderer = ({identifier, attributes}) => {
-    console.log('identifier', identifier);
-    console.log('attributes', attributes);
-    console.log('components', components);
+    const keys = Object.keys(attributes);
+    const sanitizedAttributes = {};
+    keys.forEach(key => {
+        sanitizedAttributes[key] = sanitizeAttribute(attributes[key]);
+    });
     const Component = getComponent(identifier);
-    return <div>Hello World</div>;
-    // return <Component {...attributes} />;
+    return <Component {...sanitizedAttributes} />;
 };
 
 const Markdown = ({children, ...props}) => (

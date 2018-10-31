@@ -119,14 +119,6 @@ data = pd.DataFrame(
     columns=['sector 1', 'sector 2', 'sector 3'])
 
 # Map data
-# map_data = pd.read_csv(StringIO("""
-# i,j,k,x0,y0,x1,y1,x2,y2,x3,y3,value,FLOWI+,FLOWJ+
-# 0,0,0,0,0,1,0,1,1,0,1,1,0.005,0.0025
-# 1,0,0,1,0,2,0,2,1,1,1,0,0.002,0.0045
-# 0,1,0,0,1,1,1,1,2,0,2,4,0.001,0.0025
-# 1,1,0,1,1,2,1,2,2,1,2,2,0.004,0.0035
-# """)).to_json()
-
 map_data = pd.read_csv('./reek.csv').to_json()
 
 app = dash.Dash('')

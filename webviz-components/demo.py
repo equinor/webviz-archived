@@ -812,6 +812,20 @@ if __name__ == '__main__':
 '''.format(map_data=map_data)
                 )
             ]
+        ),
+        webviz.Page(
+            id='markdown-latex',
+            title='Math in Markdown',
+            children=[
+                webviz.Markdown(
+'''
+# Math in Markdown
+$$
+f(x) = \\int_{-\\infty}^\\infty\\hat f(\\xi)\\,e^{2 \\pi i \\xi x}\\,d\\xi
+$$
+'''
+                )
+            ]
         )
     ]
 )

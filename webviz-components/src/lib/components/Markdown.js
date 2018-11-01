@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import shortcodes from 'remark-shortcodes';
+import MathJax from '@matejmazur/react-mathjax';
+import RemarkMathPlugin from 'remark-math';
 import Map from './Map';
 
 const components = {
@@ -32,16 +34,27 @@ const ShortcodeRenderer = ({identifier, attributes}) => {
     return <Component {...sanitizedAttributes} />;
 };
 
+ShortcodeRenderer.propTypes = {
+    identifier: PropTypes.string,
+    attributes: PropTypes.object,
+};
+
 const Markdown = ({children, ...props}) => (
-    <ReactMarkdown
-        source={Array.isArray(children) ? children.join('\n') : children}
-        escapeHtml={true}
-        plugins={[[shortcodes]]}
-        renderers={{
-            shortcode: ShortcodeRenderer,
-        }}
-        {...props}
-    />
+    <MathJax.Context input="tex">
+        <ReactMarkdown
+            source={Array.isArray(children) ? children.join('\n') : children}
+            escapeHtml={true}
+            plugins={[shortcodes, RemarkMathPlugin]}
+            renderers={{
+                shortcode: ShortcodeRenderer,
+                math: ({value}) => <MathJax.Node>{value}</MathJax.Node>,
+                inlineMath: ({value}) => (
+                    <MathJax.Node inline>{value}</MathJax.Node>
+                ),
+            }}
+            {...props}
+        />
+    </MathJax.Context>
 );
 
 Markdown.propTypes = {

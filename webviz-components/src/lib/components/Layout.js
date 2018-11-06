@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Menu from '../private_components/Menu';
 import Banner from '../private_components/Banner';
 import defaultTheme from '../resources/themes/defaultTheme';
+import 'normalize.css';
 
 const PageWrapper = styled.div`
     display: flex;

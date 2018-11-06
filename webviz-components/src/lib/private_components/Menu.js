@@ -58,26 +58,40 @@ const LogoWrapper = styled.div`
         align-items: center;
         width: 100%;
     }
-    margin: 12px 20px 20px 18px;
-    height: 60px;
+    margin: 20px 30px;
+    height: 100%
     display: flex;
     align-items: center;
 `;
 
-const yellowBackground = css`
-    background: #f59f00;
+const selectedStyle = css`
+    background: ${({theme}) => theme.menuLinkBackgroundSelected};
+    color: ${({theme}) => theme.menuLinkColorSelected};
+`;
+
+const uppercaseStyle = css`
+    text-transform: uppercase;
+`;
+
+const hoverStyle = css`
+    background: ${({theme}) => theme.menuLinkBackgroundHover};
+    color: ${({theme}) => theme.menuLinkHoverColor};
 `;
 
 const SubPageLink = styled(Link)`
-    ${({selected}) => selected && yellowBackground};
     text-decoration: none;
-    text-transform: uppercase;
-    color: #ffffff;
-    padding: 20px;
-    font-size: 15px;
-    font-family: system-ui;
-    font-weight: 700;
+    ${({menuLinkUppercase}) => menuLinkUppercase && uppercaseStyle};
+    padding: 20px 30px;
+    font-size: 16px;
+    font-family: ${({theme}) => theme.menuLinkFont};
+    font-weight: ${({theme}) => theme.menuLinkFontWeight};
+    font-style: ${({theme}) => theme.menuLinkFontStyle};
     border-bottom: 1px solid white;
+    color: ${({theme}) => theme.menuLinkColor};
+    :hover {
+        ${({selected}) => !selected && hoverStyle};
+    }
+    ${({selected}) => selected && selectedStyle};
 `;
 
 const ButtonWrapper = styled.div`
@@ -90,8 +104,8 @@ const StyledLogo = styled.img`
     @media (max-width: 1200px) {
         height: 42px;
     }
-    height: 50px;
-    content: url(${({theme}) => theme.logo});
+    height: ${({theme}) => theme.menuLogoHeight}px;
+    content: url(${({theme}) => theme.menuLogo});
 `;
 
 class Menu extends Component {

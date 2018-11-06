@@ -633,7 +633,7 @@ if __name__ == '__main__':
         ),
         webviz.Page(
             id='scatterplotmatrix',
-            title='scatterPlotMatrix',
+            title='ScatterPlotMatrix',
             children=[
                 html.H1(children='ScatterPlotMatrix'),
 

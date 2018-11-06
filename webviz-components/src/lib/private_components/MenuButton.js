@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 const StyledButton = styled.button`
     :hover {
-        color: ${({theme}) => theme.menuButtonHoverColor};
+        color: ${({theme}) => theme.menuLinkHoverColor};
     }
-    color: ${({theme}) => theme.menuButtonColor};
+    color: ${({theme}) => theme.menuLinkColor};
     height: 50px;
     width: 50px;
     border: none;

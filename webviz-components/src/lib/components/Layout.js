@@ -28,11 +28,12 @@ const Layout = ({theme = defaultTheme, children = [], banner}) => {
     const subPageProps = subPages.map(
         ({props}) => (props && props.children && props.children.props) || props
     );
+    const {menuLogo} = theme;
     return (
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <Wrapper id="layout">
-                    <Menu subPages={subPageProps} />
+                    <Menu subPages={subPageProps} menuLogo={menuLogo} />
                     <Switch>
                         <Route
                             exact

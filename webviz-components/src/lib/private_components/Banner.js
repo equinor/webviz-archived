@@ -26,8 +26,8 @@ const Wrapper = styled.div`
 const StyledParagraph = styled.p`
     color: #ffffff;
     font-size: 48px;
-    font-family: system-ui;
-    font-weight: 700;
+    font-family: var(--bannerFontFamily);
+    font-weight: var(--bannerFontWeight);
 `;
 
 const Banner = ({url, color, title}) => (

@@ -1,0 +1,19 @@
+:root {
+    --menuLinkFont: system-ui;
+    --menuLogoHeight: 50px;
+    --menuBackground: #adb5bd;
+    --menuLinkBackgroundHover: #adb5bd;
+    --menuLinkBackgroundSelected: #F59F00;
+    --menuLinkColor: #ffffff;
+    --menuLinkColorSelected: #ffffff;
+    --menuLinkFontStyle: normal;
+    --menuLinkFontWeight: 700;
+    --menuLinkHoverColor: #ffffff;
+    --menuLinkUppercase: true;
+    --bannerFontFamily: system-ui;
+    --bannerFontWeight: 700;
+}
+
+._dash-loading {
+    margin: 20% 50%;
+}

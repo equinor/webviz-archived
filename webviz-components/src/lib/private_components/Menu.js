@@ -5,7 +5,7 @@ import styled, {css} from 'styled-components';
 import MenuButton from './MenuButton';
 
 const OuterWrapper = styled.div`
-    background: ${({theme}) => theme.menuBackground};
+    background: var(--menuBackground);
     @media (min-width: 1201px) {
         min-height: fill-available;
     }
@@ -16,7 +16,7 @@ const displayNone = css`
 `;
 
 const Wrapper = styled.div`
-    background: ${({theme}) => theme.menuBackground};
+    background: var(--menuBackground);
     min-width: 250px;
     display: flex;
     flex-direction: column;
@@ -65,8 +65,8 @@ const LogoWrapper = styled.div`
 `;
 
 const selectedStyle = css`
-    background: ${({theme}) => theme.menuLinkBackgroundSelected};
-    color: ${({theme}) => theme.menuLinkColorSelected};
+    background: var(--menuLinkBackgroundSelected);
+    color: var(--menuLinkColorSelected);
 `;
 
 const uppercaseStyle = css`
@@ -74,8 +74,8 @@ const uppercaseStyle = css`
 `;
 
 const hoverStyle = css`
-    background: ${({theme}) => theme.menuLinkBackgroundHover};
-    color: ${({theme}) => theme.menuLinkHoverColor};
+    background: var(--menuLinkBackgroundHover);
+    color: var(--menuLinkHoverColor);
 `;
 
 const SubPageLink = styled(Link)`
@@ -83,11 +83,11 @@ const SubPageLink = styled(Link)`
     ${({menuLinkUppercase}) => menuLinkUppercase && uppercaseStyle};
     padding: 20px 30px;
     font-size: 16px;
-    font-family: ${({theme}) => theme.menuLinkFont};
-    font-weight: ${({theme}) => theme.menuLinkFontWeight};
-    font-style: ${({theme}) => theme.menuLinkFontStyle};
+    font-family: var(--menuLinkFont);
+    font-weight: var(--menuLinkFontWeight);
+    font-style: var(--menuLinkFontStyle);
     border-bottom: 1px solid white;
-    color: ${({theme}) => theme.menuLinkColor};
+    color: var(--menuLinkColor);
     :hover {
         ${({selected}) => !selected && hoverStyle};
     }
@@ -104,8 +104,7 @@ const StyledLogo = styled.img`
     @media (max-width: 1200px) {
         height: 42px;
     }
-    height: ${({theme}) => theme.menuLogoHeight}px;
-    content: url(${({theme}) => theme.menuLogo});
+    height: var(--menuLogoHeight);
 `;
 
 class Menu extends Component {
@@ -117,7 +116,7 @@ class Menu extends Component {
     }
 
     render() {
-        const {subPages} = this.props;
+        const {subPages, menuLogo} = this.props;
         const {menuOpen} = this.state;
         return (
             <OuterWrapper>
@@ -136,7 +135,7 @@ class Menu extends Component {
                             children={() => (
                                 <LogoWrapper>
                                     <LinkHome to="/">
-                                        <StyledLogo />
+                                        <StyledLogo src={menuLogo} />
                                     </LinkHome>
                                 </LogoWrapper>
                             )}

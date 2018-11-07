@@ -14,6 +14,7 @@
   "author": "Árni Geir Úlfarsson arnigeir@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "frontend-assets-internal": "git@github.com:Statoil/frontend-assets-internal.git",
     "@matejmazur/react-mathjax": "^0.1.8",
     "d3": "^5.7.0",
     "normalize.css": "^8.0.0",

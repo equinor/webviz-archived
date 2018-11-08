@@ -139,8 +139,8 @@ def validate_observation_data(obs):
 
 
 def validate_value(data):
-    if any(x < 0 for x in data):
-        warnings.warn('Negative values are not supported in a'
+    if any(x <= 0 for x in data):
+        warnings.warn('Non-positive values are not supported in a'
                       ' logarithmic scale.')
 
 

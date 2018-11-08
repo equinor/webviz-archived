@@ -21,7 +21,7 @@ class TestHistogram(unittest.TestCase):
                 'normal': [1, 2, 3],
                 'poisson': [5, -2, 1],
                 'triangular': [1, 9, 4]
-            }), xlabel='xlabel', logy=True)
+            }), logy=True)
 
-            assert len(w) == 1
-            assert "Negative values" in str(w[-1].message)
+            self.assertEqual(len(w), 1)
+            self.assertTrue("Non-positive values" in str(w[-1].message))

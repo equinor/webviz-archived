@@ -26,9 +26,9 @@ class ScatterPlot(FilteredPlotly):
         lines = []
 
         for column in data.columns:
-            if self.logy and any(x < 0 for x in data[column].tolist()
+            if self.logy and any(x <= 0 for x in data[column].tolist()
                                  if isinstance(x, int or float)):
-                warnings.warn('Negative values are not supported in a'
+                warnings.warn('Non-positive values are not supported in a'
                               ' logarithmic scale.')
 
             lines.append({

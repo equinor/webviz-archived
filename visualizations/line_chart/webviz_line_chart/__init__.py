@@ -24,8 +24,9 @@ class LineChart(FilteredPlotly):
         lines = []
 
         for column in data.columns:
-            if self.logy and any(x < 0 for x in data[column].tolist()):
-                warnings.warn('Negative values are not supported in a'
+            if self.logy and column not in ['index', 'category', 'dateslider']\
+                    and any(float(x) <= 0 for x in data[column].tolist()):
+                warnings.warn('Non-positive values are not supported in a'
                               ' logarithmic scale.')
 
             lines.append({

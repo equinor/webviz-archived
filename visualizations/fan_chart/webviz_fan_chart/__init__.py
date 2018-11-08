@@ -144,6 +144,11 @@ def validate_value(data):
                       ' logarithmic scale.')
 
 
+def get_unique_names_in_data(data):
+    return set(data['name']) \
+        if 'name' in data else {'line'}
+
+
 class FanChart(FilteredPlotly):
     """Fan chart page element.
 
@@ -171,11 +176,11 @@ class FanChart(FilteredPlotly):
 
         if not isinstance(data, pd.DataFrame):
             self.data = pd.read_csv(data)
-            self.uniquelines = set(self.data['name']) \
-                if 'name' in pd.DataFrame(self.data) else {'line'}
+            self.unique_names = get_unique_names_in_data(
+                pd.DataFrame(self.data)
+            )
         else:
-            self.uniquelines = set(data['name']) \
-                if 'name' in data else {'line'}
+            self.unique_names = get_unique_names_in_data(data)
 
         datas = [data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(
@@ -185,13 +190,12 @@ class FanChart(FilteredPlotly):
             **kwargs)
 
     def process_data(self, data, observations=None):
-        unique_in_set = set(data['name']) \
-            if 'name' in data else {'line'}
-        colors = color_spread(self.uniquelines)
+        unique_names_in_category = get_unique_names_in_data(data)
+        colors = color_spread(self.unique_names)
         validate_observation_data(observations)
         lines = []
 
-        for index, line in enumerate(unique_in_set):
+        for index, line in enumerate(unique_names_in_category):
             line_data = data[data['name'] == line] \
                 if 'name' in data else data
             x = line_data.index.tolist()

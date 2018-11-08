@@ -54,10 +54,10 @@ class Histogram(FilteredPlotly):
         lines = []
 
         for column in data.columns:
-            if (self.logy or self.logx) and any(x < 0 for x
+            if (self.logy or self.logx) and any(x <= 0 for x
                                                 in data[column].tolist() if
                                                 isinstance(x, int or float)):
-                warnings.warn('Negative values are not supported in a'
+                warnings.warn('Non-positive values are not supported in a'
                               ' logarithmic scale.')
 
             lines.append({

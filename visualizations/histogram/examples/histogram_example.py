@@ -14,6 +14,6 @@ triangular = [x for x in np.random.triangular(0, 10, 20, 1000).tolist()]
 data = pd.DataFrame({'normal': normal, 'poisson': poisson,
                     'triangular': triangular})
 
-page.add_content(Histogram(data, xlabel='x-label', nbinsx=20))
+page.add_content(Histogram(data, nbinsx=20))
 web.add(page)
 web.write_html("./webviz_example", overwrite=True, display=False)

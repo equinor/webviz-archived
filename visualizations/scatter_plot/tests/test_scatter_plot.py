@@ -23,5 +23,5 @@ class TestScatterPlot(unittest.TestCase):
                 'triangular': [1, 9, 4]
             }), logy=True)
 
-            assert len(w) == 1
-            assert "Negative values" in str(w[-1].message)
+            self.assertEqual(len(w), 1)
+            self.assertIn("Non-positive values", str(w[-1].message))

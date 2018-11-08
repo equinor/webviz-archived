@@ -1,1 +1,1 @@
-{{ page_element('Histogram', './test.csv', xlabel='xlabel') }}
+{{ page_element('Histogram', './test.csv') }}

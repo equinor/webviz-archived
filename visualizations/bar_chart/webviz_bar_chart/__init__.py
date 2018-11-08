@@ -30,9 +30,9 @@ class BarChart(FilteredPlotly):
         bars = []
 
         for column in data.columns:
-            if self.logy and any(x < 0 for x in data[column].tolist()
+            if self.logy and any(x <= 0 for x in data[column].tolist()
                                  if not isinstance(x, str)):
-                warnings.warn('Negative values are not supported in a'
+                warnings.warn('Non-positive values are not supported in a'
                               ' logarithmic scale.')
 
             bars.append({

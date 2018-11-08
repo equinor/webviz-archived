@@ -11,7 +11,7 @@ install: build
 	pip install $(ARGS) .
 
 test:
-	cd tests && py.test --cov=webviz_line_chart --cov-fail-under=100 . && cd ..
+	cd tests && py.test --cov=webviz_line_chart --cov-report=term-missing --cov-fail-under=100 . && cd ..
 
 lint:
 	pycodestyle webviz_line_chart examples tests

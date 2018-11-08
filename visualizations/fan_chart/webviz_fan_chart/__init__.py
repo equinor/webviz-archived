@@ -14,8 +14,9 @@ def color_spread(lines):
     :returns: dictionary with format {'line-name': ['r','g','b']}
     """
     colorlist = {}
+    number_of_colors = 9
     for i, name in enumerate(lines):
-        single_color = color_scheme(i % 9)
+        single_color = color_scheme(i % number_of_colors)
         formatted_color = []
         for y in single_color[:-1]:
             formatted_color.append(str(math.ceil(y*255)))

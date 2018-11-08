@@ -14,8 +14,9 @@ def color_spread(lines):
     :returns: dictionary with format {'line-name': ['r','g','b']}
     """
     colorlist = {}
+    number_of_colors = 9
     for i, name in enumerate(lines):
-        single_color = color_scheme(float(i) / len(lines))
+        single_color = color_scheme(i % number_of_colors)
         formatted_color = []
         for y in single_color[:-1]:
             formatted_color.append(str(math.ceil(y*255)))
@@ -144,6 +145,11 @@ def validate_value(data):
                       ' logarithmic scale.')
 
 
+def get_unique_names_in_data(data):
+    return set(data['name']) \
+        if 'name' in data else {'line'}
+
+
 class FanChart(FilteredPlotly):
     """Fan chart page element.
 
@@ -169,6 +175,14 @@ class FanChart(FilteredPlotly):
             **kwargs):
         self.logy = logy
 
+        if not isinstance(data, pd.DataFrame):
+            self.data = pd.read_csv(data)
+            self.unique_names = get_unique_names_in_data(
+                pd.DataFrame(self.data)
+            )
+        else:
+            self.unique_names = get_unique_names_in_data(data)
+
         datas = [data, observations] if observations is not None else [data]
         super(FanChart, self).__init__(
             datas,
@@ -177,14 +191,12 @@ class FanChart(FilteredPlotly):
             **kwargs)
 
     def process_data(self, data, observations=None):
+        unique_names_in_category = get_unique_names_in_data(data)
+        colors = color_spread(self.unique_names)
         validate_observation_data(observations)
-
-        uniquelines = set(data['name']) \
-            if 'name' in data else {'line'}
         lines = []
-        colors = color_spread(uniquelines)
 
-        for index, line in enumerate(uniquelines):
+        for index, line in enumerate(unique_names_in_category):
             line_data = data[data['name'] == line] \
                 if 'name' in data else data
             x = line_data.index.tolist()

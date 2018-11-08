@@ -35,8 +35,7 @@ class ScatterPlot(FilteredPlotly):
                 'y': data[column].tolist(),
                 'x': data.index.tolist(),
                 'type': 'scatter',
-                'name': column,
-                'mode': 'markers'
+                'name': column
             })
 
         return lines

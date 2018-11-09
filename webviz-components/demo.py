@@ -240,7 +240,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use BarChart
                 '''),
-                BarChart(id='bar-chart-example', data=bars),
+                BarChart(id='bar-chart-example', figure={'data':bars}),
                 dcc.Markdown(
 '''
 ```
@@ -294,7 +294,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use FanChart
                 '''),
-                FanChart(id='fan-chart-example', data=lines,
+                FanChart(id='fan-chart-example', figure={'data':lines},
                          observations=observations),
                 dcc.Markdown(
 '''
@@ -372,7 +372,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use HeatMap
                 '''),
-                HeatMap(id='heat-map-example', data=heat_map_data),
+                HeatMap(id='heat-map-example', figure={'data':heat_map_data}),
                 dcc.Markdown(
                     '''
 ```
@@ -425,7 +425,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use Histogram
                 '''),
-                Histogram(id='histogram-example', data=histogram_data,
+                Histogram(id='histogram-example', figure={'data':histogram_data},
                           xlabel='x-label', nbinsx=20),
                 dcc.Markdown(
 '''
@@ -481,7 +481,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use LineChart
                 '''),
-                LineChart(id='line-chart-example', data=line_chart_data),
+                LineChart(id='line-chart-example', figure={'data':line_chart_data}),
                 dcc.Markdown(
 '''
 ```
@@ -540,7 +540,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use PieChart
                 '''),
-                PieChart(id='pie-chart-example', data=pie_chart_data),
+                PieChart(id='pie-chart-example', figure={'data':pie_chart_data}),
                 dcc.Markdown(
 '''
 ```
@@ -589,7 +589,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use ScatterPlot
                 '''),
-                ScatterPlot(id='scatter-plot-example', data=points),
+                ScatterPlot(id='scatter-plot-example', figure={'data':points}),
                 dcc.Markdown(
 '''
 ```
@@ -641,7 +641,7 @@ if __name__ == '__main__':
                     This is an example of how to use ScatterPlotMatrix
                 '''),
                 ScatterPlotMatrix(
-                    id='scatter-plot-matrix-example', data=scatter_plot_matrix_data),
+                    id='scatter-plot-matrix-example', figure={'data':scatter_plot_matrix_data}),
                 dcc.Markdown(
 '''
 ```
@@ -702,7 +702,7 @@ if __name__ == '__main__':
                 html.Div(children='''
                     This is an example of how to use TornadoPlot
                 '''),
-                TornadoPlot(id='tornado-plot-example', data=tornado_plot_data),
+                TornadoPlot(id='tornado-plot-example', figure={'data':tornado_plot_data}),
                 dcc.Markdown(
 '''
 ```

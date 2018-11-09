@@ -17,19 +17,18 @@ class ScatterPlot(FilteredGraph):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, data, id='scatter-plot-graph', logx=False, logy=False, *args, **kwargs):
+    def __init__(self, figure, id='scatter-plot-graph', logx=False, logy=False, *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
-
+        figure['layout'] = {
+            'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
+            'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
+        }
         super(ScatterPlot, self).__init__(
             *args,
             id=id,
-            data=data,
-            layout={
-                'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
-                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
-            },
+            figure=figure,
             config={},
             **kwargs)
 
@@ -46,7 +45,8 @@ class ScatterPlot(FilteredGraph):
                 'y': data[column].tolist(),
                 'x': data.index.tolist(),
                 'type': 'scatter',
-                'name': column
+                'name': column,
+                'mode': 'markers'
             })
 
         return lines

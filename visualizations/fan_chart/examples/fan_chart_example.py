@@ -50,7 +50,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is an example of how to use FanChart
                 '''),
-                FanChart(id='fan-chart-example', data=lines,
+                FanChart(id='fan-chart-example', figure={'data':lines},
                          observations=observations)
             ]
         ),
@@ -63,7 +63,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is another FanChart example
                 '''),
-                FanChart(id='fan-chart-example_2', data=lines,
+                FanChart(id='fan-chart-example_2', figure={'data':lines},
                          observations=observations)
             ]
         )

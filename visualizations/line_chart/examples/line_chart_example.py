@@ -33,7 +33,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is an example of how to use LineChart
                 '''),
-                LineChart(id='line-chart-example', data=lines)
+                LineChart(id='line-chart-example', figure={'data':lines})
             ]
         ),
         webviz.Page(
@@ -45,7 +45,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is another LineChart example
                 '''),
-                LineChart(id='line-chart-example-2', data=lines)
+                LineChart(id='line-chart-example-2', figure={'data':lines})
             ]
         )
     ]

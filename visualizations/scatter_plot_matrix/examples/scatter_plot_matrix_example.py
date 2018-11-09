@@ -35,7 +35,7 @@ app.layout = webviz.Layout(
                     This is an example of how to use ScatterPlotMatrix
                 '''),
                 ScatterPlotMatrix(
-                    id='scatter-plot-matrix-example', data=points)
+                    id='scatter-plot-matrix-example', figure={'data':points})
             ]
         ),
         webviz.Page(
@@ -48,7 +48,7 @@ app.layout = webviz.Layout(
                     This is another ScatterPlotMatrix example
                 '''),
                 ScatterPlotMatrix(
-                    id='scatter-plot-matrix-example-2', data=points)
+                    id='scatter-plot-matrix-example-2', figure={'data':points})
             ]
         )
     ]

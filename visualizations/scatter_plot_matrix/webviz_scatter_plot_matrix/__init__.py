@@ -104,7 +104,8 @@ class ScatterPlotMatrix(Graph):
         :class:`pandas.DataFrame`. If a dataframe is given, a column called
         `name` is used to distinguish points.
     """
-    def __init__(self, data, id="scatter-plot-matrix-graph"):
+    def __init__(self, figure, id="scatter-plot-matrix-graph"):
+        data = figure['data']
         if isinstance(data, str):
             self.data = validate_data_format(pd.read_csv(data))
         else:

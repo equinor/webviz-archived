@@ -15,21 +15,20 @@ class HeatMap(FilteredGraph):
     :param logy: boolean value to toggle y-axis logarithmic scale.
         Defaults to `False`
     """
-    def __init__(self, data, id="heat-map-graph", *args, **kwargs):
+    def __init__(self, figure, id="heat-map-graph", *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
-
+        figure['layout'] = {
+            'showlegend': True,
+            'xaxis': {'title': xaxis},
+            'yaxis': {'title': yaxis,
+                      'autorange': 'reversed',
+                      'automargin': True}
+        }
         super(HeatMap, self).__init__(
             *args,
             id=id,
-            data=data,
-            layout={
-                'showlegend': True,
-                'xaxis': {'title': xaxis},
-                'yaxis': {'title': yaxis,
-                          'autorange': 'reversed',
-                          'automargin': True}
-            },
+            figure=figure,
             config={},
             **kwargs)
 

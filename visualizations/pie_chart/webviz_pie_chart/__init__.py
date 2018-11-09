@@ -1,7 +1,71 @@
-from webviz_plotly import Plotly
 import pandas as pd
 import math
 from dash_core_components import Graph
+
+
+def pie_chart_figure(data, num_per_row=4):
+    frame = data
+    if isinstance(data, str):
+        frame = pd.read_csv(data)
+    frame = frame.copy()
+
+    text = None
+    if 'pie_chart_label' in frame.columns:
+        text = list(frame['pie_chart_label'])
+        del frame['pie_chart_label']
+    labels = list(frame.columns)
+
+    length = len(frame.index)
+    height = length / num_per_row + (1 if length % num_per_row else 0)
+    width = min(num_per_row, length)
+    margin = 0.1
+
+    if text:
+        return {'data': [{
+                'values': [row[label] for label in labels],
+                'labels': labels,
+                'type': 'pie',
+                'text': text[ind],
+                'textposition': 'inside',
+                'name': text[ind],
+                'hoverinfo': 'label+percent+name',
+                'hole': 0.4,
+                'domain': {
+                    'x': [(ind % width) / float(width) + margin/2,
+                          ((ind % width)+1) / float(width) - margin/2],
+                    'y': [math.floor(ind / width) /
+                          float(height) + margin/2,
+                          (math.floor(ind / width)+1) /
+                          float(height) - margin/2]
+                }
+                } for ind, row in frame.iterrows()],
+                'layout': {'annotations': [
+                    {'font': {'size': 20},
+                     'text': text[ind],
+                     'showarrow': False,
+                     'xanchor': 'center',
+                     'yanchor': 'middle',
+                     'x': ((ind % width) + 0.5) / float(width),
+                     'y': (math.floor(ind / width) + 0.5) /
+                        float(height),
+                     }
+                    for ind, _ in frame.iterrows()]}}
+    else:
+        return {'data': [{
+            'values': [row[label] for label in labels],
+                'labels': labels,
+                'type': 'pie',
+                'hoverinfo': 'label+percent+name',
+                'domain': {
+                    'x': [(ind % width) / float(width) + margin/2,
+                          ((ind % width)+1) / float(width) - margin/2],
+
+                    'y': [math.floor(ind / width) /
+                          float(height) + margin/2,
+                          (math.floor(ind / width)+1) /
+                          float(height) - margin/2]
+            }
+        } for ind, row in frame.iterrows()]}
 
 
 class PieChart(Graph):
@@ -14,7 +78,8 @@ class PieChart(Graph):
     :param num_per_row: If more than one pie chart, number per row.
     """
 
-    def __init__(self, data, id='pie-chart-graph', num_per_row=4):
+    def __init__(self, figure, id='pie-chart-graph', num_per_row=4):
+        data = figure['data']
         frame = data
         if isinstance(data, str):
             frame = pd.read_csv(data)

@@ -11,19 +11,19 @@ class TornadoPlot(FilteredGraph):
     :param xaxis: Will create a label for the x-axis. Defaults to `None`.
     :param yaxis: Will create a label for the y-axis. Defaults to `None`.
     """
-    def __init__(self, data, id='tornado-plot-graph', *args, **kwargs):
+    def __init__(self, figure, id='tornado-plot-graph', *args, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
+        figure['layout'] = {
+            'barmode': 'relative',
+            'showlegend': False,
+            'xaxis': {'title': xaxis},
+            'yaxis': {'automargin': True, 'title': yaxis}
+        }
         super(TornadoPlot, self).__init__(
             *args,
             id=id,
-            data=data,
-            layout={
-                'barmode': 'relative',
-                'showlegend': False,
-                'xaxis': {'title': xaxis},
-                'yaxis': {'automargin': True, 'title': yaxis}
-                },
+            figure=figure,
             config={},
             **kwargs)
 

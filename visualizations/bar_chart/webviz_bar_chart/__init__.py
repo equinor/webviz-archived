@@ -20,18 +20,18 @@ class BarChart(FilteredGraph):
         Defaults to `False`
     """
 
-    def __init__(self, data, id='bar-chart-graph', barmode='group', logy=False, **kwargs):
+    def __init__(self, figure, id='bar-chart-graph', barmode='group', logy=False, **kwargs):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
+        figure['layout'] = {
+            'barmode': barmode,
+            'xaxis': {'title': xaxis},
+            'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
+        }
         super(BarChart, self).__init__(
             id=id,
-            data=data,
-            layout={
-                'barmode': barmode,
-                'xaxis': {'title': xaxis},
-                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
-            },
+            figure=figure,
             config={},
             **kwargs
         )

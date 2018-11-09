@@ -168,7 +168,7 @@ class FanChart(FilteredGraph):
     """
     def __init__(
             self,
-            data,
+            figure,
             id='fan-chart-graph',
             observations=None,
             logx=False,
@@ -178,17 +178,16 @@ class FanChart(FilteredGraph):
         xaxis = kwargs.pop('xaxis') if 'xaxis' in kwargs else None
         yaxis = kwargs.pop('yaxis') if 'yaxis' in kwargs else None
         self.logy = logy
-
-        chart_data = [
-            data, observations] if observations is not None else [data]
+        data = figure['data']
+        figure['data'] = [data, observations] if observations is not None else [data]
+        figure['layout'] = {
+            'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
+            'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
+        }
         super(FanChart, self).__init__(
             *args,
             id=id,
-            data=chart_data,
-            layout={
-                'xaxis': {'title': xaxis, 'type': 'log' if logx else '-'},
-                'yaxis': {'title': yaxis, 'type': 'log' if logy else '-'}
-            },
+            figure=figure,
             **kwargs)
 
     def process_data(self, data, observations=None):

@@ -26,7 +26,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is an example of how to use HeatMap
                 '''),
-                HeatMap(id='heat-map-example', data=lines)
+                HeatMap(id='heat-map-example', figure={'data':lines})
             ]
         ),
         webviz.Page(
@@ -38,7 +38,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is another HeatMap example
                 '''),
-                HeatMap(id='heat-map-example_2', data=lines)
+                HeatMap(id='heat-map-example_2', figure={'data':lines})
             ]
         )
     ]

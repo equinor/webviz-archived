@@ -27,7 +27,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is an example of how to use Histogram
                 '''),
-                Histogram(id='histogram-example', data=data,
+                Histogram(id='histogram-example', figure={'data':data},
                           xlabel='x-label', nbinsx=20)
             ]
         ),
@@ -40,7 +40,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is another Histogram example
                 '''),
-                Histogram(id='histogram-example-2', data=data,
+                Histogram(id='histogram-example-2', figure={'data':data},
                           xlabel='x-label', nbinsx=20)
             ]
         )

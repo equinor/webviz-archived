@@ -325,7 +325,7 @@ class FilteredGraph(Graph):
 
     def __init__(
             self,
-            data,
+            figure,
             id = 'webviz-graph',
             check_box_columns=[],
             slider_columns=[],
@@ -333,6 +333,7 @@ class FilteredGraph(Graph):
             **kwargs):
         self.data = []
         _data = []
+        data = figure['data']
         if isinstance(data, list):
             _data = data
         else:
@@ -400,10 +401,7 @@ class FilteredGraph(Graph):
                 data['labels'] = {}
             filtered_data.extend(processed)
         
-        figure = {
-            'data': filtered_data,
-            **kwargs
-        }
+        figure['data'] = filtered_data
 
         super(FilteredGraph, self).__init__(id=id, figure=figure)
 

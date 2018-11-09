@@ -28,7 +28,7 @@ class Histogram(FilteredGraph):
         Defaults to `False`
     """
     def __init__(self,
-                 data,
+                 figure,
                  xlabel,
                  ylabel='[%]',
                  id='histogram-graph',
@@ -44,17 +44,16 @@ class Histogram(FilteredGraph):
         self.nbinsx = nbinsx
         self.logx = logx
         self.logy = logy
-
+        figure['layout'] = {
+            'bargap': 0.05,
+            'bargroupgap': 0.05,
+            'barmode': barmode,
+            'xaxis': {'title': xlabel, 'type': 'log' if logx else '-'},
+            'yaxis': {'title': ylabel, 'type': 'log' if logy else '-'}}
         super(Histogram, self).__init__(
             *args,
             id=id,
-            data=data,
-            layout={
-                'bargap': 0.05,
-                'bargroupgap': 0.05,
-                'barmode': barmode,
-                'xaxis': {'title': xlabel, 'type': 'log' if logx else '-'},
-                'yaxis': {'title': ylabel, 'type': 'log' if logy else '-'}},
+            figure=figure,
             config={},
             **kwargs)
 

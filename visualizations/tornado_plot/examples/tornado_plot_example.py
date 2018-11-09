@@ -30,7 +30,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is an example of how to use TornadoPlot
                 '''),
-                TornadoPlot(id='tornado-plot-example', data=bars)
+                TornadoPlot(id='tornado-plot-example', figure={'data':bars})
             ]
         ),
         webviz.Page(
@@ -42,7 +42,7 @@ app.layout = webviz.Layout(
                 html.Div(children='''
                     This is another TornadoPlot example
                 '''),
-                TornadoPlot(id='tornado-plot-example-2', data=bars)
+                TornadoPlot(id='tornado-plot-example-2', figure={'data':bars})
             ]
         )
     ]

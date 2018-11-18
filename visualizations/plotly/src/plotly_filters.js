@@ -1,4 +1,5 @@
-/* global Plotly */
+var Plotly = require('plotly.js');
+
 function contains(obj, prop) {
     return Object.prototype.hasOwnProperty.call(obj, prop)
 }

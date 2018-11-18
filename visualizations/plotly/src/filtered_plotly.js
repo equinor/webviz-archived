@@ -11,9 +11,8 @@ function makeFilterCheckboxes(containerId, labels, filters) {
     return boxes
 }
 
-const global = window || {}
 
-global.makeFilteredPlotly = function makeFilteredPlotly(
+export function makeFilteredPlotly(
     containerId,
     data,
     layout,

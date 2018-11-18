@@ -1,0 +1,5 @@
+{
+  "load_extensions": {
+    "webviz_plotly/webviz_plotly": true
+  }
+}

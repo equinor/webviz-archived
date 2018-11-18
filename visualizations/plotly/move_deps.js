@@ -9,7 +9,7 @@ function copyFile(src, dest) {
 }
 
 const moveToJs = [
-    'node_modules/plotly.js-dist/plotly.js',
+    'build/webviz_plotly.js',
 ]
 
 moveToJs.forEach(file => {

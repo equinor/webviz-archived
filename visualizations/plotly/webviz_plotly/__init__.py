@@ -67,7 +67,7 @@ class Plotly(JSONPageElement):
             path.dirname(__file__),
             'resources',
             'js',
-            'plotly.js'))
+            'webviz_plotly.js'))
 
     def handle_args(
             self,
@@ -108,6 +108,13 @@ class Plotly(JSONPageElement):
         Overrides :meth:`webviz.PageElement.get_template`.
         """
         return env.get_template('plotly.html')
+
+    def _repr_html_(self):
+        html = ""
+        for elem in self.header_elements:
+            if not any(key in ["href", "src"] for key, _ in elem.attributes):
+                html += str(elem) + "\n"
+        return html + self.get_template().render(element=self, root_folder='.')
 
 
 class FilteredPlotly(Plotly):
@@ -260,11 +267,6 @@ class FilteredPlotly(Plotly):
             filtered_data,
             *args,
             **kwargs)
-        self.add_js_file(path.join(
-            path.dirname(__file__),
-            'resources',
-            'js',
-            'filtered_plotly.js'))
 
         self['check_box_filters'] = [str(label) for label in check_box_columns]
 

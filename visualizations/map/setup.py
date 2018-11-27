@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='webviz_map',
-    version='0.1.0',
+    version='0.1.1',
     packages=find_packages("."),
     package_dir={"": "."},
     package_data={

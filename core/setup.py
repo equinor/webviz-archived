@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='webviz',
-    version='0.10.0',
+    version='0.10.2',
     packages=find_packages("."),
     package_dir={"": "."},
     package_data={

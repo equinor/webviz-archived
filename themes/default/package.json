@@ -1,6 +1,6 @@
 {
     "name": "webviz-default-theme",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "scripts": {
         "build": "npm-run-all atomize babel moveDeps",
         "atomize": "atomizer -c \"./acss.config.js\" -r \"./acss.rules.js\" -n \"#webviz\" -H \"#webviz\" -R \"./src/webviz_default_theme/templates/\" | postcss --config \"./build/postcss.config.js\" --no-map -o \"./src/webviz_default_theme/resources/css/theme.css\"",

@@ -1,6 +1,6 @@
 {
   "name": "webviz-map",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Webviz page element for maps.",
   "scripts": {
     "build": "browserify src/index.js -o webviz_map/resources/js/map.js -t [ babelify --presets [ '@babel/preset-env' ] ]",

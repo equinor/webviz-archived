@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='webviz_default_theme',
-    version='0.1.0a0',
+    version='0.1.1',
     packages=find_packages("src"),
     package_dir={"": "src"},
     package_data={'webviz_default_theme': [

@@ -1,3 +1,22 @@
+Webviz moving to Dash
+=====================
+
+We're currently working on rewriting Webviz to work with Dash, which is a python framework for building analytical web applications. It's built by Plotly, the company behind the visualization library we already use in the current version of Webviz.
+
+Behind the scenes, Dash is using React components. React is a javascript framework developed by Facebook that we use in a lot of web applications in Equinor. Using Dash as a framework for Webviz allows us to share components with these applications, and thereby enable us to set up new Dash applications faster.
+
+Moving to Dash will allow us to focus on the vizualisation components, and not having to maintain a framework. This also means that instead of being a single application, Webviz will be a component library for Dash. We will provide documentation on how to use Webviz with Dash, and how to integrate Webviz with Jupyter, a feature that has been much requested by current Webviz users. We will also provide example code that can be downloaded and used as starting points for custom Dash applications.
+
+_The current roadmap looks like this:_
+
+- Rewrite Webviz components as Dash components
+- Write documentation that will be hosted on a subdomain of equinor.com
+- Write examples as applications and Jupyter Notebooks that can be cloned from Github
+
+What we're focusing on first is to provide an example based on FMU summary data and the fanchart component, both in an application and in a Jupyter Notebook. We'll let you know when it's ready. Let me know if you have any comments or questions.
+
+_The following documentation is related to the current (or "old") version of Webviz:_
+
 # Webviz [![Build Status](https://travis-ci.com/Statoil/webviz.svg?branch=master)](https://travis-ci.com/Statoil/webviz) [![Documentation Status](https://readthedocs.org/projects/webviz/badge/?version=latest)](https://webviz.readthedocs.io/en/latest/?badge=latest)
 
 Webviz is a static site generator that fascilitates producing visualizations

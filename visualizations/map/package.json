@@ -11,10 +11,10 @@
   "license": "LGPL-3.0",
   "dependencies": {
     "d3": "^5.7.0",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.7.5",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-eslint": "^9.0.0",
@@ -25,6 +25,8 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-chai-expect": "^1.1.1",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
     "jsdom": "^12.0.0",
     "jsdom-global": "^3.0.2",
     "jsverify": "^0.8.3",

@@ -11,7 +11,7 @@
   "license": "LGPL-3.0",
   "dependencies": {
     "d3": "^5.7.0",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

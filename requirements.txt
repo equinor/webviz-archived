@@ -6,6 +6,6 @@ argparse
 pyyaml
 markdown
 pygments
-pandas
+pandas<0.25
 ordered-set
 python-markdown-math

@@ -18,8 +18,9 @@ matrix:
 
 before_install:
   - sudo apt-get -qq update
+  - pip freeze | grep -vw "pip" | xargs pip uninstall -y
+  - pip install --upgrade pip
   - sudo apt-get install pep8
-
 
 install:
   - pip install -r requirements.txt

@@ -1,3 +1,8 @@
+NOTE: this repository is part of the WebViz project developed by _Software Innovation Bergen_ (SIB) in 2018 and is not maintained anymore. If you are looking for the version of WebViz based on Dash, see https://github.com/equinor/webviz-config.
+
+SIB is not involved in the development of the new version.
+
+
 # Webviz [![Build Status](https://travis-ci.com/Statoil/webviz.svg?branch=master)](https://travis-ci.com/Statoil/webviz) [![Documentation Status](https://readthedocs.org/projects/webviz/badge/?version=latest)](https://webviz.readthedocs.io/en/latest/?badge=latest)
 
 Webviz is a static site generator that fascilitates producing visualizations

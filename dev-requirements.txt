@@ -2,5 +2,6 @@ mock==2.0.0
 pycodestyle==2.4.0
 pytest==3.5.1
 pytest-cov==2.5.1
-selenium
-sphinx_rtd_theme
+selenium==3.141.0
+coverage==4.5.4  # pin down coverage version used by pytest-cov to one that works on python2
+sphinx_rtd_theme==0.4.3

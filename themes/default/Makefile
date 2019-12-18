@@ -3,7 +3,7 @@ all: build
 
 .PHONY: build install
 build:
-	npm install && npm run build && python setup.py build
+	npm install --ignore-scripts && npm run build && python setup.py build
 
 dev-install:
 	pip install -e .

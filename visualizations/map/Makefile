@@ -9,7 +9,7 @@ dev-install:
 	pip install -e .
 
 install: build
-	python setup.py install
+	pip install $(ARGS) .
 
 test:
 	cd tests && py.test --cov=webviz_map --cov-fail-under=96 . && cd ..
